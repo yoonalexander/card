@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home | Alexander Yoon</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --light-bg: #f5f5f5;
+      --dark-bg: #1f1f1f;
+      --light-text: #333;
+      --dark-text: #f1f1f1;
+      /* Shared shadow for card, icons, buttons, etc. */
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      --transition: 0.3s ease;
+    }
+
+    /* Remove scrollbars and make the page fill the screen */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; /* Prevent scrolling */
+    }
+
+    body {
+      background: var(--light-bg);
+      color: var(--light-text);
+      font-family: sans-serif;
+      transition: background var(--transition), color var(--transition);
+    }
+
+    body.dark {
+      background: var(--dark-bg);
+      color: var(--dark-text);
+    }
+
+    /* Container centers everything horizontally & vertically */
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative; /* Needed for toggle button absolute positioning */
+      box-sizing: border-box;
+    }
+
+    /* Main card with shadow, but transparent background */
+    .card {
+      position: relative;
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      max-width: 700px;
+      width: 90%;
+      background: transparent; /* Matches body background; shadow for contrast */
+      text-align: left;        /* Left-aligned text */
+    }
+
+    /* Headings & paragraphs spacing */
+    .card h1 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.75rem;
+    }
+    .card p {
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      font-family: "Quicksand", sans-serif;
+      font-size: x-large;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    /* Social icon buttons */
+    .icon-container {
+      display: flex;
+      justify-content: center; /* Center icons horizontally */
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .icon-container a {
+      display: inline-block;
+      text-decoration: none;
+      color: inherit;
+      font-size: 1.5rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      box-shadow: var(--card-shadow);
+      background: #e0e0e0;
+      transition: transform 0.2s, background var(--transition);
+    }
+    .icon-container a:hover {
+      transform: scale(1.1);
+    }
+    body.dark .icon-container a {
+      background: #444;
+    }
+
+    /* Large buttons container */
+    .btn-container {
+      display: flex;
+      justify-content: center; /* Center the main buttons */
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn-container a {
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      box-shadow: var(--card-shadow);
+      background: #e0e0e0;
+      color: inherit;
+      transition: background var(--transition), transform 0.2s;
+    }
+    .btn-container a:hover {
+      transform: scale(1.03);
+    }
+    body.dark .btn-container a {
+      background: #444;
+    }
+
+    /* Toggle (night-mode) button */
+    .toggle-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #e0e0e0;
+      border: none;
+      padding: 0.5rem;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: var(--card-shadow);
+      transition: background var(--transition), transform 0.2s;
+    }
+    .toggle-btn:hover {
+      transform: scale(1.1);
+    }
+    body.dark .toggle-btn {
+      background: #444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Night Mode Toggle -->
+    <button class="toggle-btn" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
+      ☀️
+    </button>
+
+    <!-- Main Card -->
+    <div class="card">
+      <p>
+        👋 Hey, I'm Alex! I'm a software engineering student who enjoys exploring AI, 
+        machine learning, and the world of data and development.
+      </p>
+      <p>
+        Outside of coding, I enjoy playing volleyball, learning new ML techniques, 
+        and tackling real-world challenges with technology.
+        
+      </p>
+
+      <!-- Social Icons -->
+      <div class="icon-container">
+        <!-- Replace '#' with actual links and these emojis with real icons (Font Awesome, etc.) -->
+        <a href="#" target="_blank" aria-label="YouTube">📺</a>
+        <a href="#" target="_blank" aria-label="GitHub">💻</a>
+        <a href="#" target="_blank" aria-label="LinkedIn">🔗</a>
+        <a href="#" target="_blank" aria-label="Twitter">🐦</a>
+        <a href="#" target="_blank" aria-label="Email">✉️</a>
+        <a href="#" target="_blank" aria-label="Other 1">❤️</a>
+        <a href="#" target="_blank" aria-label="Other 2">⭐</a>
+      </div>
+
+      <!-- Buttons -->
+      <div class="btn-container">
+        <a href="#">Resume</a>
+        <a href="#">Projects</a>
+        <a href="#">Let’s Chat</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Toggle between light & dark mode
+    function toggleTheme() {
+      const body = document.body;
+      const toggleBtn = document.querySelector('.toggle-btn');
+
+      body.classList.toggle('dark');
+      if (body.classList.contains('dark')) {
+        toggleBtn.textContent = '🌙';
+      } else {
+        toggleBtn.textContent = '☀️';
+      }
+    }
+  </script>
+</body>
+</html>
