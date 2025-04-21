@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Projects | Alexander Yoon</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --light-bg: #f5f5f5;
+      --dark-bg:  #1f1f1f;
+      --light-text: #333;
+      --dark-text:  #f1f1f1;
+      --card-bg-light: #f0f0f0;
+      --card-bg-dark:  #2c2c2c;
+      --shadow: 0 4px 20px rgba(0,0,0,0.1);
+      --transition: 0.3s ease;
+    }
+
+    /* Reset + base */
+    * { margin:0; padding:0; box-sizing: border-box; }
+    html, body { height:100%; overflow:hidden; font-family:"Quicksand",sans-serif; }
+    body {
+      background: var(--light-bg);
+      color: var(--light-text);
+      transition: background var(--transition), color var(--transition);
+    }
+    body.dark {
+      background: var(--dark-bg);
+      color: var(--dark-text);
+    }
+
+    /* Top‐left back + top‐right toggle */
+    .back-btn, .toggle-btn {
+      position: fixed;
+      top: 1rem;
+      padding:0.5rem;
+      border:none;
+      border-radius:8px;
+      box-shadow: var(--shadow);
+      background: #e0e0e0;
+      cursor: pointer;
+      transition: transform 0.2s, background var(--transition);
+    }
+    .back-btn:hover, .toggle-btn:hover { transform: scale(1.1); }
+    .back-btn { left: 1rem; }
+    .toggle-btn { right: 1rem; }
+    body.dark .back-btn,
+    body.dark .toggle-btn { background: #444; }
+
+    /* Layout: sidebar + main */
+    .content {
+      display: flex;
+      height: 100%;
+    }
+    nav {
+      width: 200px;
+      overflow-y: auto;
+      padding: 2rem 1rem;
+      border-right: 1px solid #ccc;
+    }
+    body.dark nav { border-color: #555; }
+    nav ul { list-style:none; }
+    nav a {
+      display: block;
+      margin-bottom: 1rem;
+      text-decoration: none;
+      color: inherit;
+      font-size: 1rem;
+      transition: font-size var(--transition), font-weight var(--transition);
+    }
+    nav a.active {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    main {
+      flex:1;
+      overflow-y: auto;
+      padding: 2rem;
+    }
+
+    /* Project cards */
+    .project {
+      background: var(--card-bg-light);
+      margin-bottom: 3rem;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      transition: background var(--transition);
+    }
+    body.dark .project { background: var(--card-bg-dark); }
+
+    .project h2 {
+      margin-bottom: 0.5rem;
+    }
+    .project img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .project p {
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .project .links a {
+      margin-right: 1rem;
+      text-decoration: none;
+      color: #007acc;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- back / toggle -->
+  <button class="back-btn" onclick="location.href='index.html'" aria-label="Back">⟵</button>
+  <button class="toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">☀️</button>
+
+  <div class="content">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <ul>
+        <li><a href="#proj1">Notepad Calculator</a></li>
+        <li><a href="#proj2">Gamer Server Tool</a></li>
+        <li><a href="#proj3">VEXU Robotics</a></li>
+      </ul>
+    </nav>
+
+    <!-- Main Projects -->
+    <main id="main">
+      <section id="proj1" class="project">
+        <h2>Notepad Calculator</h2>
+        <img src="assets/images/notepad-calculator.png" alt="Notepad Calculator UI"/>
+        <p>A lightweight, real-time calculator powered by the Monaco editor. Perfect for quick calculations without needing spreadsheets.</p>
+        <div class="links">
+          <a href="#">GitHub</a>
+          <a href="#">Live Demo</a>
+        </div>
+      </section>
+
+      <section id="proj2" class="project">
+        <h2>Gamer Server Tool</h2>
+        <img src="assets/images/gamer-server.png" alt="Gamer Server Tool Screenshot"/>
+        <p>A dashboard to manage private game servers, track uptime, and deploy mods automatically via CI/CD pipelines.</p>
+        <div class="links">
+          <a href="#">GitHub</a>
+          <a href="#">Docs</a>
+        </div>
+      </section>
+
+      <section id="proj3" class="project">
+        <h2>VEXU Robotics</h2>
+        <img src="assets/images/vexu-robotics.png" alt="VEXU Robotics Project"/>
+        <p>A robot control system written in C++ for the VEX U competition, featuring PID‑tuned motor controllers and vision‑guided alignment.</p>
+        <div class="links">
+          <a href="#">GitHub</a>
+          <a href="#">Competition Video</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Toggle light/dark
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      const btn = document.querySelector('.toggle-btn');
+      btn.textContent = document.body.classList.contains('dark') ? '🌙' : '☀️';
+    }
+
+    // Scroll‑spy
+    const navLinks = document.querySelectorAll('#sidebar a');
+    const sections = document.querySelectorAll('main .project');
+
+    function onScroll() {
+      let idx = sections.length - 1;
+      for (let i = 0; i < sections.length; i++) {
+        const top = sections[i].getBoundingClientRect().top;
+        if (top > window.innerHeight * 0.3) {
+          idx = i - 1;
+          break;
+        }
+      }
+      navLinks.forEach(a => a.classList.remove('active'));
+      const activeLink = navLinks[Math.max(idx, 0)];
+      if (activeLink) activeLink.classList.add('active');
+    }
+
+    document.getElementById('main').addEventListener('scroll', onScroll);
+    window.addEventListener('resize', onScroll);
+    // Initialize on load
+    onScroll();
+  </script>
+</body>
+</html>
