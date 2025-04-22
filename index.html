@@ -112,13 +112,15 @@
     /* Large buttons container */
     .btn-container {
       display: flex;
-      justify-content: center; /* Center the main buttons */
       gap: 1rem;
-      flex-wrap: wrap;
+      /* force the three buttons to sit in one row */
+      flex-wrap: nowrap;
     }
     .btn-container a {
-      text-decoration: none;
-      padding: 0.75rem 1.5rem;
+      flex: 1;                 /* each button takes equal share of available width */
+      min-width: 0;            /* prevents overflow in some browsers */
+      padding: 1rem 0;         /* taller buttons */
+      text-align: center;      /* center the label */
       border-radius: 8px;
       box-shadow: var(--card-shadow);
       background: #e0e0e0;
