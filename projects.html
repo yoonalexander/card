@@ -88,6 +88,13 @@
       padding: 2rem;
     }
 
+    /* Year separator styling */
+    h1.year {
+    font-size: 2rem;
+    margin: 2rem 0 1rem;
+    text-align: center;
+    }
+
     /* Project cards */
     .project {
       background: var(--card-bg-light);
@@ -126,21 +133,26 @@
   <button class="toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">☀️</button>
 
   <div class="content">
-    <!-- Sidebar -->
     <nav id="sidebar">
       <ul>
         <li><a href="#card">Portfolio Website</a></li>
         <li><a href="#chess">Chess-Bot</a></li>
         <li><a href="#evodle">Evodle</a></li>
         <li><a href="#nlp">NLP Analysis Tool</a></li>
+        <li><a href="#vankl">VanklCommApp</a></li>
+        <li><a href="#fitness">ACMERun</a></li>
         <li><a href="#island">Island Generator</a></li>
         <li><a href="#mesh">Mesh Terrain Generator</a></li>
+        <li><a href="#piraten">Piraten-Karpen</a></li>
       </ul>
     </nav>
 
     <!-- Main Projects -->
     <main id="main">
-      <!-- Portfolio Website (card) -->
+      <!-- 2025 -->  
+      <h1 class="year">2025</h1>
+
+      <!-- Portfolio -->
       <section id="card" class="project">
         <h2>Portfolio Website</h2>
         <img src="assets/images/portfolio-screenshot.png" alt="Portfolio Website"/>
@@ -172,6 +184,9 @@
         </div>
       </section>
 
+      <!-- 2024 -->
+      <h1 class="year">2024</h1>
+
       <!-- NLP Analysis Tool -->
       <section id="nlp" class="project">
         <h2>NLP Analysis Tool</h2>
@@ -179,6 +194,29 @@
         <p>A Python package leveraging NLTK & SpaCy to perform text classification, keyword extraction, and sentiment analysis on unstructured data.</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/Natural-Language-Processing-Analysis-Tool" target="_blank">GitHub</a>
+        </div>
+      </section>
+
+      <!-- VanklCommApp -->
+      <section id="vankl" class="project">
+        <h2>VanklCommApp</h2>
+        <img src="assets/images/vanklcommapp.png" alt="VanklCommApp Screenshot"/>
+        <p>A communication platform built with React Native and Firebase—features real-time chat, group channels, and file sharing.</p>
+        <div class="links">
+          <a href="https://github.com/yoonalexander/VanklCommApp" target="_blank">GitHub</a>
+        </div>
+      </section>
+
+      <!-- 2023 -->
+      <h1 class="year">2023</h1>
+
+      <!-- ACMERun -->
+      <section id="fitness" class="project">
+        <h2>Fitness-Run-Application-ACMERun</h2>
+        <img src="assets/images/acmerun.png" alt="ACMERun App"/>
+        <p>An Android app that tracks your runs, displays pace/heart-rate graphs, and syncs with Google Fit using Kotlin and Jetpack Compose.</p>
+        <div class="links">
+          <a href="https://github.com/yoonalexander/Fitness-Run-Application-ACMERun" target="_blank">GitHub</a>
         </div>
       </section>
 
@@ -199,6 +237,16 @@
         <p>A Java library for generating 3D mesh terrains from heightmaps, complete with UV mapping and customizable shader support.</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/Mesh-Terrain-Generator" target="_blank">GitHub</a>
+        </div>
+      </section>
+
+      <!-- Piraten Karpen -->
+      <section id="piraten" class="project">
+        <h2>Piraten-Karpen</h2>
+        <img src="assets/images/piraten-karpen.png" alt="Piraten-Karpen Game"/>
+        <p>A Unity-based 2D pirate adventure game featuring procedurally generated maps, inventory management, and NES-style pixel art.</p>
+        <div class="links">
+          <a href="https://github.com/yoonalexander/Piraten-Karpen" target="_blank">GitHub</a>
         </div>
       </section>
     </main>
