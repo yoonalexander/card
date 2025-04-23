@@ -40,9 +40,22 @@
     }
 
     /* Top‐left back + top‐right toggle */
-    .back-btn, .toggle-btn {
+    .back-btn {
         position: fixed;           /* stays in viewport */
         top: 1rem;
+        padding: 0.5rem;           /* same padding as home page */
+        font-size: 1.5rem;         /* same size */
+        border: none;
+        border-radius: 50%;        /* pill / circular shape */
+        background: #e0e0e0;       /* light grey */
+        cursor: pointer;
+        box-shadow: var(--card-shadow);
+        transition: background var(--transition), transform 0.2s;
+    }
+    .toggle-btn {
+        position: fixed;           /* stays in viewport */
+        top: 1rem;
+        right: 2rem;           /* 2rem from right edge */
         padding: 0.5rem;           /* same padding as home page */
         font-size: 1.5rem;         /* same size */
         border: none;
