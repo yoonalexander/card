@@ -55,7 +55,7 @@
     .toggle-btn {
         position: fixed;           /* stays in viewport */
         top: 1rem;
-        right: 3rem;         
+        right: calc(1rem + 12px); ;         
         padding: 0.5rem;           /* same padding as home page */
         font-size: 1.5rem;         /* same size */
         border: none;
@@ -67,7 +67,6 @@
     }
     .back-btn:hover, .toggle-btn:hover { transform: scale(1.1); }
     .back-btn { left: 1rem; }
-    .toggle-btn { right: 1rem; }
     body.dark .back-btn,
     body.dark .toggle-btn { background: #444; }
 
