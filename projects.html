@@ -149,11 +149,11 @@
   <div class="content">
     <nav id="sidebar">
       <ul>
+        <li><a href="#anime">MAL Anime Score Predictions</a></li>
+        <li><a href="#xyball">XY-Ball-Fight</a></li>
         <li><a href="#card">Portfolio Website</a></li>
         <li><a href="#chess">Chess-Bot</a></li>
         <li><a href="#evodle">Evodle</a></li>
-        <li><a href="#xyball">XY-Ball-Fight</a></li>
-        <li><a href="#anime">MAL Anime Score Predictions</a></li>
         <li><a href="#nlp">NLP Analysis Tool</a></li>
         <li><a href="#vankl">VanklCommApp</a></li>
         <li><a href="#fitness">ACMERun</a></li>
@@ -173,11 +173,8 @@
         <h2>MAL Anime Score Predictions</h2>
         <img src="assets/images/anime-score-predictor.png" alt="MAL Anime Score Predictions"/>
         <p>This project pairs a data pipeline and model stack written in Python with a small React front end. The backend pulls and cleans MyAnimeList data, turns synopses into TF‑IDF vectors (with dimensionality control) and combines those with engineered metadata features; models are trained in scikit‑learn and with XGBoost/LightGBM and served through a FastAPI endpoint on Uvicorn. The frontend (Vite + React + Tailwind) shows an anime card grid with cover art, MAL IDs, color‑coded score badges, and a CSV export for further analysis.</p>
-        <ul>
-          <li>Motivation and outcome: as an anime fan I built this to improve my chances in MAL’s seasonal score prediction competitions — the project focused on practical gains (robust preprocessing, leakage‑safe validation, and repeatable experiments) rather than academic novelty.</li>
-          <li>Approach and reasoning: I found that combining textual signals from TF‑IDF (reduced to control dimensionality) with structured features like genre, popularity, and airing metadata produced the most reliable signals. To get realistic performance estimates I used time‑aware / leakage‑safe splits, extensive error analysis, and K‑fold cross validation with early stopping during hyperparameter searches.</li>
-          <li>Effort and iterations: the work took several weeks and dozens of hours of training and tuning — many experiments were short runs to validate feature ideas, while final models required longer training and careful hyperparameter sweeps. I used feature‑importance and targeted error analysis to guide each iteration and selected the final model by RMSE/MAE on held‑out data.</li>
-        </ul>
+        <p>Approach and reasoning: I found that combining textual signals from TF‑IDF (reduced to control dimensionality) with structured features like genre, popularity, and airing metadata produced the most reliable signals. To get realistic performance estimates I used time‑aware / leakage‑safe splits, extensive error analysis, and K‑fold cross validation with early stopping during hyperparameter searches.</p>
+        <p>Effort and iterations: the work took several weeks and dozens of hours of training and tuning — many experiments were short runs to validate feature ideas, while final models required longer training and careful hyperparameter sweeps. I used feature‑importance and targeted error analysis to guide each iteration and selected the final model by RMSE/MAE on held‑out data.</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/mal-anime-score-predictor" target="_blank">GitHub</a>
         </div>
