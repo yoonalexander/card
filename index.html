@@ -10,6 +10,39 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 
+  <script>
+    (function () {
+      try {
+        function applyStoredTheme() {
+          try {
+            var s = localStorage.getItem('theme');
+            if (s === 'dark') {
+              document.documentElement.classList.add('dark');
+              document.body && document.body.classList.add('dark');
+            } else if (s === 'light') {
+              document.documentElement.classList.remove('dark');
+              document.body && document.body.classList.remove('dark');
+            } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+              document.documentElement.classList.add('dark');
+              document.body && document.body.classList.add('dark');
+            } else {
+              document.documentElement.classList.remove('dark');
+              document.body && document.body.classList.remove('dark');
+            }
+            document.documentElement.setAttribute('data-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+            var btn = document.querySelector('.toggle-btn');
+            if (btn) btn.textContent = document.documentElement.classList.contains('dark') ? '🌙' : '☀️';
+          } catch (e) {}
+        }
+
+        // Apply immediately (early) and expose for pageshow/storage events
+        applyStoredTheme();
+        window.applyStoredTheme = applyStoredTheme;
+        window.addEventListener('pageshow', function () { setTimeout(window.applyStoredTheme, 0); });
+        window.addEventListener('storage', function () { window.applyStoredTheme(); });
+      } catch (e) {}
+    })();
+  </script>
   <style>
     :root {
       --light-bg: #f5f5f5;
@@ -36,7 +69,7 @@
       transition: background var(--transition), color var(--transition);
     }
 
-    body.dark {
+    body.dark, html.dark body {
       background: var(--dark-bg);
       color: var(--dark-text);
     }
@@ -105,7 +138,8 @@
     .icon-container a:hover {
       transform: scale(1.1);
     }
-    body.dark .icon-container a {
+    body.dark .icon-container a,
+    html.dark .icon-container a {
       background: #444;
     }
 
@@ -128,7 +162,8 @@
     .btn-container a:hover {
       transform: scale(1.03);
     }
-    body.dark .btn-container a {
+    body.dark .btn-container a,
+    html.dark .btn-container a {
       background: #444;
     }
 
@@ -149,24 +184,13 @@
     .toggle-btn:hover {
       transform: scale(1.1);
     }
-    body.dark .toggle-btn {
+    body.dark .toggle-btn,
+    html.dark .toggle-btn {
       background: #444;
     }
   </style>
 </head>
 <body>
-  <script>
-    (function () {
-      try {
-        const saved = localStorage.getItem('theme');
-        if (saved === 'dark') {
-          document.body.classList.add('dark');
-        }
-      } catch (e) {
-        // ignore storage errors
-      }
-    })();
-  </script>
   <div class="container">
     <!-- Night Mode Toggle -->
     <button class="toggle-btn" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
@@ -235,11 +259,14 @@
   <script>
     // Toggle between light & dark mode with persistence
     function toggleTheme() {
+      const root = document.documentElement;
       const body = document.body;
       const toggleBtn = document.querySelector('.toggle-btn');
 
-      body.classList.toggle('dark');
-      const isDark = body.classList.contains('dark');
+      // Toggle on root for early-application CSS, mirror to body for legacy selectors
+      root.classList.toggle('dark');
+      const isDark = root.classList.contains('dark');
+      body.classList.toggle('dark', isDark);
 
       // Persist preference
       try {
@@ -256,7 +283,8 @@
     (function(){
       const btn = document.querySelector('.toggle-btn');
       if (!btn) return;
-      btn.textContent = document.body.classList.contains('dark') ? '🌙' : '☀️';
+      const isDark = document.documentElement.classList.contains('dark') || document.body.classList.contains('dark');
+      btn.textContent = isDark ? '🌙' : '☀️';
     })();
   </script>
 </body>
