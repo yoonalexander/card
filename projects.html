@@ -192,6 +192,10 @@
       color: #007acc;
     }
 
+    body.mobile nav {
+      display: none;
+    }
+
   </style>
 </head>
 <body>
@@ -383,6 +387,33 @@
     // Scroll‑spy
     const navLinks = document.querySelectorAll('#sidebar a');
     const sections = document.querySelectorAll('main .project');
+    const mobileQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(max-width: 768px)') : null;
+
+    function applyLayoutForViewport() {
+      const sidebar = document.getElementById('sidebar');
+      const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
+      const isMobileViewport = mobileQuery ? mobileQuery.matches : window.innerWidth <= 768;
+      const isMobile = isMobileViewport || (isTouchDevice && window.innerWidth <= 900);
+      document.body.classList.toggle('mobile', isMobile);
+      if (sidebar) {
+        sidebar.setAttribute('aria-hidden', isMobile ? 'true' : 'false');
+      } else if (isMobile) {
+        document.body.classList.remove('mobile');
+      }
+      if (typeof onScroll === 'function') {
+        onScroll();
+      }
+    }
+
+    if (mobileQuery) {
+      if (typeof mobileQuery.addEventListener === 'function') {
+        mobileQuery.addEventListener('change', applyLayoutForViewport);
+      } else if (typeof mobileQuery.addListener === 'function') {
+        mobileQuery.addListener(applyLayoutForViewport);
+      }
+    }
+    window.addEventListener('orientationchange', applyLayoutForViewport);
+    window.addEventListener('resize', applyLayoutForViewport);
 
     function onScroll() {
       let idx = sections.length - 1;
@@ -398,8 +429,9 @@
       if (activeLink) activeLink.classList.add('active');
     }
 
+    applyLayoutForViewport();
+
     document.getElementById('main').addEventListener('scroll', onScroll);
-    window.addEventListener('resize', onScroll);
     // Initialize on load
     onScroll();
   </script>
