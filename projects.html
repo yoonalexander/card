@@ -201,7 +201,7 @@
 <body>
 
   <!-- back / toggle -->
-  <button class="back-btn" onclick="location.href='/card/'" aria-label="Back">⟵</button>
+  <button class="back-btn" onclick="location.href='index.html'" aria-label="Back">⟵</button>
   <button class="toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">☀️</button>
 
   <div class="content">
@@ -229,7 +229,7 @@
       <!-- MAL Anime Score Predictions -->
       <section id="anime" class="project">
         <h2>MAL Anime Score Predictions</h2>
-        <img src="images/anime-score-predictor.png" alt="MAL Anime Score Predictions"/>
+        <img src="assets/images/anime-score-predictor.png" alt="MAL Anime Score Predictions"/>
         <p>This project pairs a data pipeline and model stack written in Python with a small React front end. The backend pulls and cleans MyAnimeList data, turns synopses into TF‑IDF vectors (with dimensionality control) and combines those with engineered metadata features; models are trained in scikit‑learn and with XGBoost/LightGBM and served through a FastAPI endpoint on Uvicorn. The frontend (Vite + React + Tailwind) shows an anime card grid with cover art, MAL IDs, color‑coded score badges, and a CSV export for further analysis.</p>
         <p>Motivation and outcome: as an anime fan I built this to improve my chances in MAL’s seasonal score prediction competitions — the project focused on practical gains (robust preprocessing, leakage‑safe validation, and repeatable experiments) rather than academic novelty.</p>
         <p>Approach and reasoning: I found that combining textual signals from TF‑IDF (reduced to control dimensionality) with structured features like genre, popularity, and airing metadata produced the most reliable signals. To get realistic performance estimates I used time‑aware / leakage‑safe splits, extensive error analysis, and K‑fold cross validation with early stopping during hyperparameter searches.</p>
@@ -242,7 +242,7 @@
       <!-- XY-Ball-Fight -->
       <section id="xyball" class="project">
         <h2>XY-Ball-Fight</h2>
-        <img src="images/XY-Ball-Fight.png" alt="XY Ball Fight"/>
+        <img src="assets/images/XY-Ball-Fight.png" alt="XY Ball Fight"/>
         <p>A small browser-based 2D "ball fight" game built with plain HTML, CSS and JavaScript. This project demonstrates a simple game loop, basic physics, AI opponents, weapons, and an on-screen UI.</p>
         <ul>
           <li>Lightweight vanilla JavaScript implementation</li>
@@ -259,7 +259,7 @@
       <!-- Portfolio -->
       <section id="card" class="project">
         <h2>Portfolio Website</h2>
-        <img src="images/Portfolio.png" alt="Portfolio Website"/>
+        <img src="assets/images/Portfolio.png" alt="Portfolio Website"/>
         <p>My personal portfolio site built with plain HTML, CSS and JavaScript—showcasing my bio, projects, and resume link.</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/card" target="_blank">GitHub</a>
@@ -270,7 +270,7 @@
       <!-- Chess Bot -->
       <section id="chess" class="project">
         <h2>Chess-Bot</h2>
-        <img src="images/Chess.png" alt="Chess Bot"/>
+        <img src="assets/images/Chess.png" alt="Chess Bot"/>
         <p>A Python implementation of a chess-playing agent using minimax with alpha-beta pruning and heuristics for board evaluation. (WIP)</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/Chess-Bot" target="_blank">GitHub</a>
@@ -280,7 +280,7 @@
       <!-- Evodle -->
       <section id="evodle" class="project">
         <h2>Evodle</h2>
-        <img src="images/Evodle.png" alt="Evodle Game"/>
+        <img src="assets/images/Evodle.png" alt="Evodle Game"/>
         <p>An idle‐clicker browser game powered by evolutionary algorithms—watch your creatures evolve and unlock new upgrades. (WIP)</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/Evodle" target="_blank">GitHub</a>
@@ -294,7 +294,7 @@
       <!-- NLP Analysis Tool -->
       <section id="nlp" class="project">
         <h2>NLP Analysis Tool</h2>
-        <img src="images/NLP.png" alt="NLP Tool"/>
+        <img src="assets/images/NLP.png" alt="NLP Tool"/>
         <p>A Python package leveraging NLTK & SpaCy to perform text classification, keyword extraction, and sentiment analysis on unstructured data. (WIP)</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/Natural-Language-Processing-Analysis-Tool" target="_blank">GitHub</a>
@@ -304,7 +304,7 @@
       <!-- VanklCommApp -->
       <section id="vankl" class="project">
         <h2>VanklCommApp</h2>
-        <img src="images/Vankl.png" alt="VanklCommApp Screenshot"/>
+        <img src="assets/images/Vankl.png" alt="VanklCommApp Screenshot"/>
         <p>A communication platform built with React Native and Firebase—features real-time chat, group channels, and file sharing.</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/VanklCommApp" target="_blank">GitHub</a>
@@ -317,7 +317,7 @@
       <!-- ACMERun -->
       <section id="fitness" class="project">
         <h2>Fitness-Run-Application-ACMERun</h2>
-        <img src="images/ACME-Run.png" alt="ACMERun App"/>
+        <img src="assets/images/ACME-Run.png" alt="ACMERun App"/>
         <p>An Android app that tracks your runs, displays pace/heart-rate graphs, and syncs with Google Fit using Kotlin and Jetpack Compose.</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/Fitness-Run-Application-ACMERun" target="_blank">GitHub</a>
@@ -327,7 +327,7 @@
       <!-- Island Generator -->
       <section id="island" class="project">
         <h2>Island Generator</h2>
-        <img src="images/Island.png" alt="Island Generator"/>
+        <img src="assets/images/Island.png" alt="Island Generator"/>
         <p>A procedurally generated island terrain tool implemented in Java using Perlin noise and Voronoi-based erosion simulation.</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/Island-Generator" target="_blank">GitHub</a>
@@ -337,7 +337,7 @@
       <!-- Mesh Terrain Generator -->
       <section id="mesh" class="project">
         <h2>Mesh Terrain Generator</h2>
-        <img src="images/Mesh.png" alt="Mesh Terrain Generator"/>
+        <img src="assets/images/Mesh.png" alt="Mesh Terrain Generator"/>
         <p>A Java library for generating 3D mesh terrains from heightmaps, complete with UV mapping and customizable shader support.</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/Mesh-Terrain-Generator" target="_blank">GitHub</a>
@@ -347,7 +347,7 @@
       <!-- Piraten Karpen -->
       <section id="piraten" class="project">
         <h2>Piraten-Karpen</h2>
-        <img src="images/piraten karpen.png" alt="Piraten-Karpen Game"/>
+        <img src="assets/images/piraten karpen.png" alt="Piraten-Karpen Game"/>
         <p>A Unity-based 2D pirate adventure game featuring procedurally generated maps, inventory management, and NES-style pixel art.</p>
         <div class="links">
           <a href="https://github.com/yoonalexander/Piraten-Karpen" target="_blank">GitHub</a>
