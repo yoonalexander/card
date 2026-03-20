@@ -31,7 +31,7 @@
             }
             document.documentElement.setAttribute('data-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
             var btn = document.querySelector('.toggle-btn');
-            if (btn) btn.textContent = document.documentElement.classList.contains('dark') ? '🌙' : '☀️';
+            if (btn) btn.textContent = document.documentElement.classList.contains('dark') ? '\uD83C\uDF19' : '\u2600\uFE0F';
           } catch (e) {}
         }
 
@@ -54,15 +54,15 @@
       --transition: 0.3s ease;
     }
 
-    /* Remove scrollbars and make the page fill the screen */
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      overflow: hidden; /* Prevent scrolling */
+      min-height: 100%;
+      overflow-x: hidden;
     }
 
     body {
+      min-height: 100vh;
       background: var(--light-bg);
       color: var(--light-text);
       font-family: sans-serif;
@@ -74,119 +74,186 @@
       color: var(--dark-text);
     }
 
-    /* Container centers everything horizontally & vertically */
     .container {
       width: 100%;
-      height: 100%;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center;
-      position: relative; /* Needed for toggle button absolute positioning */
+      align-items: flex-start;
+      position: relative;
+      padding: clamp(4.75rem, 12vw, 6.5rem) 1rem 1.5rem;
       box-sizing: border-box;
     }
 
-    /* Main card with shadow, but transparent background */
     .card {
       position: relative;
-      padding: 3rem;
-      border-radius: 16px;
+      padding: clamp(1.5rem, 5vw, 3rem);
+      border-radius: clamp(16px, 4vw, 20px);
       box-shadow: var(--card-shadow);
       max-width: 700px;
-      width: 90%;
-      background: transparent; /* Matches body background; shadow for contrast */
-      text-align: left;        /* Left-aligned text */
+      width: min(100%, 700px);
+      background: transparent;
+      text-align: left;
     }
 
-    /* Headings & paragraphs spacing */
     .card h1 {
       margin-top: 0;
       margin-bottom: 1rem;
       font-size: 1.75rem;
     }
+
     .card p {
-      margin-bottom: 1.5rem;
+      margin: 0 0 1.25rem;
       line-height: 1.6;
       font-family: "Quicksand", sans-serif;
-      font-size: x-large;
+      font-size: clamp(1.05rem, 4.8vw, 1.5rem);
       font-optical-sizing: auto;
       font-weight: 400;
       font-style: normal;
     }
 
-    /* Social icon buttons */
     .icon-container {
       display: flex;
-      justify-content: center; /* Center icons horizontally */
-      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
       margin-bottom: 1.5rem;
     }
+
     .icon-container a {
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      padding: 0.5rem;
+      padding: 0.7rem;
       border-radius: 8px;
       box-shadow: var(--card-shadow);
       background: #e0e0e0;
       transition: transform 0.2s, background var(--transition);
     }
+
     .icon-container a img {
       display: block;
-      width: 24px; /* Adjust icon size */
-      height: 24px; /* Adjust icon size */
+      width: 24px;
+      height: 24px;
     }
+
     .icon-container a:hover {
       transform: scale(1.1);
     }
+
     body.dark .icon-container a,
     html.dark .icon-container a {
       background: #444;
     }
 
-    /* Large buttons container */
     .btn-container {
-      display: flex;
-      justify-content: center; /* Center the main buttons */
-      gap: 1rem;
-      flex-wrap: wrap;
+      display: grid;
+      gap: 0.9rem;
     }
+
     .btn-container a {
       text-decoration: none;
-      padding: 0.75rem 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 52px;
+      padding: 0.9rem 1.2rem;
       border-radius: 8px;
       box-shadow: var(--card-shadow);
       background: #e0e0e0;
       color: inherit;
       transition: background var(--transition), transform 0.2s;
     }
+
     .btn-container a:hover {
       transform: scale(1.03);
     }
+
     body.dark .btn-container a,
     html.dark .btn-container a {
       background: #444;
     }
 
-    /* Toggle (night-mode) button */
     .toggle-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
+      position: fixed;
+      top: max(0.9rem, env(safe-area-inset-top));
+      right: max(0.9rem, env(safe-area-inset-right));
       background: #e0e0e0;
       border: none;
-      padding: 0.5rem;
-      font-size: 1.5rem;
+      padding: 0.65rem;
+      font-size: 1.15rem;
+      line-height: 1;
       border-radius: 50%;
       cursor: pointer;
       box-shadow: var(--card-shadow);
       transition: background var(--transition), transform 0.2s;
+      z-index: 10;
     }
+
     .toggle-btn:hover {
       transform: scale(1.1);
     }
+
     body.dark .toggle-btn,
     html.dark .toggle-btn {
       background: #444;
+    }
+
+    @media (min-width: 721px) {
+      html, body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .container {
+        align-items: center;
+        padding: 1.5rem;
+      }
+
+      .card {
+        width: 90%;
+      }
+
+      .icon-container {
+        gap: 1rem;
+      }
+
+      .btn-container {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .btn-container a {
+        width: auto;
+        min-height: 0;
+        padding: 0.75rem 1.5rem;
+      }
+
+      .toggle-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        padding: 0.5rem;
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .container {
+        padding-inline: 0.85rem;
+      }
+
+      .card {
+        padding-inline: 1.15rem;
+      }
+
+      .icon-container a img {
+        width: 22px;
+        height: 22px;
+      }
     }
   </style>
 </head>
@@ -194,13 +261,12 @@
   <div class="container">
     <!-- Night Mode Toggle -->
     <button class="toggle-btn" onclick="toggleTheme()" aria-label="Toggle Dark Mode">
-      ☀️
-    </button>
+      &#9728;&#65039;</button>
 
     <!-- Main Card -->
     <div class="card">
       <p>
-        👋 Hey, I'm Alex! I'm a software engineering student who enjoys exploring AI, 
+        &#128075; Hey, I'm Alex! I'm a software engineering student who enjoys exploring AI, 
         machine learning, and the world of data and development. Previous Intern at Amazon and CIBC.
       </p>
       <p>
@@ -250,8 +316,7 @@
           target="_blank" 
           rel="noopener noreferrer"
         >
-          Let’s Chat
-        </a>
+          Let's Chat</a>
       </div>
     </div> 
   </div>
@@ -275,7 +340,7 @@
 
       // Update icon
       if (toggleBtn) {
-        toggleBtn.textContent = isDark ? '🌙' : '☀️';
+        toggleBtn.textContent = isDark ? '\uD83C\uDF19' : '\u2600\uFE0F';
       }
     }
 
@@ -284,7 +349,7 @@
       const btn = document.querySelector('.toggle-btn');
       if (!btn) return;
       const isDark = document.documentElement.classList.contains('dark') || document.body.classList.contains('dark');
-      btn.textContent = isDark ? '🌙' : '☀️';
+      btn.textContent = isDark ? '\uD83C\uDF19' : '\u2600\uFE0F';
     })();
   </script>
 </body>
