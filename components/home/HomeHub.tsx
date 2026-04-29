@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import SectionNav from "./SectionNav";
 import SectionPanel, { getSectionTitle, type SectionId } from "./SectionPanel";
 import SectionWindow from "./SectionWindow";
+import StarField from "./StarField";
 
 type OpenWindow = {
   id: SectionId;
@@ -107,6 +108,20 @@ export default function HomeHub() {
 
   return (
     <main className="container">
+      <StarField isActive={isDark} />
+
+      <div className="cloud-field" aria-hidden="true">
+        {[0, 1, 2, 3].map((cloud) => (
+          <div className={`cloud cloud-${cloud + 1}`} key={cloud}>
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
+          </div>
+        ))}
+      </div>
+
       <button className="toggle-btn" type="button" onClick={toggleTheme} aria-label="Toggle Dark Mode">
         {isDark ? "🌙" : "☀️"}
       </button>
