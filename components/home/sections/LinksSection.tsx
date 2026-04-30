@@ -17,17 +17,21 @@ const links = [
 export default function LinksSection() {
   return (
     <div className="link-list">
-      {links.map((link) => (
-        <a
-          key={link.label}
-          href={link.href}
-          target={link.href.startsWith("http") ? "_blank" : undefined}
-          rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
-        >
-          <img src={link.icon} alt="" aria-hidden="true" />
-          <span>{link.label}</span>
-        </a>
-      ))}
+      {links.map((link) => {
+        const opensInNewTab = link.href.startsWith("http") || link.href.endsWith(".pdf");
+
+        return (
+          <a
+            key={link.label}
+            href={link.href}
+            target={opensInNewTab ? "_blank" : undefined}
+            rel={opensInNewTab ? "noopener noreferrer" : undefined}
+          >
+            <img src={link.icon} alt="" aria-hidden="true" />
+            <span>{link.label}</span>
+          </a>
+        );
+      })}
       <p className="links-note">clicking any link opens a new tab</p>
     </div>
   );

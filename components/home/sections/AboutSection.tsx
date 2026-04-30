@@ -6,8 +6,31 @@ export default function AboutSection() {
         <div>
           <h3 className="about-name">Hi, I&apos;m Alex</h3>
           <p className="about-role">Software engineering graduate</p>
-          <p className="about-role">AI, machine learning, data, and product development</p>
-          <p className="about-role">Previous intern at Amazon and CIBC</p>
+          <p className="about-role">
+            <span className="about-highlight">AI</span>, <span className="about-highlight">machine learning</span>,{" "}
+            <span className="about-highlight">data</span>, and{" "}
+            <span className="about-highlight">product development</span>
+          </p>
+          <p className="about-role">
+            Previous intern at{" "}
+            <a
+              className="about-link"
+              href="https://www.amazon.com/b?ie=UTF8&node=16384500011"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Amazon
+            </a>{" "}
+            and{" "}
+            <a
+              className="about-link"
+              href="https://www.cibc.com/en/personal-banking.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CIBC
+            </a>
+          </p>
         </div>
       </section>
 
@@ -15,12 +38,17 @@ export default function AboutSection() {
         <h4 className="about-heading">What I Do</h4>
         <p className="section-copy">
           I like building practical software that connects technical systems with interfaces people
-          can actually use. Lately, I&apos;ve been especially interested in AI tools, ML workflows,
-          data-heavy products, and small interactive web projects.
+          can actually use. Lately, I&apos;ve been especially interested in{" "}
+          <span className="about-highlight">AI tools</span>, <span className="about-highlight">ML workflows</span>,{" "}
+          <span className="about-highlight">data-heavy products</span>, and small{" "}
+          <span className="about-highlight">interactive web projects</span>.
         </p>
         <ul className="section-list">
           <li>Build web apps and interactive experiences.</li>
-          <li>Explore machine learning models, APIs, and data pipelines.</li>
+          <li>
+            Explore <span className="about-highlight">machine learning models</span>, APIs, and{" "}
+            <span className="about-highlight">data pipelines</span>.
+          </li>
           <li>Turn project ideas into clean, usable demos.</li>
         </ul>
       </section>
@@ -28,8 +56,8 @@ export default function AboutSection() {
       <section className="about-block">
         <h4 className="about-heading">Education</h4>
         <div className="about-callout">
-          <p className="about-callout-title">Software Engineering</p>
-          <p className="about-callout-copy">Graduate focused on software systems, AI, data, and product-minded development.</p>
+          <p className="about-callout-title">Bachelor&apos;s of Software Engineering</p>
+          <p className="about-callout-copy">Graduated 2026.</p>
         </div>
       </section>
 
@@ -41,14 +69,6 @@ export default function AboutSection() {
           <li>Finding great food spots.</li>
           <li>Thrifting and hunting for small treasures.</li>
         </ul>
-      </section>
-
-      <section className="about-block">
-        <h4 className="about-heading">Currently Curious About</h4>
-        <p className="section-copy">
-          Recommendation systems, useful AI assistants, game-like interfaces, and ways to make
-          technical work feel more approachable.
-        </p>
       </section>
     </div>
   );

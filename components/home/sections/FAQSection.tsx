@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
 const faqs = [
   {
     question: "what are you focused on right now?",
@@ -61,21 +65,71 @@ const faqs = [
 ];
 
 export default function FAQSection() {
+  const [openItems, setOpenItems] = useState<Set<number>>(() => new Set([0]));
+  const faqAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const audio = new Audio("/assets/sounds/faq_slide_down_up.mp3");
+    audio.preload = "auto";
+    faqAudioRef.current = audio;
+  }, []);
+
+  function playFAQSound() {
+    if (window.localStorage.getItem("sound") === "off") return;
+
+    const audio = faqAudioRef.current;
+    if (!audio) return;
+
+    audio.currentTime = 0;
+    void audio.play().catch(() => {
+      // Browser audio policies can block playback until a user gesture is accepted.
+    });
+  }
+
+  function toggleItem(index: number) {
+    playFAQSound();
+
+    setOpenItems((currentItems) => {
+      const nextItems = new Set(currentItems);
+
+      if (nextItems.has(index)) {
+        nextItems.delete(index);
+      } else {
+        nextItems.add(index);
+      }
+
+      return nextItems;
+    });
+  }
+
   return (
     <div className="faq-list">
-      {faqs.map((faq, index) => (
-        <details className="faq-item" key={faq.question} open={index === 0}>
-          <summary>
-            <span>{faq.question}</span>
-            <span className="faq-chevron" aria-hidden="true">
-              ^
-            </span>
-          </summary>
-          <div className="faq-answer">
-            <p>{faq.answer}</p>
-          </div>
-        </details>
-      ))}
+      {faqs.map((faq, index) => {
+        const isOpen = openItems.has(index);
+        const answerId = `faq-answer-${index}`;
+
+        return (
+          <article className={`faq-item${isOpen ? " faq-item-open" : ""}`} key={faq.question}>
+            <button
+              className="faq-trigger"
+              type="button"
+              onClick={() => toggleItem(index)}
+              aria-expanded={isOpen}
+              aria-controls={answerId}
+            >
+              <span>{faq.question}</span>
+              <span className="faq-chevron" aria-hidden="true">
+                ^
+              </span>
+            </button>
+            <div className="faq-answer" id={answerId}>
+              <div className="faq-answer-inner">
+                <p>{faq.answer}</p>
+              </div>
+            </div>
+          </article>
+        );
+      })}
     </div>
   );
 }

@@ -503,16 +503,34 @@ html.dark .btn-container .section-launcher {
   position: fixed;
   top: max(0.9rem, env(safe-area-inset-top));
   right: max(0.9rem, env(safe-area-inset-right));
-  background: #e0e0e0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
   border: none;
   padding: 0.65rem;
   font-size: 1.15rem;
   line-height: 1;
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: var(--card-shadow);
+  box-shadow: none;
+  outline: none;
   transition: background var(--transition), transform 0.2s;
   z-index: 1000;
+}
+
+.volume-btn {
+  left: max(0.9rem, env(safe-area-inset-left));
+  right: auto;
+}
+
+.volume-btn img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .toggle-btn:hover {
@@ -521,7 +539,7 @@ html.dark .btn-container .section-launcher {
 
 body.dark .toggle-btn,
 html.dark .toggle-btn {
-  background: #444;
+  background: transparent;
 }
 
 .section-window {
@@ -742,6 +760,30 @@ html.dark .about-avatar {
   opacity: 0.82;
 }
 
+.about-highlight,
+.about-link {
+  color: #2d8ed6;
+  font-weight: 700;
+}
+
+.about-link {
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.about-link:hover,
+.about-link:focus-visible {
+  text-decoration-thickness: 0.12em;
+}
+
+body.dark .about-highlight,
+body.dark .about-link,
+html.dark .about-highlight,
+html.dark .about-link {
+  color: #7fb8ff;
+}
+
 .about-block {
   display: grid;
   gap: 0.7rem;
@@ -843,6 +885,20 @@ html.dark .work-heading {
   border: 1px solid rgba(0, 0, 0, 0.06);
   font-family: "Quicksand", sans-serif;
   font-size: 0.95rem;
+  transform: translateY(0);
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background var(--transition);
+  user-select: none;
+}
+
+.skill-chips span:hover,
+.skill-chips span:focus-visible {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.12);
+  transform: translateY(2px);
+}
+
+.skill-chips span:active {
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.12);
+  transform: translateY(3px);
 }
 
 body.dark .skill-chips span,
@@ -1138,22 +1194,27 @@ html.dark .project-github-link {
   background: rgba(255, 247, 214, 0.82);
 }
 
-.faq-item summary {
+.faq-trigger {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  width: 100%;
   min-height: 58px;
   padding: 1rem 1.1rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
   cursor: pointer;
   font-family: "Quicksand", sans-serif;
   font-size: 1rem;
   font-weight: 700;
-  list-style: none;
+  text-align: left;
 }
 
-.faq-item summary::-webkit-details-marker {
-  display: none;
+.faq-trigger:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -4px;
 }
 
 .faq-chevron {
@@ -1162,14 +1223,30 @@ html.dark .project-github-link {
   transition: transform 0.2s;
 }
 
-.faq-item:not([open]) .faq-chevron {
+.faq-item:not(.faq-item-open) .faq-chevron {
   transform: rotate(180deg);
 }
 
 .faq-answer {
-  padding: 1rem 1.1rem 1.1rem;
+  display: grid;
+  grid-template-rows: 0fr;
   background: #ffffff;
   border-top: 1px solid rgba(218, 181, 86, 0.14);
+  opacity: 0;
+  transition: grid-template-rows 0.24s ease, opacity 0.18s ease;
+}
+
+.faq-item-open .faq-answer {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.faq-answer-inner {
+  overflow: hidden;
+}
+
+.faq-answer-inner p {
+  padding: 1rem 1.1rem 1.1rem;
 }
 
 .faq-answer p {
@@ -1301,8 +1378,31 @@ html.dark .contact-cat-note {
     position: absolute;
     top: 1rem;
     right: 1rem;
+    width: 46px;
+    height: 46px;
     padding: 0.5rem;
     font-size: 1.5rem;
+  }
+
+  .volume-btn {
+    left: 1rem;
+    right: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-chips span {
+    transition-duration: 1ms;
+  }
+
+  .faq-answer {
+    transition-duration: 1ms;
+  }
+
+  .skill-chips span:hover,
+  .skill-chips span:focus-visible,
+  .skill-chips span:active {
+    transform: none;
   }
 }
 
