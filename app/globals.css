@@ -426,6 +426,7 @@ html.dark .icon-container a {
 
 .btn-container {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.9rem;
 }
 
@@ -1407,6 +1408,10 @@ html.dark .contact-cat-note {
 }
 
 @media (max-width: 720px) {
+  .container {
+    padding-inline: 1.4rem;
+  }
+
   .section-window {
     position: fixed;
     left: 4vw !important;
@@ -1427,7 +1432,7 @@ html.dark .contact-cat-note {
 
 @media (max-width: 420px) {
   .container {
-    padding-inline: 0.85rem;
+    padding-inline: 1.15rem;
   }
 
   .card {
