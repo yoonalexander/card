@@ -23,6 +23,13 @@ const defaultPositions: Record<SectionId, { x: number; y: number }> = {
   contact: { x: 416, y: 36 },
 };
 
+const estimatedWindowWidths: Partial<Record<SectionId, number>> = {
+  about: 720,
+  work: 900,
+  projects: 1500,
+  contact: 640,
+};
+
 const soundSources = {
   click: "/assets/sounds/click.mp3",
   closeWindow: "/assets/sounds/close_window.mp3",
@@ -263,8 +270,11 @@ function getInitialPosition(sectionId: SectionId) {
     return fallback;
   }
 
+  const estimatedWidth = Math.min(window.innerWidth * 0.96, estimatedWindowWidths[sectionId] ?? 520);
+  const preferredX = sectionId === "projects" ? (window.innerWidth - estimatedWidth) / 2 : fallback.x;
+
   return {
-    x: Math.min(fallback.x, Math.max(16, window.innerWidth - 540)),
+    x: Math.min(Math.max(16, preferredX), Math.max(16, window.innerWidth - estimatedWidth - 16)),
     y: Math.min(fallback.y, Math.max(72, window.innerHeight - 460)),
   };
 }

@@ -53,9 +53,9 @@ export default function SectionWindow({
 
     const node = windowRef.current;
     const width = node?.offsetWidth ?? 520;
-    const height = node?.offsetHeight ?? 420;
+    const headerHeight = event.currentTarget.offsetHeight || 56;
     const maxX = Math.max(12, window.innerWidth - width - 12);
-    const maxY = Math.max(12, window.innerHeight - height - 12);
+    const maxY = Math.max(12, window.innerHeight - headerHeight);
 
     onMove({
       x: clamp(event.clientX - dragOffset.current.x, 12, maxX),

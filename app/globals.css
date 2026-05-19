@@ -571,7 +571,13 @@ html.dark .toggle-btn {
 }
 
 .section-window-projects {
-  width: min(94vw, 1040px);
+  width: min(96vw, 1500px);
+  max-height: min(84vh, 860px);
+}
+
+.section-window-projects .section-window-content {
+  max-height: calc(min(84vh, 860px) - 3.7rem);
+  padding: clamp(1.15rem, 2vw, 2rem);
 }
 
 .section-window-contact {
@@ -1039,13 +1045,13 @@ html.dark .links-note {
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.1rem;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 1.3rem;
 }
 
 .project-card {
   position: relative;
-  min-height: 250px;
+  min-height: 340px;
   overflow: hidden;
   border-radius: 14px;
   background: rgba(224, 224, 224, 0.56);
@@ -1063,7 +1069,7 @@ html.dark .project-card {
 
 .project-image-wrap {
   position: relative;
-  height: 168px;
+  height: clamp(230px, 19vw, 300px);
   overflow: hidden;
   background: #f6f6f6;
 }
@@ -1071,7 +1077,8 @@ html.dark .project-card {
 .project-image-wrap > img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center top;
   transition: opacity 0.2s, transform 0.2s;
 }
 
@@ -1091,7 +1098,6 @@ html.dark .project-card {
 .project-card:hover .project-image-wrap > img,
 .project-card:focus-within .project-image-wrap > img {
   opacity: 0.22;
-  transform: scale(1.03);
 }
 
 .project-card:hover .project-overlay,

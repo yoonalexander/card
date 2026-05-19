@@ -57,7 +57,7 @@ export default function AboutSection() {
         <h4 className="about-heading">Education</h4>
         <div className="about-callout">
           <p className="about-callout-title">Bachelor&apos;s of Software Engineering</p>
-          <p className="about-callout-copy">Graduated 2026.</p>
+          <p className="about-callout-copy">Mcmaster University, Graduated 2026.</p>
         </div>
       </section>
 
