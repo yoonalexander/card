@@ -1,5 +1,13 @@
 const projects = [
   {
+    name: "Particle Engine",
+    year: "2026",
+    image: "/assets/images/Particle-Engine.png",
+    summary:
+      "Interactive React and Three.js particle simulation that morphs up to 30,000 particles between text, images, drawings, 2D shapes, and 3D forms.",
+    stack: ["React", "Three.js", "WebGL", "Particle Systems"],
+  },
+  {
     name: "CraveAI",
     year: "2025",
     image: "/assets/images/CraveAI.png",
