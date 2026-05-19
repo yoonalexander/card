@@ -1,8 +1,12 @@
 {
   "rewrites": [
     {
+      "source": "/craveai",
+      "destination": "https://crave-ai-eight.vercel.app/craveai"
+    },
+    {
       "source": "/craveai/:path*",
-      "destination": "https://crave-ai-eight.vercel.app/:path*"
+      "destination": "https://crave-ai-eight.vercel.app/craveai/:path*"
     }
   ]
 }
