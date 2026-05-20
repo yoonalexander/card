@@ -259,6 +259,8 @@ export default function HomeHub() {
           <SectionPanel sectionId={sectionWindow.id} />
         </SectionWindow>
       ))}
+
+      <footer className="site-footer">© Alex Yoon 2026</footer>
     </main>
   );
 }

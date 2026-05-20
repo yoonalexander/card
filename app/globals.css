@@ -173,6 +173,25 @@ a {
   box-sizing: border-box;
 }
 
+.site-footer {
+  position: fixed;
+  left: 50%;
+  bottom: max(0.8rem, env(safe-area-inset-bottom));
+  z-index: 2;
+  transform: translateX(-50%);
+  color: rgba(0, 0, 0, 0.56);
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+body.dark .site-footer,
+html.dark .site-footer {
+  color: rgba(255, 255, 255, 0.58);
+}
+
 .cloud-field {
   position: fixed;
   inset: 0 0 auto;
