@@ -1043,6 +1043,23 @@ html.dark .links-note {
   color: rgba(255, 255, 255, 0.68);
 }
 
+.project-panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.project-demo-tip {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(45, 142, 214, 0.18);
+  border-radius: 8px;
+  background: rgba(45, 142, 214, 0.08);
+  color: rgba(0, 0, 0, 0.68);
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.94rem;
+  line-height: 1.45;
+}
+
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
@@ -1146,10 +1163,30 @@ html.dark .project-card {
   opacity: 0.8;
 }
 
-.project-demo-link {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+.project-demo-button {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0.58rem 0.82rem;
+  border-radius: 8px;
+  background: #2d8ed6;
+  color: #ffffff;
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  box-shadow: var(--card-shadow);
+  transition: background var(--transition), transform 0.2s;
+}
+
+.project-demo-button:hover,
+.project-demo-button:focus-visible {
+  background: #247bc0;
+  transform: translateY(-1px);
 }
 
 .project-github-link {
@@ -1182,6 +1219,13 @@ html.dark .project-card {
 body.dark .project-overlay,
 html.dark .project-overlay {
   background: rgba(31, 31, 31, 0.9);
+}
+
+body.dark .project-demo-tip,
+html.dark .project-demo-tip {
+  background: rgba(127, 184, 255, 0.12);
+  border-color: rgba(127, 184, 255, 0.18);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 body.dark .project-github-link,

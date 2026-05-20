@@ -14,6 +14,7 @@ const projects = [
     summary: "RAG chatbot for mood- and craving-based restaurant recommendations.",
     stack: ["Python", "LangChain", "OpenAI API", "FastAPI", "React"],
     github: "https://github.com/yoonalexander/CraveAI",
+    demo: "https://www.alexyoon.com/craveai",
   },
   {
     name: "MAL Anime Score Predictions",
@@ -109,47 +110,53 @@ const projects = [
 
 export default function ProjectsSection() {
   return (
-    <div className="project-grid">
-      {projects.map((project) => (
-        <article className="project-card" key={project.name}>
-          {project.demo ? (
-            <a
-              className="project-demo-link"
-              href={project.demo}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Open ${project.name} demo`}
-            />
-          ) : null}
+    <div className="project-panel">
+      <p className="project-demo-tip">Some projects have live demos. Hover over a project to see if it does.</p>
 
-          <div className="project-image-wrap">
-            <img src={project.image} alt={`${project.name} preview`} />
-            <div className="project-overlay">
-              <p>{project.summary}</p>
-              <span>{project.demo ? "click card for demo" : "demo coming later"}</span>
+      <div className="project-grid">
+        {projects.map((project) => (
+          <article className="project-card" key={project.name}>
+            <div className="project-image-wrap">
+              <img src={project.image} alt={`${project.name} preview`} />
+              <div className="project-overlay">
+                <p>{project.summary}</p>
+                {project.demo ? (
+                  <a
+                    className="project-demo-button"
+                    href={project.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Open ${project.name} live demo`}
+                  >
+                    Live demo
+                  </a>
+                ) : (
+                  <span>demo coming later</span>
+                )}
+              </div>
             </div>
-          </div>
 
-          <div className="project-card-body">
-            <h3 className="project-name">{project.name}</h3>
-            <p className="project-meta">
-              {project.year} - {project.stack.join(", ")}
-            </p>
-          </div>
+            <div className="project-card-body">
+              <h3 className="project-name">{project.name}</h3>
+              <p className="project-meta">
+                {project.year} - {project.stack.join(", ")}
+              </p>
+            </div>
 
-          {project.github ? (
-            <a
-              className="project-github-link"
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Open ${project.name} GitHub`}
-            >
-              <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
-            </a>
-          ) : null}
-        </article>
-      ))}
+            {project.github ? (
+              <a
+                className="project-github-link"
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open ${project.name} GitHub`}
+              >
+                <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
+              </a>
+            ) : null}
+          </article>
+        ))}
+      </div>
     </div>
   );
 }
