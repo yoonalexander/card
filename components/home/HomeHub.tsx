@@ -5,6 +5,7 @@ import SectionNav from "./SectionNav";
 import SectionPanel, { getSectionTitle, type SectionId } from "./SectionPanel";
 import SectionWindow from "./SectionWindow";
 import StarField from "./StarField";
+import { preloadHomeAssets } from "./preloadAssets";
 
 type OpenWindow = {
   id: SectionId;
@@ -60,6 +61,10 @@ export default function HomeHub() {
     document.body.classList.toggle("dark", shouldUseDark);
     root.setAttribute("data-theme", shouldUseDark ? "dark" : "light");
     setIsDark(shouldUseDark);
+  }, []);
+
+  useEffect(() => {
+    preloadHomeAssets();
   }, []);
 
   useEffect(() => {
