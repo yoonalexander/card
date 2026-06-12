@@ -10,7 +10,7 @@ const links = [
     href: "https://open.spotify.com/user/y6nkbdx2s6hie39ap0m24pz8r?si=ue5ZbrmGSkOqls2iruWu5w",
     icon: "/assets/icons/spotify-logo.png",
   },
-  { label: "Resume", href: "/assets/files/Alexander_Yoon_Resume_DG_2026.pdf", icon: "/assets/icons/work.png" },
+  { label: "Resume", href: "/assets/files/Alexander_Yoon_Resume_DA_2026.pdf", icon: "/assets/icons/work.png" },
   { label: "Let's Chat", href: "https://cal.com/alexyoon", icon: "/assets/icons/contacts.png" },
 ];
 
