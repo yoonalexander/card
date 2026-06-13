@@ -20,11 +20,16 @@ export function getSectionTitle(sectionId: SectionId) {
   return sections.find((section) => section.id === sectionId)?.label ?? "Section";
 }
 
-export default function SectionPanel({ sectionId }: { sectionId: SectionId }) {
+type SectionPanelProps = {
+  sectionId: SectionId;
+  onOpenProjectDemo?: (projectName: string) => void;
+};
+
+export default function SectionPanel({ sectionId, onOpenProjectDemo }: SectionPanelProps) {
   if (sectionId === "about") return <AboutSection />;
   if (sectionId === "links") return <LinksSection />;
   if (sectionId === "work") return <WorkSection />;
-  if (sectionId === "projects") return <ProjectsSection />;
+  if (sectionId === "projects") return <ProjectsSection onOpenProjectDemo={onOpenProjectDemo} />;
   if (sectionId === "faq") return <FAQSection />;
   return <ContactSection />;
 }

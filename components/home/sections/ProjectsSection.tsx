@@ -1,4 +1,20 @@
+"use client";
+
+import { useState } from "react";
+
 const projects = [
+  {
+    name: "Pocket AI",
+    year: "2025 - 2026",
+    image: "/assets/images/Pocket AI Poster.png",
+    imageFit: "contain",
+    summary:
+      "Capstone voice-to-task system for CATTLElytics Inc. that turns natural speech into structured farm tasks using Whisper, an LLM pipeline, Flask APIs, and React Native.",
+    stack: ["Python", "Flask", "React Native", "OpenAI Whisper", "REST API"],
+    demo: "/assets/videos/pocket-ai.mp4",
+    demoLabel: "Demo video",
+    demoMode: "window",
+  },
   {
     name: "Particle Engine",
     year: "2026",
@@ -32,6 +48,7 @@ const projects = [
     stack: ["Next.js", "React", "CSS"],
     github: "https://github.com/yoonalexander/card",
     demo: "https://yoonalexander.github.io/card",
+    demoMode: "message",
   },
   {
     name: "XY-Ball-Fight",
@@ -108,7 +125,13 @@ const projects = [
   },
 ];
 
-export default function ProjectsSection() {
+type ProjectsSectionProps = {
+  onOpenProjectDemo?: (projectName: string) => void;
+};
+
+export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionProps) {
+  const [showPortfolioMessage, setShowPortfolioMessage] = useState(false);
+
   return (
     <div className="project-panel">
       <p className="project-demo-tip">Some projects have live demos. Hover over a project to see if it does.</p>
@@ -116,11 +139,29 @@ export default function ProjectsSection() {
       <div className="project-grid">
         {projects.map((project) => (
           <article className="project-card" key={project.name}>
-            <div className="project-image-wrap">
+            <div className={`project-image-wrap${project.imageFit === "contain" ? " project-image-contain" : ""}`}>
               <img src={project.image} alt={`${project.name} preview`} />
               <div className="project-overlay">
                 <p>{project.summary}</p>
-                {project.demo ? (
+                {project.demo && project.demoMode === "window" ? (
+                  <button
+                    className="project-demo-button"
+                    type="button"
+                    onClick={() => onOpenProjectDemo?.(project.name)}
+                    aria-label={`Open ${project.name} demo video`}
+                  >
+                    {project.demoLabel || "Demo"}
+                  </button>
+                ) : project.demo && project.demoMode === "message" ? (
+                  <button
+                    className="project-demo-button project-demo-message-button"
+                    type="button"
+                    onClick={() => setShowPortfolioMessage(true)}
+                    aria-label="This portfolio project is the current website"
+                  >
+                    {showPortfolioMessage ? "its this website silly :p" : project.demoLabel || "Live demo"}
+                  </button>
+                ) : project.demo ? (
                   <a
                     className="project-demo-button"
                     href={project.demo}
@@ -128,7 +169,7 @@ export default function ProjectsSection() {
                     rel="noopener noreferrer"
                     aria-label={`Open ${project.name} live demo`}
                   >
-                    Live demo
+                    {project.demoLabel || "Live demo"}
                   </a>
                 ) : (
                   <span>demo coming later</span>

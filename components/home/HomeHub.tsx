@@ -7,27 +7,32 @@ import SectionWindow from "./SectionWindow";
 import StarField from "./StarField";
 
 type OpenWindow = {
-  id: SectionId;
+  id: WindowId;
   x: number;
   y: number;
   z: number;
   isClosing?: boolean;
 };
 
-const defaultPositions: Record<SectionId, { x: number; y: number }> = {
+type DemoWindowId = "pocket-ai-demo";
+type WindowId = SectionId | DemoWindowId;
+
+const defaultPositions: Record<WindowId, { x: number; y: number }> = {
   about: { x: 96, y: 96 },
   links: { x: 160, y: 132 },
   work: { x: 224, y: 168 },
   projects: { x: 288, y: 92 },
   faq: { x: 352, y: 148 },
   contact: { x: 416, y: 36 },
+  "pocket-ai-demo": { x: 260, y: 96 },
 };
 
-const estimatedWindowWidths: Partial<Record<SectionId, number>> = {
+const estimatedWindowWidths: Partial<Record<WindowId, number>> = {
   about: 720,
   work: 900,
   projects: 1500,
   contact: 640,
+  "pocket-ai-demo": 900,
 };
 
 const soundSources = {
@@ -42,13 +47,23 @@ type SoundName = keyof typeof soundSources;
 
 export default function HomeHub() {
   const [openWindows, setOpenWindows] = useState<OpenWindow[]>([]);
-  const [savedPositions, setSavedPositions] = useState<Partial<Record<SectionId, { x: number; y: number }>>>({});
+  const [savedPositions, setSavedPositions] = useState<Partial<Record<WindowId, { x: number; y: number }>>>({});
   const topZ = useRef(20);
   const audioRefs = useRef<Partial<Record<SoundName, HTMLAudioElement>>>({});
   const [isDark, setIsDark] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(true);
 
-  const openSectionIds = useMemo(() => openWindows.map((sectionWindow) => sectionWindow.id), [openWindows]);
+  const openSectionIds = useMemo(
+    () =>
+      openWindows.reduce<SectionId[]>((sectionIds, sectionWindow) => {
+        if (isSectionId(sectionWindow.id)) {
+          sectionIds.push(sectionWindow.id);
+        }
+
+        return sectionIds;
+      }, []),
+    [openWindows],
+  );
 
   useEffect(() => {
     const root = document.documentElement;
@@ -83,48 +98,58 @@ export default function HomeHub() {
   }
 
   function openSection(sectionId: SectionId) {
+    openWindow(sectionId);
+  }
+
+  function openProjectDemo(projectName: string) {
+    if (projectName === "Pocket AI") {
+      openWindow("pocket-ai-demo");
+    }
+  }
+
+  function openWindow(windowId: WindowId) {
     const nextZ = nextZIndex();
     setOpenWindows((currentWindows) => {
-      if (currentWindows.some((sectionWindow) => sectionWindow.id === sectionId)) {
+      if (currentWindows.some((sectionWindow) => sectionWindow.id === windowId)) {
         return currentWindows.map((sectionWindow) =>
-          sectionWindow.id === sectionId ? { ...sectionWindow, z: nextZ } : sectionWindow,
+          sectionWindow.id === windowId ? { ...sectionWindow, z: nextZ } : sectionWindow,
         );
       }
 
-      const position = savedPositions[sectionId] ?? getInitialPosition(sectionId);
-      return [...currentWindows, { id: sectionId, x: position.x, y: position.y, z: nextZ }];
+      const position = savedPositions[windowId] ?? getInitialPosition(windowId);
+      return [...currentWindows, { id: windowId, x: position.x, y: position.y, z: nextZ }];
     });
   }
 
-  function closeSection(sectionId: SectionId) {
+  function closeWindow(windowId: WindowId) {
     setOpenWindows((currentWindows) =>
       currentWindows.map((sectionWindow) =>
-        sectionWindow.id === sectionId ? { ...sectionWindow, isClosing: true } : sectionWindow,
+        sectionWindow.id === windowId ? { ...sectionWindow, isClosing: true } : sectionWindow,
       ),
     );
   }
 
-  function removeSection(sectionId: SectionId) {
-    setOpenWindows((currentWindows) => currentWindows.filter((sectionWindow) => sectionWindow.id !== sectionId));
+  function removeWindow(windowId: WindowId) {
+    setOpenWindows((currentWindows) => currentWindows.filter((sectionWindow) => sectionWindow.id !== windowId));
   }
 
-  function focusSection(sectionId: SectionId) {
+  function focusWindow(windowId: WindowId) {
     const nextZ = nextZIndex();
     setOpenWindows((currentWindows) =>
       currentWindows.map((sectionWindow) =>
-        sectionWindow.id === sectionId ? { ...sectionWindow, z: nextZ } : sectionWindow,
+        sectionWindow.id === windowId ? { ...sectionWindow, z: nextZ } : sectionWindow,
       ),
     );
   }
 
-  function moveSection(sectionId: SectionId, position: { x: number; y: number }) {
+  function moveWindow(windowId: WindowId, position: { x: number; y: number }) {
     setSavedPositions((currentPositions) => ({
       ...currentPositions,
-      [sectionId]: position,
+      [windowId]: position,
     }));
     setOpenWindows((currentWindows) =>
       currentWindows.map((sectionWindow) =>
-        sectionWindow.id === sectionId ? { ...sectionWindow, ...position } : sectionWindow,
+        sectionWindow.id === windowId ? { ...sectionWindow, ...position } : sectionWindow,
       ),
     );
   }
@@ -246,17 +271,21 @@ export default function HomeHub() {
       {openWindows.map((sectionWindow) => (
         <SectionWindow
           key={sectionWindow.id}
-          title={getSectionTitle(sectionWindow.id)}
+          title={getWindowTitle(sectionWindow.id)}
           sectionId={sectionWindow.id}
           isClosing={sectionWindow.isClosing}
           position={{ x: sectionWindow.x, y: sectionWindow.y }}
           zIndex={sectionWindow.z}
-          onClose={() => closeSection(sectionWindow.id)}
-          onClosed={() => removeSection(sectionWindow.id)}
-          onFocus={() => focusSection(sectionWindow.id)}
-          onMove={(position) => moveSection(sectionWindow.id, position)}
+          onClose={() => closeWindow(sectionWindow.id)}
+          onClosed={() => removeWindow(sectionWindow.id)}
+          onFocus={() => focusWindow(sectionWindow.id)}
+          onMove={(position) => moveWindow(sectionWindow.id, position)}
         >
-          <SectionPanel sectionId={sectionWindow.id} />
+          {isSectionId(sectionWindow.id) ? (
+            <SectionPanel sectionId={sectionWindow.id} onOpenProjectDemo={openProjectDemo} />
+          ) : (
+            <PocketAIDemoWindow />
+          )}
         </SectionWindow>
       ))}
 
@@ -265,18 +294,72 @@ export default function HomeHub() {
   );
 }
 
-function getInitialPosition(sectionId: SectionId) {
-  const fallback = defaultPositions[sectionId];
+function getInitialPosition(windowId: WindowId) {
+  const fallback = defaultPositions[windowId];
 
   if (typeof window === "undefined") {
     return fallback;
   }
 
-  const estimatedWidth = Math.min(window.innerWidth * 0.96, estimatedWindowWidths[sectionId] ?? 520);
-  const preferredX = sectionId === "projects" ? (window.innerWidth - estimatedWidth) / 2 : fallback.x;
+  const estimatedWidth = Math.min(window.innerWidth * 0.96, estimatedWindowWidths[windowId] ?? 520);
+  const preferredX =
+    windowId === "projects" || windowId === "pocket-ai-demo" ? (window.innerWidth - estimatedWidth) / 2 : fallback.x;
 
   return {
     x: Math.min(Math.max(16, preferredX), Math.max(16, window.innerWidth - estimatedWidth - 16)),
     y: Math.min(fallback.y, Math.max(72, window.innerHeight - 460)),
   };
+}
+
+function getWindowTitle(windowId: WindowId) {
+  if (windowId === "pocket-ai-demo") return "Pocket AI Demo";
+  return getSectionTitle(windowId);
+}
+
+function isSectionId(windowId: WindowId): windowId is SectionId {
+  return windowId !== "pocket-ai-demo";
+}
+
+function PocketAIDemoWindow() {
+  return (
+    <div className="project-video-panel">
+      <div className="project-phone-demo" aria-label="Pocket AI demo video">
+        <div className="project-phone-screen">
+          <video
+            className="project-video"
+            src="/assets/videos/pocket-ai.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            disablePictureInPicture
+            controlsList="nodownload nofullscreen noremoteplayback"
+            onContextMenu={(event) => event.preventDefault()}
+          />
+        </div>
+      </div>
+      <div className="project-video-details">
+        <p className="project-video-kicker">CATTLElytics Inc. Capstone</p>
+        <h3>Pocket AI</h3>
+        <p>
+          Voice-driven task management app for low-connectivity farm environments.
+        </p>
+        <ul>
+          <li>Natural speech to structured tasks using Whisper and an LLM pipeline.</li>
+          <li>Flask REST APIs for auth, task lifecycle management, and syncing.</li>
+          <li>Offline-first React Native app with local SQLite storage.</li>
+          <li>Usability testing hit 100% voice recognition accuracy under simulated barn noise.</li>
+          <li>Featured on the official McMaster Engineering Instagram.</li>
+        </ul>
+        <div className="project-video-tags" aria-label="Pocket AI tech stack">
+          <span>Python</span>
+          <span>Flask</span>
+          <span>React Native</span>
+          <span>OpenAI Whisper</span>
+          <span>REST API</span>
+        </div>
+      </div>
+    </div>
+  );
 }

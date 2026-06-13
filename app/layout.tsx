@@ -32,10 +32,11 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "any" },
       { url: logoPath, sizes: "500x500", type: "image/png" },
       { url: "/AY Logo Large Clear.png", sizes: "500x500", type: "image/png" },
     ],
-    shortcut: logoPath,
+    shortcut: "/favicon.ico",
     apple: logoPath,
   },
   openGraph: {
