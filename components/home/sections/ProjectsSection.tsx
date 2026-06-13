@@ -22,6 +22,7 @@ const projects = [
     summary:
       "Interactive React and Three.js particle simulation that morphs up to 30,000 particles between text, images, drawings, 2D shapes, and 3D forms.",
     stack: ["React", "Three.js", "WebGL", "Particle Systems"],
+    demo: "https://www.alexyoon.com/particle-engine/",
   },
   {
     name: "CraveAI",

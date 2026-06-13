@@ -7,6 +7,14 @@
     {
       "source": "/craveai/:path*",
       "destination": "https://crave-ai-eight.vercel.app/craveai/:path*"
+    },
+    {
+      "source": "/particle-engine",
+      "destination": "https://particle-engine-plum.vercel.app"
+    },
+    {
+      "source": "/particle-engine/:path*",
+      "destination": "https://particle-engine-plum.vercel.app/:path*"
     }
   ]
 }
