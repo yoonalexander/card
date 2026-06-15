@@ -5,8 +5,10 @@ import "./globals.css";
 
 const siteUrl = "https://alexyoon.com";
 const siteDescription =
-  "Software engineer focused on AI, machine learning, data products, and interactive web apps. Former Amazon and CIBC intern, McMaster Software Engineering graduate.";
-const logoPath = "/assets/images/ay-logo-large-clear.png";
+  "Alexander Yoon is a software engineer who builds AI, machine learning, data, and interactive web projects. Explore his work, projects, resume, and links.";
+const logoPath = "/assets/images/alexander-yoon-icon-512.png";
+const icon48Path = "/assets/images/alexander-yoon-icon-48.png";
+const icon192Path = "/assets/images/alexander-yoon-icon-192.png";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -15,6 +17,7 @@ export const metadata: Metadata = {
     template: "%s | Alexander Yoon",
   },
   description: siteDescription,
+  applicationName: "Alexander Yoon",
   alternates: {
     canonical: "/",
   },
@@ -33,8 +36,9 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: logoPath, sizes: "500x500", type: "image/png" },
-      { url: "/AY Logo Large Clear.png", sizes: "500x500", type: "image/png" },
+      { url: icon48Path, sizes: "48x48", type: "image/png" },
+      { url: icon192Path, sizes: "192x192", type: "image/png" },
+      { url: logoPath, sizes: "512x512", type: "image/png" },
     ],
     shortcut: "/favicon.ico",
     apple: logoPath,
@@ -48,8 +52,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: logoPath,
-        width: 500,
-        height: 500,
+        width: 512,
+        height: 512,
         alt: "Alexander Yoon logo",
       },
     ],
@@ -63,6 +67,13 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+    },
   },
 };
 
@@ -71,6 +82,7 @@ const structuredData = {
   "@type": "Person",
   name: "Alexander Yoon",
   alternateName: "Alex Yoon",
+  description: siteDescription,
   url: siteUrl,
   image: `${siteUrl}${logoPath}`,
   jobTitle: "Software Engineer",
