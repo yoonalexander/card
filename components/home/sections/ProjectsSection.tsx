@@ -34,6 +34,16 @@ const projects = [
     demo: "https://www.alexyoon.com/craveai",
   },
   {
+    name: "Spam vs. Ham",
+    year: "2025",
+    image: "/assets/images/Spam_vs_ham.png",
+    summary:
+      "Explainable SMS spam and phishing detector using TF-IDF n-grams, handcrafted message cues, and a linear SVM.",
+    stack: ["Python", "scikit-learn", "Linear SVM", "TF-IDF"],
+    demo: "/assets/files/spam_vs_ham_report.pdf",
+    demoLabel: "See publication",
+  },
+  {
     name: "MAL Anime Score Predictions",
     year: "2025",
     image: "/assets/images/anime-score-predictor.png",
@@ -168,7 +178,7 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
                     href={project.demo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Open ${project.name} live demo`}
+                    aria-label={`Open ${project.name} ${project.demoLabel || "live demo"}`}
                   >
                     {project.demoLabel || "Live demo"}
                   </a>
