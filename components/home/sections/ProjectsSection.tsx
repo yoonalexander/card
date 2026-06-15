@@ -165,7 +165,9 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
   const filteredProjects =
     selectedTopics.length === 0
       ? projects
-      : projects.filter((project) => project.topics.some((topic) => selectedTopics.includes(topic as ProjectTopic)));
+      : projects.filter((project) =>
+          selectedTopics.every((selectedTopic) => project.topics.includes(selectedTopic)),
+        );
   const blurAfterPointerActivation = (event: PointerEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     event.currentTarget.blur();
   };
@@ -209,72 +211,76 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
 
       <p className="project-demo-tip">Some projects have live demos. Hover over a project to see if it does.</p>
 
-      <div className="project-grid">
-        {filteredProjects.map((project) => (
-          <article className="project-card" key={project.name}>
-            <div className={`project-image-wrap${project.imageFit === "contain" ? " project-image-contain" : ""}`}>
-              <img src={project.image} alt={`${project.name} preview`} />
-              <div className="project-overlay">
-                <p>{project.summary}</p>
-                {project.demo && project.demoMode === "window" ? (
-                  <button
-                    className="project-demo-button"
-                    type="button"
-                    onPointerUp={blurAfterPointerActivation}
-                    onClick={() => onOpenProjectDemo?.(project.name)}
-                    aria-label={`Open ${project.name} demo video`}
-                  >
-                    {project.demoLabel || "Demo"}
-                  </button>
-                ) : project.demo && project.demoMode === "message" ? (
-                  <button
-                    className="project-demo-button project-demo-message-button"
-                    type="button"
-                    onPointerUp={blurAfterPointerActivation}
-                    onClick={() => setShowPortfolioMessage(true)}
-                    aria-label="This portfolio project is the current website"
-                  >
-                    {showPortfolioMessage ? "its this website silly :p" : project.demoLabel || "Live demo"}
-                  </button>
-                ) : project.demo ? (
-                  <a
-                    className="project-demo-button"
-                    href={project.demo}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onPointerUp={blurAfterPointerActivation}
-                    aria-label={`Open ${project.name} ${project.demoLabel || "live demo"}`}
-                  >
-                    {project.demoLabel || "Live demo"}
-                  </a>
-                ) : (
-                  <span>demo coming later</span>
-                )}
+      {filteredProjects.length > 0 ? (
+        <div className="project-grid">
+          {filteredProjects.map((project) => (
+            <article className="project-card" key={project.name}>
+              <div className={`project-image-wrap${project.imageFit === "contain" ? " project-image-contain" : ""}`}>
+                <img src={project.image} alt={`${project.name} preview`} />
+                <div className="project-overlay">
+                  <p>{project.summary}</p>
+                  {project.demo && project.demoMode === "window" ? (
+                    <button
+                      className="project-demo-button"
+                      type="button"
+                      onPointerUp={blurAfterPointerActivation}
+                      onClick={() => onOpenProjectDemo?.(project.name)}
+                      aria-label={`Open ${project.name} demo video`}
+                    >
+                      {project.demoLabel || "Demo"}
+                    </button>
+                  ) : project.demo && project.demoMode === "message" ? (
+                    <button
+                      className="project-demo-button project-demo-message-button"
+                      type="button"
+                      onPointerUp={blurAfterPointerActivation}
+                      onClick={() => setShowPortfolioMessage(true)}
+                      aria-label="This portfolio project is the current website"
+                    >
+                      {showPortfolioMessage ? "its this website silly :p" : project.demoLabel || "Live demo"}
+                    </button>
+                  ) : project.demo ? (
+                    <a
+                      className="project-demo-button"
+                      href={project.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onPointerUp={blurAfterPointerActivation}
+                      aria-label={`Open ${project.name} ${project.demoLabel || "live demo"}`}
+                    >
+                      {project.demoLabel || "Live demo"}
+                    </a>
+                  ) : (
+                    <span>demo coming later</span>
+                  )}
+                </div>
               </div>
-            </div>
 
-            <div className="project-card-body">
-              <h3 className="project-name">{project.name}</h3>
-              <p className="project-meta">
-                {project.year} - {project.stack.join(", ")}
-              </p>
-            </div>
+              <div className="project-card-body">
+                <h3 className="project-name">{project.name}</h3>
+                <p className="project-meta">
+                  {project.year} - {project.stack.join(", ")}
+                </p>
+              </div>
 
-            {project.github ? (
-              <a
-                className="project-github-link"
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                onPointerUp={blurAfterPointerActivation}
-                aria-label={`Open ${project.name} GitHub`}
-              >
-                <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
-              </a>
-            ) : null}
-          </article>
-        ))}
-      </div>
+              {project.github ? (
+                <a
+                  className="project-github-link"
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onPointerUp={blurAfterPointerActivation}
+                  aria-label={`Open ${project.name} GitHub`}
+                >
+                  <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
+                </a>
+              ) : null}
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p className="project-empty-state">No projects match that topic mix.</p>
+      )}
     </div>
   );
 }

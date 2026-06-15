@@ -1135,6 +1135,22 @@ html.dark .links-note {
   line-height: 1.45;
 }
 
+.project-empty-state {
+  margin: 0;
+  min-height: 180px;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  border: 1px dashed rgba(45, 142, 214, 0.26);
+  border-radius: 12px;
+  background: rgba(45, 142, 214, 0.05);
+  color: rgba(0, 0, 0, 0.62);
+  font-family: "Quicksand", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
@@ -1318,6 +1334,13 @@ html.dark .project-demo-tip {
   background: rgba(127, 184, 255, 0.12);
   border-color: rgba(127, 184, 255, 0.18);
   color: rgba(255, 255, 255, 0.72);
+}
+
+body.dark .project-empty-state,
+html.dark .project-empty-state {
+  background: rgba(127, 184, 255, 0.08);
+  border-color: rgba(127, 184, 255, 0.22);
+  color: rgba(255, 255, 255, 0.68);
 }
 
 body.dark .project-topic-button,
