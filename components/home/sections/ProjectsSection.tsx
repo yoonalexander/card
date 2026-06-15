@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type PointerEvent } from "react";
 
 const projects = [
   {
@@ -142,6 +142,9 @@ type ProjectsSectionProps = {
 
 export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionProps) {
   const [showPortfolioMessage, setShowPortfolioMessage] = useState(false);
+  const blurAfterPointerActivation = (event: PointerEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+    event.currentTarget.blur();
+  };
 
   return (
     <div className="project-panel">
@@ -158,6 +161,7 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
                   <button
                     className="project-demo-button"
                     type="button"
+                    onPointerUp={blurAfterPointerActivation}
                     onClick={() => onOpenProjectDemo?.(project.name)}
                     aria-label={`Open ${project.name} demo video`}
                   >
@@ -167,6 +171,7 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
                   <button
                     className="project-demo-button project-demo-message-button"
                     type="button"
+                    onPointerUp={blurAfterPointerActivation}
                     onClick={() => setShowPortfolioMessage(true)}
                     aria-label="This portfolio project is the current website"
                   >
@@ -178,6 +183,7 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
                     href={project.demo}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onPointerUp={blurAfterPointerActivation}
                     aria-label={`Open ${project.name} ${project.demoLabel || "live demo"}`}
                   >
                     {project.demoLabel || "Live demo"}
@@ -201,6 +207,7 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
                 href={project.github}
                 target="_blank"
                 rel="noopener noreferrer"
+                onPointerUp={blurAfterPointerActivation}
                 aria-label={`Open ${project.name} GitHub`}
               >
                 <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
