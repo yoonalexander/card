@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type PointerEvent } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 
 const projectTopics = ["AI/ML", "Web Apps", "Mobile", "Games", "Graphics", "Data/NLP", "Back-End", "Course Work"] as const;
 
@@ -155,28 +155,222 @@ const projects = [
   },
 ];
 
+function getFilteredProjects(selectedTopics: ProjectTopic[]) {
+  return selectedTopics.length === 0
+    ? projects
+    : projects.filter((project) => selectedTopics.every((selectedTopic) => project.topics.includes(selectedTopic)));
+}
+
 type ProjectsSectionProps = {
   onOpenProjectDemo?: (projectName: string) => void;
+};
+
+type Project = (typeof projects)[number];
+
+type ProjectRect = {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+};
+
+type LeavingProject = {
+  id: string;
+  project: Project;
+  rect: ProjectRect;
 };
 
 export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionProps) {
   const [showPortfolioMessage, setShowPortfolioMessage] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState<ProjectTopic[]>([]);
-  const filteredProjects =
-    selectedTopics.length === 0
-      ? projects
-      : projects.filter((project) =>
-          selectedTopics.every((selectedTopic) => project.topics.includes(selectedTopic)),
-        );
+  const [displayedProjects, setDisplayedProjects] = useState(() => getFilteredProjects([]));
+  const [leavingProjects, setLeavingProjects] = useState<LeavingProject[]>([]);
+  const projectCardRefs = useRef(new Map<string, HTMLElement>());
+  const resultsRef = useRef<HTMLDivElement | null>(null);
+  const previousProjectRects = useRef<Map<string, ProjectRect> | null>(null);
+  const liquidAnimationTimers = useRef<number[]>([]);
+  const activeCardAnimations = useRef<Animation[]>([]);
   const blurAfterPointerActivation = (event: PointerEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     event.currentTarget.blur();
   };
-  const toggleTopic = (topic: ProjectTopic) => {
-    setSelectedTopics((currentTopics) =>
-      currentTopics.includes(topic)
-        ? currentTopics.filter((currentTopic) => currentTopic !== topic)
-        : [...currentTopics, topic],
+
+  useEffect(() => {
+    return () => {
+      liquidAnimationTimers.current.forEach((timer) => window.clearTimeout(timer));
+      activeCardAnimations.current.forEach((animation) => animation.cancel());
+    };
+  }, []);
+
+  const setProjectCardRef = (projectName: string) => (element: HTMLElement | null) => {
+    if (element) {
+      projectCardRefs.current.set(projectName, element);
+      return;
+    }
+
+    projectCardRefs.current.delete(projectName);
+  };
+
+  const getProjectRects = () => {
+    const resultsElement = resultsRef.current;
+    const resultsRect = resultsElement?.getBoundingClientRect();
+    const nextRects = new Map<string, ProjectRect>();
+
+    if (!resultsRect) {
+      return nextRects;
+    }
+
+    projectCardRefs.current.forEach((element, projectName) => {
+      const rect = element.getBoundingClientRect();
+      nextRects.set(projectName, {
+        top: rect.top - resultsRect.top,
+        left: rect.left - resultsRect.left,
+        width: rect.width,
+        height: rect.height,
+      });
+    });
+
+    return nextRects;
+  };
+
+  useLayoutEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      previousProjectRects.current = null;
+      return;
+    }
+
+    const firstRects = previousProjectRects.current;
+    previousProjectRects.current = null;
+
+    if (!firstRects) {
+      return;
+    }
+
+    activeCardAnimations.current.forEach((animation) => animation.cancel());
+    activeCardAnimations.current = [];
+
+    const frame = window.requestAnimationFrame(() => {
+      displayedProjects.forEach((project) => {
+        const element = projectCardRefs.current.get(project.name);
+
+        if (!element) {
+          return;
+        }
+
+        const previousRect = firstRects.get(project.name);
+
+        if (!previousRect) {
+          activeCardAnimations.current.push(
+            element.animate(
+              [
+                {
+                  opacity: 0,
+                  filter: "blur(18px) saturate(1.45)",
+                  transform: "translate3d(0, 16px, 0) scale(0.94)",
+                  clipPath: "inset(14% 5% 0 5% round 18px)",
+                },
+                {
+                  opacity: 1,
+                  filter: "blur(0) saturate(1)",
+                  transform: "translate3d(0, 0, 0) scale(1)",
+                  clipPath: "inset(0 0 0 0 round 14px)",
+                },
+              ],
+              {
+                duration: 620,
+                easing: "cubic-bezier(0.19, 1, 0.22, 1)",
+                fill: "both",
+              },
+            ),
+          );
+          return;
+        }
+
+        const resultsRect = resultsRef.current?.getBoundingClientRect();
+        const rect = element.getBoundingClientRect();
+
+        if (!resultsRect) {
+          return;
+        }
+
+        const lastRect = {
+          top: rect.top - resultsRect.top,
+          left: rect.left - resultsRect.left,
+          width: rect.width,
+          height: rect.height,
+        };
+        const deltaX = previousRect.left - lastRect.left;
+        const deltaY = previousRect.top - lastRect.top;
+        const scaleX = previousRect.width / lastRect.width;
+        const scaleY = previousRect.height / lastRect.height;
+
+        if (Math.abs(deltaX) < 0.5 && Math.abs(deltaY) < 0.5 && Math.abs(scaleX - 1) < 0.01 && Math.abs(scaleY - 1) < 0.01) {
+          return;
+        }
+
+        activeCardAnimations.current.push(
+          element.animate(
+            [
+              {
+                transform: `translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scaleX}, ${scaleY})`,
+                filter: "blur(0) saturate(1)",
+              },
+              {
+                transform: "translate3d(0, 0, 0) scale(1)",
+                filter: "blur(0) saturate(1)",
+              },
+            ],
+            {
+              duration: 480,
+              easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+              fill: "both",
+            },
+          ),
+        );
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [displayedProjects]);
+
+  const applySelectedTopics = (nextTopics: ProjectTopic[]) => {
+    const nextProjects = getFilteredProjects(nextTopics);
+    const nextProjectNames = new Set(nextProjects.map((project) => project.name));
+    const previousRects = getProjectRects();
+
+    liquidAnimationTimers.current.forEach((timer) => window.clearTimeout(timer));
+    liquidAnimationTimers.current = [];
+    previousProjectRects.current = previousRects;
+    setSelectedTopics(nextTopics);
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setLeavingProjects([]);
+      setDisplayedProjects(nextProjects);
+      return;
+    }
+
+    setLeavingProjects(
+      displayedProjects
+        .filter((project) => !nextProjectNames.has(project.name))
+        .map((project) => ({
+          id: `${project.name}-${Date.now()}`,
+          project,
+          rect: previousRects.get(project.name) || { top: 0, left: 0, width: 0, height: 0 },
+        })),
     );
+    setDisplayedProjects(nextProjects);
+    liquidAnimationTimers.current.push(
+      window.setTimeout(() => {
+        setLeavingProjects([]);
+      }, 260),
+    );
+  };
+
+  const toggleTopic = (topic: ProjectTopic) => {
+    const nextTopics = selectedTopics.includes(topic)
+      ? selectedTopics.filter((currentTopic) => currentTopic !== topic)
+      : [...selectedTopics, topic];
+
+    applySelectedTopics(nextTopics);
   };
 
   return (
@@ -187,7 +381,7 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
           type="button"
           aria-pressed={selectedTopics.length === 0}
           onPointerUp={blurAfterPointerActivation}
-          onClick={() => setSelectedTopics([])}
+          onClick={() => applySelectedTopics([])}
         >
           All
         </button>
@@ -211,76 +405,161 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
 
       <p className="project-demo-tip">Some projects have live demos. Hover over a project to see if it does.</p>
 
-      {filteredProjects.length > 0 ? (
-        <div className="project-grid">
-          {filteredProjects.map((project) => (
-            <article className="project-card" key={project.name}>
-              <div className={`project-image-wrap${project.imageFit === "contain" ? " project-image-contain" : ""}`}>
-                <img src={project.image} alt={`${project.name} preview`} />
-                <div className="project-overlay">
-                  <p>{project.summary}</p>
-                  {project.demo && project.demoMode === "window" ? (
-                    <button
-                      className="project-demo-button"
-                      type="button"
-                      onPointerUp={blurAfterPointerActivation}
-                      onClick={() => onOpenProjectDemo?.(project.name)}
-                      aria-label={`Open ${project.name} demo video`}
-                    >
-                      {project.demoLabel || "Demo"}
-                    </button>
-                  ) : project.demo && project.demoMode === "message" ? (
-                    <button
-                      className="project-demo-button project-demo-message-button"
-                      type="button"
-                      onPointerUp={blurAfterPointerActivation}
-                      onClick={() => setShowPortfolioMessage(true)}
-                      aria-label="This portfolio project is the current website"
-                    >
-                      {showPortfolioMessage ? "its this website silly :p" : project.demoLabel || "Live demo"}
-                    </button>
-                  ) : project.demo ? (
-                    <a
-                      className="project-demo-button"
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onPointerUp={blurAfterPointerActivation}
-                      aria-label={`Open ${project.name} ${project.demoLabel || "live demo"}`}
-                    >
-                      {project.demoLabel || "Live demo"}
-                    </a>
-                  ) : (
-                    <span>demo coming later</span>
-                  )}
-                </div>
-              </div>
-
-              <div className="project-card-body">
-                <h3 className="project-name">{project.name}</h3>
-                <p className="project-meta">
-                  {project.year} - {project.stack.join(", ")}
-                </p>
-              </div>
-
-              {project.github ? (
-                <a
-                  className="project-github-link"
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onPointerUp={blurAfterPointerActivation}
-                  aria-label={`Open ${project.name} GitHub`}
-                >
-                  <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
-                </a>
-              ) : null}
-            </article>
+      <div className="project-results" ref={resultsRef} aria-live="polite">
+        <div className="project-liquid-layer" aria-hidden="true">
+          {leavingProjects.map(({ id, project, rect }) => (
+            <ProjectCard
+              className="project-card-liquid-ghost"
+              inertContent
+              key={id}
+              project={project}
+              style={{
+                top: `${rect.top}px`,
+                left: `${rect.left}px`,
+                width: `${rect.width}px`,
+                height: `${rect.height}px`,
+              }}
+            />
           ))}
         </div>
-      ) : (
-        <p className="project-empty-state">No projects match that topic mix.</p>
-      )}
+        {displayedProjects.length > 0 ? (
+          <div className="project-grid">
+            {displayedProjects.map((project) => (
+              <ProjectCard
+                key={project.name}
+                onOpenProjectDemo={onOpenProjectDemo}
+                onPointerActivation={blurAfterPointerActivation}
+                onShowPortfolioMessage={() => setShowPortfolioMessage(true)}
+                project={project}
+                refCallback={setProjectCardRef(project.name)}
+                showPortfolioMessage={showPortfolioMessage}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="project-empty-state">No projects match that topic mix.</p>
+        )}
+      </div>
     </div>
+  );
+}
+
+type ProjectCardProps = {
+  className?: string;
+  inertContent?: boolean;
+  onOpenProjectDemo?: (projectName: string) => void;
+  onPointerActivation?: (event: PointerEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+  onShowPortfolioMessage?: () => void;
+  project: Project;
+  refCallback?: (element: HTMLElement | null) => void;
+  showPortfolioMessage?: boolean;
+  style?: CSSProperties;
+};
+
+function ProjectCard({
+  className = "",
+  inertContent = false,
+  onOpenProjectDemo,
+  onPointerActivation,
+  onShowPortfolioMessage,
+  project,
+  refCallback,
+  showPortfolioMessage,
+  style,
+}: ProjectCardProps) {
+  return (
+    <article className={`project-card${className ? ` ${className}` : ""}`} ref={refCallback} style={style}>
+      <div className={`project-image-wrap${project.imageFit === "contain" ? " project-image-contain" : ""}`}>
+        <img src={project.image} alt={inertContent ? "" : `${project.name} preview`} />
+        <div className="project-overlay">
+          <p>{project.summary}</p>
+          {renderProjectDemo(project, inertContent, showPortfolioMessage, onPointerActivation, onOpenProjectDemo, onShowPortfolioMessage)}
+        </div>
+      </div>
+
+      <div className="project-card-body">
+        <h3 className="project-name">{project.name}</h3>
+        <p className="project-meta">
+          {project.year} - {project.stack.join(", ")}
+        </p>
+      </div>
+
+      {project.github ? (
+        inertContent ? (
+          <span className="project-github-link">
+            <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
+          </span>
+        ) : (
+          <a
+            className="project-github-link"
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            onPointerUp={onPointerActivation}
+            aria-label={`Open ${project.name} GitHub`}
+          >
+            <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
+          </a>
+        )
+      ) : null}
+    </article>
+  );
+}
+
+function renderProjectDemo(
+  project: Project,
+  inertContent: boolean,
+  showPortfolioMessage?: boolean,
+  onPointerActivation?: (event: PointerEvent<HTMLAnchorElement | HTMLButtonElement>) => void,
+  onOpenProjectDemo?: (projectName: string) => void,
+  onShowPortfolioMessage?: () => void,
+) {
+  if (!project.demo) {
+    return <span>demo coming later</span>;
+  }
+
+  if (inertContent) {
+    return <span className="project-demo-button project-demo-ghost-label">{project.demoLabel || "Live demo"}</span>;
+  }
+
+  if (project.demoMode === "window") {
+    return (
+      <button
+        className="project-demo-button"
+        type="button"
+        onPointerUp={onPointerActivation}
+        onClick={() => onOpenProjectDemo?.(project.name)}
+        aria-label={`Open ${project.name} demo video`}
+      >
+        {project.demoLabel || "Demo"}
+      </button>
+    );
+  }
+
+  if (project.demoMode === "message") {
+    return (
+      <button
+        className="project-demo-button project-demo-message-button"
+        type="button"
+        onPointerUp={onPointerActivation}
+        onClick={onShowPortfolioMessage}
+        aria-label="This portfolio project is the current website"
+      >
+        {showPortfolioMessage ? "its this website silly :p" : project.demoLabel || "Live demo"}
+      </button>
+    );
+  }
+
+  return (
+    <a
+      className="project-demo-button"
+      href={project.demo}
+      target="_blank"
+      rel="noopener noreferrer"
+      onPointerUp={onPointerActivation}
+      aria-label={`Open ${project.name} ${project.demoLabel || "live demo"}`}
+    >
+      {project.demoLabel || "Live demo"}
+    </a>
   );
 }
