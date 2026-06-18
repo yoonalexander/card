@@ -72,6 +72,15 @@ const projects = [
     demoMode: "message",
   },
   {
+    name: "Cursora",
+    year: "2026",
+    image: "/assets/images/Cursora.png",
+    summary: "Neon browser sketch-and-dodge game built around cursor movement, quick quests, collectibles, and bullet avoidance.",
+    stack: ["HTML", "CSS", "JavaScript", "Game Loop"],
+    topics: ["Games", "Web Apps"],
+    demo: "https://alexyoon.com/cursora",
+  },
+  {
     name: "XY-Ball-Fight",
     year: "2025",
     image: "/assets/images/XY-Ball-Fight.png",
