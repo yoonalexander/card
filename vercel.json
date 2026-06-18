@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/xy-fight",
+      "destination": "https://xy-ball-fight.vercel.app/index.html"
+    },
+    {
+      "source": "/xy-fight/:path*",
+      "destination": "https://xy-ball-fight.vercel.app/:path*"
+    },
+    {
       "source": "/craveai",
       "destination": "https://crave-ai-eight.vercel.app/craveai"
     },
@@ -15,14 +23,6 @@
     {
       "source": "/particle-engine/:path*",
       "destination": "https://particle-engine-plum.vercel.app/:path*"
-    },
-    {
-      "source": "/xy-fight",
-      "destination": "https://xy-ball-fight.vercel.app/index.html"
-    },
-    {
-      "source": "/xy-fight/:path*",
-      "destination": "https://xy-ball-fight.vercel.app/:path*"
     }
   ]
 }
