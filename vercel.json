@@ -18,7 +18,7 @@
     },
     {
       "source": "/xy-fight",
-      "destination": "https://xy-ball-fight.vercel.app"
+      "destination": "https://xy-ball-fight.vercel.app/"
     },
     {
       "source": "/xy-fight/:path*",
