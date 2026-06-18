@@ -15,6 +15,14 @@
     {
       "source": "/particle-engine/:path*",
       "destination": "https://particle-engine-plum.vercel.app/:path*"
+    },
+    {
+      "source": "/xy-fight",
+      "destination": "https://xy-ball-fight.vercel.app"
+    },
+    {
+      "source": "/xy-fight/:path*",
+      "destination": "https://xy-ball-fight.vercel.app/:path*"
     }
   ]
 }

@@ -79,6 +79,7 @@ const projects = [
     stack: ["HTML", "CSS", "JavaScript", "Game Loop"],
     topics: ["Games", "Web Apps"],
     github: "https://github.com/yoonalexander/XY-Ball-Fight",
+    demo: "https://www.alexyoon.com/xy-fight",
   },
   {
     name: "Chess-Bot",
