@@ -17,6 +17,14 @@
       "destination": "https://crave-ai-eight.vercel.app/craveai/:path*"
     },
     {
+      "source": "/cursora",
+      "destination": "https://cursora-woad.vercel.app"
+    },
+    {
+      "source": "/cursora/:path*",
+      "destination": "https://cursora-woad.vercel.app/:path*"
+    },
+    {
       "source": "/particle-engine",
       "destination": "https://particle-engine-plum.vercel.app"
     },

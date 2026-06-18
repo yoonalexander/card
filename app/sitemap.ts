@@ -15,6 +15,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: "https://alexyoon.com/cursora",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: "https://alexyoon.com/xy-fight",
       lastModified: new Date(),
       changeFrequency: "monthly",
