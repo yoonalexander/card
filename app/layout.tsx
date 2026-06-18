@@ -10,6 +10,7 @@ const siteDescription =
 const logoPath = "/assets/images/alexander-yoon-icon-512.png";
 const icon48Path = "/assets/images/alexander-yoon-icon-48.png";
 const icon192Path = "/assets/images/alexander-yoon-icon-192.png";
+const contactPhotoPath = "/assets/images/me_with_cat.jpg";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -121,6 +122,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
           rel="stylesheet"
         />
+        <link rel="preload" href={contactPhotoPath} as="image" fetchPriority="high" />
       </head>
       <body suppressHydrationWarning>
         <Script id="theme-init" strategy="beforeInteractive">
