@@ -71,6 +71,7 @@ export default function FAQSection() {
   useEffect(() => {
     const audio = new Audio("/assets/sounds/faq_slide_down_up.mp3");
     audio.preload = "auto";
+    audio.volume = 0.8;
     faqAudioRef.current = audio;
   }, []);
 

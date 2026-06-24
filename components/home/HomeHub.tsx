@@ -43,6 +43,41 @@ const soundSources = {
   soundToggle: "/assets/sounds/sound_toggle.mp3",
 } as const;
 
+const soundVolumes: Record<keyof typeof soundSources, number> = {
+  click: 1,
+  closeWindow: 1,
+  lightMode: 0.8,
+  nightMode: 0.8,
+  soundToggle: 0.28,
+};
+
+const heroLinks = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/yoonalex/", icon: "/assets/icons/linkedin-logo.png" },
+  { label: "GitHub", href: "https://github.com/yoonalexander", icon: "/assets/icons/github-logo.png" },
+  { label: "Resume", href: "/assets/files/Alexander_Yoon_Resume_DA_2026.pdf", icon: "/assets/icons/work.png" },
+] as const;
+
+const heroDescriptors = [
+  "matcha fueled",
+  "volleyball addicted",
+  "thrifting enthusiast",
+  "gym rat",
+  "morning runner",
+  "bug squashing",
+  "game dev hobbyist",
+  "AI curious",
+  "ML passionate",
+  "manga reading",
+  "anime bingeing",
+  "foodie",
+] as const;
+
+const typewriterConfig = {
+  typingSpeed: 82,
+  deletingSpeed: 46,
+  pauseDuration: 8000,
+};
+
 type SoundName = keyof typeof soundSources;
 
 export default function HomeHub() {
@@ -182,7 +217,7 @@ export default function HomeHub() {
     const audio = audioRefs.current[soundName];
     if (!audio) return;
 
-    audio.volume = soundName === "soundToggle" ? 0.35 : 1;
+    audio.volume = soundVolumes[soundName];
     audio.currentTime = 0;
     void audio.play().catch(() => {
       // Some browsers block audio until user interaction; later clicks can still play normally.
@@ -219,10 +254,13 @@ export default function HomeHub() {
 
   function handleHubPointerOver(event: MouseEvent<HTMLElement>) {
     const target = event.target instanceof Element ? event.target : null;
-    if (!target?.closest(".skill-chips span")) return;
+    if (!target) return;
 
     const relatedTarget = event.relatedTarget instanceof Element ? event.relatedTarget : null;
-    if (relatedTarget?.closest(".skill-chips span") === target.closest(".skill-chips span")) return;
+    const hoverSoundTarget = target.closest(".section-launcher, .hero-link-row a, .toggle-btn, .skill-chips span");
+    if (!hoverSoundTarget) return;
+
+    if (relatedTarget && hoverSoundTarget.contains(relatedTarget)) return;
 
     playSound("click");
   }
@@ -262,7 +300,7 @@ export default function HomeHub() {
           <h1>
             hi! <span>i&apos;m alex</span>
           </h1>
-          <p>matcha fueled software engineer</p>
+          <TypewriterText descriptors={heroDescriptors} staticText="software engineer" {...typewriterConfig} />
         </section>
 
         <SectionNav openSections={openSectionIds} onOpen={openSection} />
@@ -288,6 +326,21 @@ export default function HomeHub() {
           )}
         </SectionWindow>
       ))}
+
+      <div className="hero-link-row" aria-label="Featured links">
+        {heroLinks.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={link.label}
+          >
+            <img src={link.icon} alt="" aria-hidden="true" />
+            <span>{link.label}</span>
+          </a>
+        ))}
+      </div>
 
       <footer className="site-footer">© Alex Yoon 2026</footer>
     </main>
@@ -318,6 +371,110 @@ function getWindowTitle(windowId: WindowId) {
 
 function isSectionId(windowId: WindowId): windowId is SectionId {
   return windowId !== "pocket-ai-demo";
+}
+
+type TypewriterTextProps = {
+  descriptors: readonly string[];
+  staticText: string;
+  typingSpeed?: number;
+  deletingSpeed?: number;
+  pauseDuration?: number;
+};
+
+function TypewriterText({
+  descriptors,
+  staticText,
+  typingSpeed = 80,
+  deletingSpeed = 45,
+  pauseDuration = 2500,
+}: TypewriterTextProps) {
+  const firstDescriptor = descriptors[0] ?? "";
+  const descriptorQueueRef = useRef<string[]>([]);
+  const lastDescriptorRef = useRef(firstDescriptor);
+  const [displayedText, setDisplayedText] = useState(firstDescriptor);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [targetDescriptor, setTargetDescriptor] = useState(firstDescriptor);
+
+  useEffect(() => {
+    if (descriptors.length <= 1) return;
+
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reducedMotionQuery.matches) return;
+
+    function getNextDescriptor() {
+      if (descriptorQueueRef.current.length === 0) {
+        descriptorQueueRef.current = shuffleDescriptors(descriptors.filter((descriptor) => descriptor !== firstDescriptor));
+      }
+
+      const nextDescriptor = descriptorQueueRef.current.shift() ?? firstDescriptor;
+      if (nextDescriptor !== lastDescriptorRef.current) {
+        return nextDescriptor;
+      }
+
+      const replacementDescriptor = descriptorQueueRef.current.shift();
+      if (!replacementDescriptor) {
+        descriptorQueueRef.current = shuffleDescriptors(
+          descriptors.filter((descriptor) => descriptor !== lastDescriptorRef.current),
+        );
+        return descriptorQueueRef.current.shift() ?? firstDescriptor;
+      }
+
+      descriptorQueueRef.current.push(nextDescriptor);
+      return replacementDescriptor;
+    }
+
+    const timeout = window.setTimeout(
+      () => {
+        if (!isDeleting && displayedText === targetDescriptor) {
+          setIsDeleting(true);
+          return;
+        }
+
+        if (isDeleting && displayedText.length === 0) {
+          const nextDescriptor = getNextDescriptor();
+          lastDescriptorRef.current = nextDescriptor;
+          setTargetDescriptor(nextDescriptor);
+          setIsDeleting(false);
+          return;
+        }
+
+        setDisplayedText((currentText) =>
+          isDeleting
+            ? currentText.slice(0, -1)
+            : targetDescriptor.slice(0, Math.min(currentText.length + 1, targetDescriptor.length)),
+        );
+      },
+      !isDeleting && displayedText === targetDescriptor
+        ? pauseDuration
+        : isDeleting
+          ? deletingSpeed
+          : typingSpeed,
+    );
+
+    return () => window.clearTimeout(timeout);
+  }, [deletingSpeed, descriptors, displayedText, firstDescriptor, isDeleting, pauseDuration, targetDescriptor, typingSpeed]);
+
+  return (
+    <p className="typewriter-line">
+      <span className="typewriter-descriptor">{displayedText}</span>
+      <span className="typewriter-cursor" aria-hidden="true" />
+      <span className="typewriter-static">{staticText}</span>
+    </p>
+  );
+}
+
+function shuffleDescriptors(descriptors: readonly string[]) {
+  const shuffledDescriptors = [...descriptors];
+
+  for (let index = shuffledDescriptors.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffledDescriptors[index], shuffledDescriptors[swapIndex]] = [
+      shuffledDescriptors[swapIndex],
+      shuffledDescriptors[index],
+    ];
+  }
+
+  return shuffledDescriptors;
 }
 
 function PocketAIDemoWindow() {
