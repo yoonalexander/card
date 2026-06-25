@@ -1,6 +1,6 @@
 "use client";
 
-import { type MouseEvent, useEffect, useMemo, useRef, useState } from "react";
+import { type MouseEvent, type PointerEvent, useEffect, useMemo, useRef, useState } from "react";
 import SectionNav from "./SectionNav";
 import SectionPanel, { getSectionTitle, type SectionId } from "./SectionPanel";
 import SectionWindow from "./SectionWindow";
@@ -85,6 +85,8 @@ export default function HomeHub() {
   const [savedPositions, setSavedPositions] = useState<Partial<Record<WindowId, { x: number; y: number }>>>({});
   const topZ = useRef(20);
   const audioRefs = useRef<Partial<Record<SoundName, HTMLAudioElement>>>({});
+  const isAudioUnlockedRef = useRef(false);
+  const isSoundOnRef = useRef(true);
   const [isDark, setIsDark] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(true);
 
@@ -116,6 +118,10 @@ export default function HomeHub() {
     const savedSound = window.localStorage.getItem("sound");
     setIsSoundOn(savedSound ? savedSound === "on" : true);
   }, []);
+
+  useEffect(() => {
+    isSoundOnRef.current = isSoundOn;
+  }, [isSoundOn]);
 
   useEffect(() => {
     audioRefs.current = Object.fromEntries(
@@ -219,9 +225,36 @@ export default function HomeHub() {
 
     audio.volume = soundVolumes[soundName];
     audio.currentTime = 0;
-    void audio.play().catch(() => {
-      // Some browsers block audio until user interaction; later clicks can still play normally.
-    });
+    void audio
+      .play()
+      .then(() => {
+        isAudioUnlockedRef.current = true;
+      })
+      .catch(() => {
+        // Some browsers block audio until user interaction; later clicks can still play normally.
+        isAudioUnlockedRef.current = false;
+      });
+  }
+
+  function handleHubPointerDownCapture(event: PointerEvent<HTMLElement>) {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target || !isSoundOnRef.current || isAudioUnlockedRef.current) return;
+
+    if (target.closest("button, a, .faq-trigger")) return;
+
+    const audio = audioRefs.current.click;
+    if (!audio) return;
+
+    audio.volume = soundVolumes.click;
+    audio.currentTime = 0;
+    void audio
+      .play()
+      .then(() => {
+        isAudioUnlockedRef.current = true;
+      })
+      .catch(() => {
+        isAudioUnlockedRef.current = false;
+      });
   }
 
   function handleHubClickCapture(event: MouseEvent<HTMLElement>) {
@@ -257,7 +290,7 @@ export default function HomeHub() {
     if (!target) return;
 
     const relatedTarget = event.relatedTarget instanceof Element ? event.relatedTarget : null;
-    const hoverSoundTarget = target.closest(".section-launcher, .hero-link-row a, .toggle-btn, .skill-chips span");
+    const hoverSoundTarget = getHoverSoundTarget(target);
     if (!hoverSoundTarget) return;
 
     if (relatedTarget && hoverSoundTarget.contains(relatedTarget)) return;
@@ -266,7 +299,12 @@ export default function HomeHub() {
   }
 
   return (
-    <main className="container" onClickCapture={handleHubClickCapture} onMouseOver={handleHubPointerOver}>
+    <main
+      className="container"
+      onPointerDownCapture={handleHubPointerDownCapture}
+      onClickCapture={handleHubClickCapture}
+      onMouseOver={handleHubPointerOver}
+    >
       <StarField isActive={isDark} />
 
       <div className="cloud-field" aria-hidden="true">
@@ -345,6 +383,10 @@ export default function HomeHub() {
       <footer className="site-footer">© Alex Yoon 2026</footer>
     </main>
   );
+}
+
+function getHoverSoundTarget(target: Element) {
+  return target.closest(".section-launcher, .hero-link-row a, .toggle-btn, .skill-chips span");
 }
 
 function getInitialPosition(windowId: WindowId) {
