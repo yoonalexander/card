@@ -54,7 +54,7 @@ const soundVolumes: Record<keyof typeof soundSources, number> = {
 const heroLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/in/yoonalex/", icon: "/assets/icons/linkedin-logo.png" },
   { label: "GitHub", href: "https://github.com/yoonalexander", icon: "/assets/icons/github-logo.png" },
-  { label: "Resume", href: "/assets/files/Alexander_Yoon_Resume_DA_2026.pdf", icon: "/assets/icons/work.png" },
+  { label: "Resume", href: "/assets/files/Alexander_Yoon_Resume_SWE_2026.pdf", icon: "/assets/icons/work.png" },
 ] as const;
 
 const heroDescriptors = [
