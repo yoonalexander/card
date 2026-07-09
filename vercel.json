@@ -28,6 +28,10 @@
       "destination": "https://cursora-woad.vercel.app"
     },
     {
+      "source": "/cursora/",
+      "destination": "https://cursora-woad.vercel.app"
+    },
+    {
       "source": "/cursora/:path*",
       "destination": "https://cursora-woad.vercel.app/:path*"
     },
