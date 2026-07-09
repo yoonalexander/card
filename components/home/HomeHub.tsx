@@ -365,22 +365,24 @@ export default function HomeHub() {
         </SectionWindow>
       ))}
 
-      <div className="hero-link-row" aria-label="Featured links">
-        {heroLinks.map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={link.label}
-          >
-            <img src={link.icon} alt="" aria-hidden="true" />
-            <span>{link.label}</span>
-          </a>
-        ))}
-      </div>
+      <div className="bottom-dock">
+        <div className="hero-link-row" aria-label="Featured links">
+          {heroLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={link.label}
+            >
+              <img src={link.icon} alt="" aria-hidden="true" />
+              <span>{link.label}</span>
+            </a>
+          ))}
+        </div>
 
-      <footer className="site-footer">© Alex Yoon 2026</footer>
+        <footer className="site-footer">&copy; Alex Yoon 2026</footer>
+      </div>
     </main>
   );
 }
