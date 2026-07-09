@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/cursora",
+      "destination": "/cursora/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/xy-fight",
