@@ -2,7 +2,7 @@
   "redirects": [
     {
       "source": "/cursora",
-      "destination": "/cursora/",
+      "destination": "/cursora/index.html",
       "permanent": false
     }
   ],
