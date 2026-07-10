@@ -413,7 +413,7 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
         })}
       </div>
 
-      <p className="project-demo-tip">Some projects have live demos. Hover over a project to see if it does.</p>
+      <p className="project-demo-tip">Some projects have live demos. Select a project to see if it does.</p>
 
       <div className="project-results" ref={resultsRef} aria-live="polite">
         <div className="project-liquid-layer" aria-hidden="true">

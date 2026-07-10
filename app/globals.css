@@ -2053,6 +2053,58 @@ html.dark .contact-cat-note {
     overflow: auto;
   }
 
+  .project-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .project-card {
+    min-height: 0;
+  }
+
+  .project-image-wrap {
+    aspect-ratio: 16 / 10;
+  }
+
+  .project-image-wrap > img {
+    opacity: 1;
+  }
+
+  .project-overlay {
+    position: relative;
+    inset: auto;
+    opacity: 1;
+    gap: 0.65rem;
+    padding: 0 1rem 1rem;
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  .project-card:hover .project-image-wrap > img,
+  .project-card:focus-within .project-image-wrap > img {
+    opacity: 1;
+  }
+
+  .project-overlay p {
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.45;
+  }
+
+  .project-demo-button {
+    min-height: 34px;
+    padding: 0.48rem 0.72rem;
+    font-size: 0.76rem;
+  }
+
+  .project-card-body {
+    padding: 0.9rem 3.15rem 0.45rem 1rem;
+  }
+
+  .project-meta {
+    font-size: 0.9rem;
+  }
+
   .project-video-panel {
     grid-template-columns: 1fr;
   }
@@ -2070,7 +2122,7 @@ html.dark .contact-cat-note {
   }
 }
 
-@media (max-width: 980px) {
+@media (min-width: 721px) and (max-width: 980px) {
   .project-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
