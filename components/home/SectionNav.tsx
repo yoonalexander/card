@@ -3,7 +3,6 @@ import { sections } from "./SectionPanel";
 
 const sectionIcons: Record<SectionId, string> = {
   about: "/assets/icons/about.png",
-  links: "/assets/icons/links.png",
   work: "/assets/icons/work.png",
   projects: "/assets/icons/projects.png",
   faq: "/assets/icons/faq.png",

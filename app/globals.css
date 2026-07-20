@@ -2122,6 +2122,30 @@ html.dark .contact-cat-note {
   }
 }
 
+@media (hover: none), (pointer: coarse) {
+  .project-card .project-image-wrap > img,
+  .project-card:hover .project-image-wrap > img,
+  .project-card:focus-within .project-image-wrap > img {
+    opacity: 1;
+  }
+
+  .project-card .project-overlay,
+  body.dark .project-card .project-overlay,
+  html.dark .project-card .project-overlay {
+    position: relative;
+    inset: auto;
+    opacity: 1;
+    gap: 0.65rem;
+    padding: 0 1rem 1rem;
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  .project-card .project-demo-button {
+    min-height: 44px;
+  }
+}
+
 @media (min-width: 721px) and (max-width: 980px) {
   .project-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

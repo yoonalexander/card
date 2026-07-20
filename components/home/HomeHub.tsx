@@ -19,7 +19,6 @@ type WindowId = SectionId | DemoWindowId;
 
 const defaultPositions: Record<WindowId, { x: number; y: number }> = {
   about: { x: 96, y: 96 },
-  links: { x: 160, y: 132 },
   work: { x: 224, y: 168 },
   projects: { x: 288, y: 92 },
   faq: { x: 352, y: 148 },

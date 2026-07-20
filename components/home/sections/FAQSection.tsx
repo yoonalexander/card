@@ -31,7 +31,7 @@ const faqs = [
   {
     question: "can I reach out?",
     answer:
-      "Yes. Email, LinkedIn, and the chat link are all good ways to reach me. The Links and Contact windows have the fastest routes.",
+      "Yes. Email and LinkedIn are both good ways to reach me. The Contact window has the fastest route.",
   },
   {
     question: "what is your favorite kind of project?",
