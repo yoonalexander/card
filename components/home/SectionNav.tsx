@@ -2,19 +2,20 @@ import type { SectionId } from "./SectionPanel";
 import { sections } from "./SectionPanel";
 
 const sectionIcons: Record<SectionId, string> = {
-  about: "/assets/icons/about.png",
-  work: "/assets/icons/work.png",
-  projects: "/assets/icons/projects.png",
-  faq: "/assets/icons/faq.png",
-  contact: "/assets/icons/contacts.png",
+  about: "about",
+  work: "work",
+  projects: "projects",
+  faq: "faq",
+  contact: "contacts",
 };
 
 type SectionNavProps = {
   openSections: SectionId[];
   onOpen: (sectionId: SectionId) => void;
+  isDark: boolean;
 };
 
-export default function SectionNav({ openSections, onOpen }: SectionNavProps) {
+export default function SectionNav({ openSections, onOpen, isDark }: SectionNavProps) {
   return (
     <div className="btn-container">
       {sections.map((section) => (
@@ -25,7 +26,11 @@ export default function SectionNav({ openSections, onOpen }: SectionNavProps) {
           onClick={() => onOpen(section.id)}
           aria-pressed={openSections.includes(section.id)}
         >
-          <img src={sectionIcons[section.id]} alt="" aria-hidden="true" />
+          <img
+            src={`/assets/icons/${sectionIcons[section.id]}${isDark ? "-white" : ""}.svg`}
+            alt=""
+            aria-hidden="true"
+          />
           <span>{section.label}</span>
         </button>
       ))}

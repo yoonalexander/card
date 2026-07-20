@@ -53,7 +53,7 @@ const soundVolumes: Record<keyof typeof soundSources, number> = {
 const heroLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/in/yoonalex/", icon: "/assets/icons/linkedin-logo.png" },
   { label: "GitHub", href: "https://github.com/yoonalexander", icon: "/assets/icons/github-logo.png" },
-  { label: "Resume", href: "/assets/files/Alexander_Yoon_Resume_SWE_2026.pdf", icon: "/assets/icons/work.png" },
+  { label: "Resume", href: "/assets/files/Alexander_Yoon_Resume_SWE_2026.pdf", icon: "/assets/icons/work.svg", darkIcon: "/assets/icons/work-white.svg" },
 ] as const;
 
 const heroDescriptors = [
@@ -325,7 +325,11 @@ export default function HomeHub() {
         aria-label={isSoundOn ? "Turn sound off" : "Turn sound on"}
         aria-pressed={isSoundOn}
       >
-        <img src={isSoundOn ? "/assets/icons/volume_on.png" : "/assets/icons/volume_off.png"} alt="" aria-hidden="true" />
+        <img
+          src={`/assets/icons/volume_${isSoundOn ? "on" : "off"}${isDark ? "-white" : ""}.svg`}
+          alt=""
+          aria-hidden="true"
+        />
       </button>
 
       <button className="toggle-btn" type="button" onClick={toggleTheme} aria-label="Toggle Dark Mode">
@@ -340,7 +344,7 @@ export default function HomeHub() {
           <TypewriterText descriptors={heroDescriptors} staticText="software engineer" {...typewriterConfig} />
         </section>
 
-        <SectionNav openSections={openSectionIds} onOpen={openSection} />
+        <SectionNav openSections={openSectionIds} onOpen={openSection} isDark={isDark} />
       </div>
 
       {openWindows.map((sectionWindow) => (
@@ -374,7 +378,7 @@ export default function HomeHub() {
               rel="noopener noreferrer"
               aria-label={link.label}
             >
-              <img src={link.icon} alt="" aria-hidden="true" />
+              <img src={isDark && "darkIcon" in link ? link.darkIcon : link.icon} alt="" aria-hidden="true" />
               <span>{link.label}</span>
             </a>
           ))}

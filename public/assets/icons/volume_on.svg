@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Sound on">
+  <path fill="#000" d="M47 181h82l93-101c12-13 34-5 34 13v326c0 18-22 26-34 13l-93-101H47c-12 0-22-10-22-22V203c0-12 10-22 22-22Z"/>
+  <g fill="none" stroke="#000" stroke-linecap="round">
+    <path stroke-width="45" d="M313 183c21 19 33 44 33 73s-12 54-33 73"/>
+    <path stroke-width="47" d="M379 117c38 37 60 85 60 139s-22 102-60 139"/>
+  </g>
+</svg>

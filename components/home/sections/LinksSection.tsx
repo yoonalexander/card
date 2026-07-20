@@ -8,7 +8,7 @@ const links = [
     href: "https://open.spotify.com/user/y6nkbdx2s6hie39ap0m24pz8r?si=ue5ZbrmGSkOqls2iruWu5w",
     icon: "/assets/icons/spotify-logo.png",
   },
-  { label: "Let's Chat", href: "https://cal.com/alexyoon", icon: "/assets/icons/contacts.png" },
+  { label: "Let's Chat", href: "https://cal.com/alexyoon", icon: "/assets/icons/contacts.svg" },
 ];
 
 export default function LinksSection() {

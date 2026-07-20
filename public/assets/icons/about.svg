@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="About">
+  <g fill="#000">
+    <path fill-rule="evenodd" d="M256 0a256 256 0 1 0 0 512 256 256 0 0 0 0-512Zm0 47a209 209 0 1 1 0 418 209 209 0 0 1 0-418Z"/>
+    <circle cx="256" cy="140" r="31"/>
+    <rect x="232.5" y="217" width="47" height="187" rx="23.5"/>
+  </g>
+</svg>
