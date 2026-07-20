@@ -8,6 +8,18 @@
   ],
   "rewrites": [
     {
+      "source": "/bunny",
+      "destination": "https://flowers-eight-inky.vercel.app"
+    },
+    {
+      "source": "/bunny/:path*",
+      "destination": "https://flowers-eight-inky.vercel.app/:path*"
+    },
+    {
+      "source": "/flowers/assets/:path*",
+      "destination": "https://flowers-eight-inky.vercel.app/flowers/assets/:path*"
+    },
+    {
       "source": "/xy-fight",
       "destination": "https://xy-ball-fight.vercel.app/index.html"
     },
