@@ -23,7 +23,6 @@ type SectionPanelProps = {
   onOpenProjectDemo?: (projectName: string) => void;
   onCatSecretClick?: () => void;
   onLogoSecretClick?: () => void;
-  isSecretFlowerVisible?: boolean;
 };
 
 export default function SectionPanel({
@@ -31,15 +30,9 @@ export default function SectionPanel({
   onOpenProjectDemo,
   onCatSecretClick,
   onLogoSecretClick,
-  isSecretFlowerVisible = false,
 }: SectionPanelProps) {
   if (sectionId === "about") {
-    return (
-      <AboutSection
-        onLogoSecretClick={onLogoSecretClick}
-        isSecretFlowerVisible={isSecretFlowerVisible}
-      />
-    );
+    return <AboutSection onLogoSecretClick={onLogoSecretClick} />;
   }
   if (sectionId === "work") return <WorkSection />;
   if (sectionId === "projects") return <ProjectsSection onOpenProjectDemo={onOpenProjectDemo} />;

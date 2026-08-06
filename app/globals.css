@@ -948,11 +948,14 @@ html.dark .about-avatar {
 }
 
 .secret-lily {
-  position: relative;
+  position: fixed;
+  right: clamp(1.5rem, 12vw, 10rem);
+  bottom: max(4.25rem, calc(3.5rem + env(safe-area-inset-bottom)));
+  z-index: 2;
   display: block;
   width: 94px;
   height: 126px;
-  margin: -0.6rem auto -0.35rem;
+  margin: 0;
   color: inherit;
   filter: drop-shadow(0 7px 5px rgba(53, 91, 44, 0.18));
   transform-origin: 50% 82%;
