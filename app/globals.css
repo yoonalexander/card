@@ -1963,18 +1963,9 @@ html.dark .faq-answer {
   border: 0;
   border-radius: 18px;
   background: transparent;
-  cursor: pointer;
-  transition: transform 160ms ease, box-shadow 160ms ease;
-}
-
-.contact-cat-secret:hover,
-.contact-cat-secret:focus-visible {
-  transform: scale(1.015);
-  box-shadow: 0 10px 24px rgba(20, 42, 64, 0.16);
-}
-
-.contact-cat-secret:active {
-  transform: scale(0.985);
+  color: inherit;
+  cursor: default;
+  outline: none;
 }
 
 .contact-cat-secret img {
