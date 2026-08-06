@@ -88,6 +88,10 @@ export default function HomeHub() {
   const isSoundOnRef = useRef(true);
   const [isDark, setIsDark] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(true);
+  const [catClicks, setCatClicks] = useState(0);
+  const [isLogoStepUnlocked, setIsLogoStepUnlocked] = useState(false);
+  const [logoClicks, setLogoClicks] = useState(0);
+  const [isSecretFlowerVisible, setIsSecretFlowerVisible] = useState(false);
 
   const openSectionIds = useMemo(
     () =>
@@ -213,6 +217,37 @@ export default function HomeHub() {
         playSound("soundToggle", { force: true });
       }
       return nextIsSoundOn;
+    });
+  }
+
+  function handleCatSecretClick() {
+    if (isLogoStepUnlocked) return;
+
+    setCatClicks((currentClicks) => {
+      const nextClicks = currentClicks + 1;
+
+      if (nextClicks >= 5) {
+        setIsLogoStepUnlocked(true);
+        playSound(isDark ? "nightMode" : "lightMode");
+        return 5;
+      }
+
+      return nextClicks;
+    });
+  }
+
+  function handleLogoSecretClick() {
+    if (!isLogoStepUnlocked || isSecretFlowerVisible) return;
+
+    setLogoClicks((currentClicks) => {
+      const nextClicks = currentClicks + 1;
+
+      if (nextClicks >= 5) {
+        setIsSecretFlowerVisible(true);
+        return 5;
+      }
+
+      return nextClicks;
     });
   }
 
@@ -361,7 +396,13 @@ export default function HomeHub() {
           onMove={(position) => moveWindow(sectionWindow.id, position)}
         >
           {isSectionId(sectionWindow.id) ? (
-            <SectionPanel sectionId={sectionWindow.id} onOpenProjectDemo={openProjectDemo} />
+            <SectionPanel
+              sectionId={sectionWindow.id}
+              onOpenProjectDemo={openProjectDemo}
+              onCatSecretClick={handleCatSecretClick}
+              onLogoSecretClick={handleLogoSecretClick}
+              isSecretFlowerVisible={isSecretFlowerVisible}
+            />
           ) : (
             <PocketAIDemoWindow />
           )}

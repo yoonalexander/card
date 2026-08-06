@@ -21,12 +21,28 @@ export function getSectionTitle(sectionId: SectionId) {
 type SectionPanelProps = {
   sectionId: SectionId;
   onOpenProjectDemo?: (projectName: string) => void;
+  onCatSecretClick?: () => void;
+  onLogoSecretClick?: () => void;
+  isSecretFlowerVisible?: boolean;
 };
 
-export default function SectionPanel({ sectionId, onOpenProjectDemo }: SectionPanelProps) {
-  if (sectionId === "about") return <AboutSection />;
+export default function SectionPanel({
+  sectionId,
+  onOpenProjectDemo,
+  onCatSecretClick,
+  onLogoSecretClick,
+  isSecretFlowerVisible = false,
+}: SectionPanelProps) {
+  if (sectionId === "about") {
+    return (
+      <AboutSection
+        onLogoSecretClick={onLogoSecretClick}
+        isSecretFlowerVisible={isSecretFlowerVisible}
+      />
+    );
+  }
   if (sectionId === "work") return <WorkSection />;
   if (sectionId === "projects") return <ProjectsSection onOpenProjectDemo={onOpenProjectDemo} />;
   if (sectionId === "faq") return <FAQSection />;
-  return <ContactSection />;
+  return <ContactSection onCatSecretClick={onCatSecretClick} />;
 }

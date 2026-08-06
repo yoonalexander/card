@@ -916,8 +916,11 @@ html.dark .about-hero {
 }
 
 .about-avatar {
+  display: block;
   width: 120px;
   height: 120px;
+  padding: 0;
+  border: 0;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.7);
   background-image: url("/assets/images/ay-logo-large-clear.png");
@@ -925,11 +928,106 @@ html.dark .about-hero {
   background-repeat: no-repeat;
   background-size: 58%;
   box-shadow: var(--card-shadow);
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.about-avatar:hover,
+.about-avatar:focus-visible {
+  transform: scale(1.04);
+  box-shadow: 0 10px 26px rgba(20, 42, 64, 0.18);
+}
+
+.about-avatar:active {
+  transform: scale(0.97);
 }
 
 body.dark .about-avatar,
 html.dark .about-avatar {
   background-color: rgba(255, 255, 255, 0.08);
+}
+
+.secret-lily {
+  position: relative;
+  display: block;
+  width: 94px;
+  height: 126px;
+  margin: -0.6rem auto -0.35rem;
+  color: inherit;
+  filter: drop-shadow(0 7px 5px rgba(53, 91, 44, 0.18));
+  transform-origin: 50% 82%;
+  animation:
+    secret-lily-appear 520ms cubic-bezier(0.16, 1, 0.3, 1) both,
+    secret-lily-sway 4.8s 520ms ease-in-out infinite alternate;
+  transition: filter 200ms ease, scale 200ms ease;
+}
+
+.secret-lily:hover,
+.secret-lily:focus-visible {
+  scale: 1.1;
+  filter: drop-shadow(0 0 14px rgba(255, 242, 160, 0.95));
+  outline: none;
+}
+
+.secret-lily svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.secret-lily-stem {
+  fill: none;
+  stroke: #498b50;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+}
+
+.secret-lily-leaf {
+  fill: #70b568;
+  stroke: #4c9253;
+}
+
+.secret-lily-head ellipse {
+  fill: #f2a5bf;
+  stroke: #bd718c;
+  stroke-width: 1;
+}
+
+.secret-lily-head circle {
+  fill: #f7d97a;
+}
+
+.secret-lily-sparkles {
+  position: absolute;
+  inset: 8px 0 auto;
+  color: #e5b938;
+  font-size: 1.1rem;
+  text-align: center;
+  animation: secret-lily-sparkle 1.5s 360ms ease-in-out infinite;
+}
+
+@keyframes secret-lily-appear {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.2) rotate(10deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotate(0);
+  }
+}
+
+@keyframes secret-lily-sway {
+  from { rotate: -2deg; }
+  to { rotate: 2.5deg; }
+}
+
+@keyframes secret-lily-sparkle {
+  0%,
+  100% { opacity: 0.25; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.18); }
 }
 
 .about-name {
@@ -1855,13 +1953,35 @@ html.dark .faq-answer {
   line-height: 1.65;
 }
 
-.contact-card img {
+.contact-cat-secret {
   display: block;
   width: min(100%, 300px);
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.contact-cat-secret:hover,
+.contact-cat-secret:focus-visible {
+  transform: scale(1.015);
+  box-shadow: 0 10px 24px rgba(20, 42, 64, 0.16);
+}
+
+.contact-cat-secret:active {
+  transform: scale(0.985);
+}
+
+.contact-cat-secret img {
+  display: block;
+  width: 100%;
   max-height: 300px;
   object-fit: contain;
   border-radius: 18px;
   margin: 0.2rem 0;
+  user-select: none;
 }
 
 .contact-cat-note {
@@ -1955,6 +2075,12 @@ html.dark .contact-cat-note {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .secret-lily,
+  .secret-lily-sparkles {
+    animation: none;
+    transition: none;
+  }
+
   .skill-chips span {
     transition-duration: 1ms;
   }
