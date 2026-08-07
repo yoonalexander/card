@@ -7,9 +7,7 @@ import "./globals.css";
 const siteUrl = "https://alexyoon.com";
 const siteDescription =
   "Alexander Yoon is a software engineer who builds AI, machine learning, data, and interactive web projects. Explore his work, projects, resume, and links.";
-const logoPath = "/assets/images/alexander-yoon-icon-512.png";
-const icon48Path = "/assets/images/alexander-yoon-icon-48.png";
-const icon192Path = "/assets/images/alexander-yoon-icon-192.png";
+const logoPath = "/AY%20Logo.svg";
 const contactPhotoPath = "/assets/images/me_with_cat.jpg";
 
 export const metadata: Metadata = {
@@ -36,13 +34,8 @@ export const metadata: Metadata = {
     "McMaster University",
   ],
   icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: icon48Path, sizes: "48x48", type: "image/png" },
-      { url: icon192Path, sizes: "192x192", type: "image/png" },
-      { url: logoPath, sizes: "512x512", type: "image/png" },
-    ],
-    shortcut: "/favicon.ico",
+    icon: [{ url: logoPath, type: "image/svg+xml" }],
+    shortcut: logoPath,
     apple: logoPath,
   },
   openGraph: {

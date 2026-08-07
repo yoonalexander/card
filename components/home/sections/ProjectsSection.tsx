@@ -38,7 +38,7 @@ const projects = [
     stack: ["Python", "LangChain", "OpenAI API", "FastAPI", "React"],
     topics: ["AI/ML", "Web Apps", "Back-End"],
     github: "https://github.com/yoonalexander/CraveAI",
-    demo: "https://www.alexyoon.com/craveai",
+    demo: "https://craveai.alexyoon.com/",
   },
   {
     name: "Spam vs. Ham",
