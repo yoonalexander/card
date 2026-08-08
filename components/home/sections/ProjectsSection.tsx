@@ -191,6 +191,7 @@ type LeavingProject = {
 };
 
 export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionProps) {
+  const [activeProjectName, setActiveProjectName] = useState<string | null>(null);
   const [showPortfolioMessage, setShowPortfolioMessage] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState<ProjectTopic[]>([]);
   const [displayedProjects, setDisplayedProjects] = useState(() => getFilteredProjects([]));
@@ -351,6 +352,9 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
     liquidAnimationTimers.current = [];
     previousProjectRects.current = previousRects;
     setSelectedTopics(nextTopics);
+    setActiveProjectName((currentProjectName) =>
+      currentProjectName && nextProjectNames.has(currentProjectName) ? currentProjectName : null,
+    );
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setLeavingProjects([]);
@@ -436,7 +440,10 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
           <div className="project-grid">
             {displayedProjects.map((project) => (
               <ProjectCard
+                active={activeProjectName === project.name}
                 key={project.name}
+                onActivate={() => setActiveProjectName(project.name)}
+                onDismiss={() => setActiveProjectName(null)}
                 onOpenProjectDemo={onOpenProjectDemo}
                 onPointerActivation={blurAfterPointerActivation}
                 onShowPortfolioMessage={() => setShowPortfolioMessage(true)}
@@ -455,8 +462,11 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
 }
 
 type ProjectCardProps = {
+  active?: boolean;
   className?: string;
   inertContent?: boolean;
+  onActivate?: () => void;
+  onDismiss?: () => void;
   onOpenProjectDemo?: (projectName: string) => void;
   onPointerActivation?: (event: PointerEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
   onShowPortfolioMessage?: () => void;
@@ -467,8 +477,11 @@ type ProjectCardProps = {
 };
 
 function ProjectCard({
+  active = false,
   className = "",
   inertContent = false,
+  onActivate,
+  onDismiss,
   onOpenProjectDemo,
   onPointerActivation,
   onShowPortfolioMessage,
@@ -478,10 +491,33 @@ function ProjectCard({
   style,
 }: ProjectCardProps) {
   return (
-    <article className={`project-card${className ? ` ${className}` : ""}`} ref={refCallback} style={style}>
-      <div className={`project-image-wrap${project.imageFit === "contain" ? " project-image-contain" : ""}`}>
+    <article
+      className={`project-card${active ? " project-card-touch-active" : ""}${className ? ` ${className}` : ""}`}
+      ref={refCallback}
+      style={style}
+    >
+      <div
+        className={`project-image-wrap${project.imageFit === "contain" ? " project-image-contain" : ""}`}
+        onClick={(event) => {
+          if (
+            inertContent ||
+            !onActivate ||
+            !window.matchMedia("(max-width: 720px), (hover: none), (pointer: coarse)").matches
+          )
+            return;
+          if ((event.target as HTMLElement).closest("a, button")) return;
+          onActivate();
+        }}
+      >
         <img src={project.image} alt={inertContent ? "" : `${project.name} preview`} />
-        <div className="project-overlay">
+        <div
+          className="project-overlay"
+          onClick={(event) => {
+            if (!active || !onDismiss || (event.target as HTMLElement).closest("a, button")) return;
+            event.stopPropagation();
+            onDismiss();
+          }}
+        >
           <p>{project.summary}</p>
           {renderProjectDemo(project, inertContent, showPortfolioMessage, onPointerActivation, onOpenProjectDemo, onShowPortfolioMessage)}
         </div>

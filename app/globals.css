@@ -1500,6 +1500,7 @@ html.dark .project-card {
   background: rgba(255, 255, 255, 0.78);
   backdrop-filter: blur(18px) saturate(1.24);
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.24s ease, backdrop-filter 0.24s ease;
 }
 
@@ -1511,6 +1512,7 @@ html.dark .project-card {
 .project-card:hover .project-overlay,
 .project-card:focus-within .project-overlay {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .project-overlay p {
@@ -2186,25 +2188,6 @@ html.dark .contact-cat-note {
     aspect-ratio: 16 / 10;
   }
 
-  .project-image-wrap > img {
-    opacity: 1;
-  }
-
-  .project-overlay {
-    position: relative;
-    inset: auto;
-    opacity: 1;
-    gap: 0.65rem;
-    padding: 0 1rem 1rem;
-    background: transparent;
-    backdrop-filter: none;
-  }
-
-  .project-card:hover .project-image-wrap > img,
-  .project-card:focus-within .project-image-wrap > img {
-    opacity: 1;
-  }
-
   .project-overlay p {
     font-size: 0.9rem;
     font-weight: 600;
@@ -2242,7 +2225,11 @@ html.dark .contact-cat-note {
   }
 }
 
-@media (hover: none), (pointer: coarse) {
+@media (max-width: 720px), (hover: none), (pointer: coarse) {
+  .project-image-wrap {
+    cursor: pointer;
+  }
+
   .project-card .project-image-wrap > img,
   .project-card:hover .project-image-wrap > img,
   .project-card:focus-within .project-image-wrap > img {
@@ -2250,15 +2237,28 @@ html.dark .contact-cat-note {
   }
 
   .project-card .project-overlay,
+  .project-card:hover .project-overlay,
+  .project-card:focus-within .project-overlay,
   body.dark .project-card .project-overlay,
   html.dark .project-card .project-overlay {
-    position: relative;
-    inset: auto;
-    opacity: 1;
+    opacity: 0;
+    pointer-events: none;
     gap: 0.65rem;
-    padding: 0 1rem 1rem;
-    background: transparent;
-    backdrop-filter: none;
+  }
+
+  .project-card-touch-active .project-image-wrap > img,
+  .project-card-touch-active:hover .project-image-wrap > img,
+  .project-card-touch-active:focus-within .project-image-wrap > img {
+    opacity: 0.22;
+  }
+
+  .project-card-touch-active .project-overlay,
+  .project-card-touch-active:hover .project-overlay,
+  .project-card-touch-active:focus-within .project-overlay,
+  body.dark .project-card-touch-active .project-overlay,
+  html.dark .project-card-touch-active .project-overlay {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .project-card .project-demo-button {
