@@ -16,6 +16,7 @@ const projects = [
       "Capstone voice-to-task system for CATTLElytics Inc. that turns natural speech into structured farm tasks using Whisper, an LLM pipeline, Flask APIs, and React Native.",
     stack: ["Python", "Flask", "React Native", "OpenAI Whisper", "REST API"],
     topics: ["AI/ML", "Mobile", "Back-End", "Course Work"],
+    github: "https://github.com/MithunPara/pocket-ai",
     demo: "/assets/videos/pocket-ai.mp4",
     demoLabel: "Demo video",
     demoMode: "window",
@@ -28,14 +29,16 @@ const projects = [
       "Interactive React and Three.js particle simulation that morphs up to 30,000 particles between text, images, drawings, 2D shapes, and 3D forms.",
     stack: ["React", "Three.js", "WebGL", "Particle Systems"],
     topics: ["Web Apps", "Graphics"],
+    github: "https://github.com/yoonalexander/Particle-Engine",
     demo: "https://www.alexyoon.com/particle-engine/",
   },
   {
     name: "CraveAI",
     year: "2025",
     image: "/assets/images/CraveAI.png",
-    summary: "RAG chatbot for mood- and craving-based restaurant recommendations.",
-    stack: ["Python", "LangChain", "OpenAI API", "FastAPI", "React"],
+    summary:
+      "Full-stack restaurant discovery app that uses OpenAI and Google Places to turn moods and cravings into personalized recommendations. Includes Supabase accounts, Google sign-in, and a FastAPI backend hosted on Render.",
+    stack: ["React", "FastAPI", "OpenAI API", "Google Places", "Supabase", "Google OAuth", "Render"],
     topics: ["AI/ML", "Web Apps", "Back-End"],
     github: "https://github.com/yoonalexander/CraveAI",
     demo: "https://craveai.alexyoon.com/",
@@ -52,11 +55,12 @@ const projects = [
     demoLabel: "See report",
   },
   {
-    name: "MAL Anime Score Predictions",
+    name: "MAL Anime Score Predictor",
     year: "2025",
     image: "/assets/images/anime-score-predictor.png",
-    summary: "ML ranking workflow with a React front end and API pipeline.",
-    stack: ["Python", "FastAPI", "scikit-learn", "React"],
+    summary:
+      "Predicts MyAnimeList scores from pre-air seasonal metadata using a leakage-safe regression pipeline, Jikan ingestion, and an AniList fallback. The Vercel-hosted React site runs without a production backend by loading generated prediction JSON with uncertainty bands, search, sorting, season filters, and CSV export.",
+    stack: ["Python", "scikit-learn", "LightGBM", "Jikan API", "AniList", "React", "Vite", "Vercel"],
     topics: ["AI/ML", "Web Apps", "Data/NLP", "Back-End"],
     github: "https://github.com/yoonalexander/mal-anime-score-predictor",
   },
@@ -524,10 +528,31 @@ function ProjectCard({
       </div>
 
       <div className="project-card-body">
-        <h3 className="project-name">{project.name}</h3>
-        <p className="project-meta">
-          {project.year} - {project.stack.join(", ")}
-        </p>
+        <div className="project-heading-row">
+          <h3 className="project-name">{project.name}</h3>
+          <time className="project-date">{project.year}</time>
+        </div>
+
+        <p className="project-summary">{project.summary}</p>
+
+        <div className="project-tag-row" aria-label={`${project.name} technologies`}>
+          <svg
+            className="project-tag-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M3.75 5.2v5.5c0 .7.28 1.37.78 1.87l7.05 7.05a2.75 2.75 0 0 0 3.89 0l4.15-4.15a2.75 2.75 0 0 0 0-3.89L12.57 4.53a2.65 2.65 0 0 0-1.87-.78H5.2c-.8 0-1.45.65-1.45 1.45Z"
+            />
+            <circle cx="8.15" cy="8.15" r="1.45" fill="currentColor" stroke="none" />
+          </svg>
+          <div className="project-tags">
+            {project.stack.map((technology) => (
+              <span key={technology}>{technology}</span>
+            ))}
+          </div>
+        </div>
       </div>
 
       {project.github ? (

@@ -426,7 +426,7 @@ export default function HomeHub() {
           ))}
         </div>
 
-        <footer className="site-footer">&copy; Alex Yoon 2026</footer>
+        <footer className="site-footer">&copy; Alex Yoon 2026, Toronto</footer>
       </div>
     </main>
   );

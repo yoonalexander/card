@@ -1424,7 +1424,9 @@ html.dark .links-note {
 
 .project-card {
   position: relative;
-  min-height: 340px;
+  display: flex;
+  min-height: 420px;
+  flex-direction: column;
   overflow: hidden;
   border-radius: 14px;
   background:
@@ -1535,27 +1537,118 @@ html.dark .project-card {
 .project-card-body {
   position: relative;
   z-index: 2;
-  padding: 0.95rem 3.25rem 1rem 1rem;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1rem 3.45rem 1rem 1rem;
+  background: #ffffff;
+}
+
+.project-heading-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
 }
 
 .project-name {
-  margin: 0 0 0.35rem;
+  min-width: 0;
+  margin: 0;
   font-family: "Quicksand", sans-serif;
-  font-size: 1rem;
+  font-size: 1.06rem;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 .project-summary {
-  margin: 0 0 0.5rem;
-  line-height: 1.45;
-  font-size: 0.95rem;
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0.7rem 0 1rem;
+  color: rgba(0, 0, 0, 0.68);
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  line-height: 1.42;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
 }
 
-.project-meta {
+.project-date {
+  flex: 0 0 auto;
   margin: 0;
-  line-height: 1.4;
-  font-size: 0.82rem;
-  opacity: 0.8;
+  color: rgba(0, 0, 0, 0.5);
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.project-tag-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin-top: auto;
+}
+
+.project-tag-icon {
+  flex: 0 0 auto;
+  width: 19px;
+  height: 19px;
+  margin-top: 0.12rem;
+  color: #545a73;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.project-tags {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 0.38rem;
+}
+
+.project-tags span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 23px;
+  padding: 0.18rem 0.48rem;
+  border: 1px solid rgba(75, 87, 118, 0.08);
+  border-radius: 5px;
+  background: rgba(214, 219, 231, 0.88);
+  color: #4f5d83;
+  font-family: "Quicksand", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.project-tags span:nth-child(5n + 1) {
+  background: rgba(255, 218, 225, 0.9);
+  color: #c34c62;
+}
+
+.project-tags span:nth-child(5n + 2) {
+  background: rgba(216, 225, 255, 0.92);
+  color: #536fd0;
+}
+
+.project-tags span:nth-child(5n + 3) {
+  background: rgba(218, 238, 218, 0.92);
+  color: #3c874b;
+}
+
+.project-tags span:nth-child(5n + 4) {
+  background: rgba(255, 228, 205, 0.94);
+  color: #c76632;
+}
+
+.project-tags span:nth-child(5n + 5) {
+  background: rgba(231, 218, 246, 0.94);
+  color: #7a58a2;
 }
 
 .project-demo-button {
@@ -1705,6 +1798,32 @@ html.dark .project-topic-button-active {
 body.dark .project-github-link,
 html.dark .project-github-link {
   background: rgba(255, 255, 255, 0.14);
+}
+
+body.dark .project-summary,
+html.dark .project-summary {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+body.dark .project-card-body,
+html.dark .project-card-body {
+  background: #303238;
+}
+
+body.dark .project-date,
+html.dark .project-date {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+body.dark .project-tag-icon,
+html.dark .project-tag-icon {
+  color: rgba(225, 231, 255, 0.76);
+}
+
+body.dark .project-tags span,
+html.dark .project-tags span {
+  border-color: rgba(255, 255, 255, 0.08);
+  filter: saturate(0.88) brightness(0.9);
 }
 
 .project-video-panel {
@@ -2201,11 +2320,16 @@ html.dark .contact-cat-note {
   }
 
   .project-card-body {
-    padding: 0.9rem 3.15rem 0.45rem 1rem;
+    padding: 0.95rem 3.25rem 1rem 1rem;
   }
 
-  .project-meta {
-    font-size: 0.9rem;
+  .project-summary {
+    margin-block: 0.65rem 0.9rem;
+    font-size: 0.86rem;
+  }
+
+  .project-date {
+    font-size: 0.76rem;
   }
 
   .project-video-panel {
