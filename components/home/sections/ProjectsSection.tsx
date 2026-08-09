@@ -48,7 +48,7 @@ const projects = [
     year: "2025",
     image: "/assets/images/Spam_vs_ham.png",
     summary:
-      "Explainable SMS spam and phishing detector using TF-IDF n-grams, handcrafted message cues, and a linear SVM.",
+      "Explainable SMS spam and phishing detector that combines TF-IDF n-grams with handcrafted message cues. A linear SVM classifies each message while supporting analysis of the signals behind its result.",
     stack: ["Python", "scikit-learn", "Linear SVM", "TF-IDF"],
     topics: ["AI/ML", "Data/NLP", "Course Work"],
     demo: "/assets/files/spam_vs_ham_report.pdf",
@@ -68,7 +68,8 @@ const projects = [
     name: "Portfolio Website",
     year: "2025",
     image: "/assets/images/Portfolio.png",
-    summary: "A personal portfolio built from a lightweight static site and migrated to Next.js.",
+    summary:
+      "Personal portfolio migrated from a lightweight static site to a component-based Next.js application. Features an interactive desktop-inspired interface, project filtering, responsive windows, and light and dark themes.",
     stack: ["Next.js", "React", "CSS"],
     topics: ["Web Apps"],
     github: "https://github.com/yoonalexander/card",
@@ -79,7 +80,8 @@ const projects = [
     name: "Cursora",
     year: "2026",
     image: "/assets/images/Cursora.png",
-    summary: "Neon browser sketch-and-dodge game built around cursor movement, quick quests, collectibles, and bullet avoidance.",
+    summary:
+      "Neon browser sketch-and-dodge game controlled through cursor movement. Players complete quick quests, collect items, and avoid escalating bullet patterns inside a fast, lightweight JavaScript game loop.",
     stack: ["HTML", "CSS", "JavaScript", "Game Loop"],
     topics: ["Games", "Web Apps"],
     demo: "https://alexyoon.com/cursora",
@@ -88,7 +90,8 @@ const projects = [
     name: "XY-Ball-Fight",
     year: "2025",
     image: "/assets/images/XY-Ball-Fight.png",
-    summary: "Vanilla JS arena game with simple AI and physics.",
+    summary:
+      "Vanilla JavaScript arena game where players battle computer-controlled opponents using movement and collision physics. Built with a custom browser game loop, responsive controls, and lightweight HTML and CSS rendering.",
     stack: ["HTML", "CSS", "JavaScript", "Game Loop"],
     topics: ["Games", "Web Apps"],
     github: "https://github.com/yoonalexander/XY-Ball-Fight",
@@ -98,7 +101,8 @@ const projects = [
     name: "Chess-Bot",
     year: "2025",
     image: "/assets/images/Chess.png",
-    summary: "Python chess agent built around minimax and alpha-beta pruning.",
+    summary:
+      "Python chess agent that searches possible moves with minimax and speeds up decision-making through alpha-beta pruning. It evaluates board states to choose competitive moves while avoiding unnecessary search branches.",
     stack: ["Python", "Minimax", "Alpha-Beta Pruning"],
     topics: ["AI/ML", "Games"],
     github: "https://github.com/yoonalexander/Chess-Bot",
@@ -107,7 +111,8 @@ const projects = [
     name: "Evodle",
     year: "2025",
     image: "/assets/images/Evodle.png",
-    summary: "Idle browser game driven by evolutionary systems.",
+    summary:
+      "Idle browser game where progression is driven by evolutionary systems and increasingly capable generations. Combines automated progression, game design, and evolutionary algorithms in a lightweight JavaScript experience.",
     stack: ["JavaScript", "Game Design", "Evolutionary Algorithms"],
     topics: ["Games", "Web Apps"],
     github: "https://github.com/yoonalexander/Evodle",
@@ -117,7 +122,8 @@ const projects = [
     name: "NLP Analysis Tool",
     year: "2024",
     image: "/assets/images/NLP.png",
-    summary: "Keyword extraction, sentiment, and classification tooling.",
+    summary:
+      "Python NLP toolkit for extracting keywords, measuring sentiment, and classifying text with NLTK and spaCy. It brings several common analysis workflows together for exploring and understanding unstructured language data.",
     stack: ["Python", "NLTK", "spaCy", "Text Analytics"],
     topics: ["AI/ML", "Data/NLP"],
     github: "https://github.com/yoonalexander/Natural-Language-Processing-Analysis-Tool",
@@ -126,7 +132,8 @@ const projects = [
     name: "VanklCommApp",
     year: "2024",
     image: "/assets/images/Vankl.png",
-    summary: "React Native chat experience backed by Firebase.",
+    summary:
+      "Cross-platform React Native messaging application backed by Firebase for real-time conversations. Explores mobile interface design, cloud-connected data flow, and responsive message updates in a course project.",
     stack: ["React Native", "Firebase", "Realtime Messaging"],
     topics: ["Mobile", "Back-End", "Course Work"],
     github: "https://github.com/yoonalexander/VanklCommApp",
@@ -135,7 +142,8 @@ const projects = [
     name: "ACMERun",
     year: "2023",
     image: "/assets/images/ACME-Run.png",
-    summary: "Android running tracker with Google Fit integrations.",
+    summary:
+      "Android fitness tracker built with Kotlin and Jetpack Compose to record running activity through Google Fit. Combines a native mobile interface, fitness-data integration, and workout-oriented tracking flows.",
     stack: ["Kotlin", "Jetpack Compose", "Android", "Google Fit"],
     topics: ["Mobile", "Course Work"],
     github: "https://github.com/yoonalexander/Fitness-Run-Application-ACMERun",
@@ -144,7 +152,8 @@ const projects = [
     name: "Island Generator",
     year: "2023",
     image: "/assets/images/Island.png",
-    summary: "Procedural terrain generation in Java.",
+    summary:
+      "Java terrain generator that uses Perlin noise to create varied procedural island landscapes. It translates layered noise values into repeatable maps for experimenting with world generation and game environments.",
     stack: ["Java", "Perlin Noise", "Procedural Generation"],
     topics: ["Games", "Graphics", "Course Work"],
     github: "https://github.com/yoonalexander/Island-Generator",
@@ -153,7 +162,8 @@ const projects = [
     name: "Mesh Terrain Generator",
     year: "2023",
     image: "/assets/images/Mesh.png",
-    summary: "3D terrain meshes with UV mapping support.",
+    summary:
+      "Java graphics project that converts heightmap data into renderable 3D terrain meshes. It generates geometry and UV mapping information for textured procedural landscapes and graphics experiments.",
     stack: ["Java", "3D Graphics", "Heightmaps"],
     topics: ["Graphics", "Course Work"],
     github: "https://github.com/yoonalexander/Mesh-Terrain-Generator",
@@ -162,7 +172,8 @@ const projects = [
     name: "Piraten-Karpen",
     year: "2023",
     image: "/assets/images/piraten karpen.png",
-    summary: "Unity pirate adventure with procedural maps.",
+    summary:
+      "Unity pirate adventure featuring a pixel-art presentation and procedurally generated maps. Built in C# to explore replayable layouts, game systems, and a cohesive pirate-themed experience.",
     stack: ["Unity", "C#", "Procedural Maps", "Pixel Art"],
     topics: ["Games", "Graphics", "Course Work"],
     github: "https://github.com/yoonalexander/Piraten-Karpen",
@@ -547,11 +558,7 @@ function ProjectCard({
             />
             <circle cx="8.15" cy="8.15" r="1.45" fill="currentColor" stroke="none" />
           </svg>
-          <div className="project-tags">
-            {project.stack.map((technology) => (
-              <span key={technology}>{technology}</span>
-            ))}
-          </div>
+          <ProjectTags projectName={project.name} technologies={project.stack} />
         </div>
       </div>
 
@@ -574,6 +581,60 @@ function ProjectCard({
         )
       ) : null}
     </article>
+  );
+}
+
+type ProjectTagsProps = {
+  projectName: string;
+  technologies: readonly string[];
+};
+
+function ProjectTags({ projectName, technologies }: ProjectTagsProps) {
+  const tagsRef = useRef<HTMLDivElement | null>(null);
+  const [visibleTagCount, setVisibleTagCount] = useState(technologies.length);
+
+  useLayoutEffect(() => {
+    const tagsElement = tagsRef.current;
+
+    if (!tagsElement) return;
+
+    const updateVisibleTags = () => {
+      const availableWidth = tagsElement.clientWidth;
+      const tagElements = Array.from(tagsElement.querySelectorAll<HTMLElement>("[data-project-tag]"));
+      const nextVisibleTagCount = tagElements.filter(
+        (tagElement) => tagElement.offsetLeft + tagElement.offsetWidth <= availableWidth + 0.5,
+      ).length;
+
+      setVisibleTagCount((currentCount) =>
+        currentCount === nextVisibleTagCount ? currentCount : nextVisibleTagCount,
+      );
+    };
+
+    const resizeObserver = new ResizeObserver(updateVisibleTags);
+    resizeObserver.observe(tagsElement);
+    Array.from(tagsElement.children).forEach((tagElement) => resizeObserver.observe(tagElement));
+    updateVisibleTags();
+
+    return () => resizeObserver.disconnect();
+  }, [technologies]);
+
+  return (
+    <div className="project-tags" ref={tagsRef} aria-label={`${projectName} technology tags`}>
+      {technologies.map((technology, index) => {
+        const isHidden = index >= visibleTagCount;
+
+        return (
+          <span
+            className={isHidden ? "project-tag-hidden" : undefined}
+            data-project-tag
+            aria-hidden={isHidden || undefined}
+            key={technology}
+          >
+            {technology}
+          </span>
+        );
+      })}
+    </div>
   );
 }
 

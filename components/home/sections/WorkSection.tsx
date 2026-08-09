@@ -54,7 +54,7 @@ export default function WorkSection() {
           <div>
             <div className="experience-header">
               <div>
-                <h4>Software Development Engineer Intern - Android</h4>
+                <h4>Software Development Engineer Intern</h4>
                 <p>Amazon · Vancouver, BC · May 2025 - Aug. 2025</p>
               </div>
             </div>

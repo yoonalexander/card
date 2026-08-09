@@ -52,7 +52,7 @@ const faqs = [
   },
   {
     question: "what's your favourite food?",
-    answer: "I'm biased but I don't careeee, Korean food is so good.",
+    answer: "I'm biased, Korean food is on top.",
   },
   {
     question: "why do you like matcha?",

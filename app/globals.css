@@ -1540,7 +1540,7 @@ html.dark .project-card {
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 1rem 3.45rem 1rem 1rem;
+  padding: 1rem;
   background: #ffffff;
 }
 
@@ -1562,20 +1562,21 @@ html.dark .project-card {
 
 .project-summary {
   display: -webkit-box;
+  height: calc(3 * 1.42em);
   overflow: hidden;
-  margin: 0.7rem 0 1rem;
+  margin: 0.7rem 0.3rem 1rem 0;
   color: rgba(0, 0, 0, 0.68);
   font-family: "Quicksand", sans-serif;
   font-size: 0.88rem;
   font-weight: 500;
   line-height: 1.42;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
 }
 
 .project-date {
   flex: 0 0 auto;
-  margin: 0;
+  margin: 0 0.3rem 0 0;
   color: rgba(0, 0, 0, 0.5);
   font-family: "Quicksand", sans-serif;
   font-size: 0.78rem;
@@ -1589,6 +1590,7 @@ html.dark .project-card {
   align-items: flex-start;
   gap: 0.55rem;
   margin-top: auto;
+  padding-right: 2.45rem;
 }
 
 .project-tag-icon {
@@ -1605,13 +1607,16 @@ html.dark .project-card {
 
 .project-tags {
   display: flex;
+  height: 23px;
   min-width: 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.38rem;
+  overflow: hidden;
 }
 
 .project-tags span {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   min-height: 23px;
   padding: 0.18rem 0.48rem;
@@ -1624,6 +1629,10 @@ html.dark .project-card {
   font-weight: 700;
   line-height: 1.1;
   white-space: nowrap;
+}
+
+.project-tags .project-tag-hidden {
+  visibility: hidden;
 }
 
 .project-tags span:nth-child(5n + 1) {
@@ -2320,7 +2329,7 @@ html.dark .contact-cat-note {
   }
 
   .project-card-body {
-    padding: 0.95rem 3.25rem 1rem 1rem;
+    padding: 0.95rem 1rem 1rem;
   }
 
   .project-summary {
