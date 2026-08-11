@@ -1,184 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
-
-const projectTopics = ["AI/ML", "Web Apps", "Mobile", "Games", "Graphics", "Data/NLP", "Back-End", "Course Work"] as const;
-
-type ProjectTopic = (typeof projectTopics)[number];
-
-const projects = [
-  {
-    name: "Pocket AI",
-    year: "2025 - 2026",
-    image: "/assets/images/Pocket AI Poster.png",
-    imageFit: "contain",
-    summary:
-      "Capstone voice-to-task system for CATTLElytics Inc. that turns natural speech into structured farm tasks using Whisper, an LLM pipeline, Flask APIs, and React Native.",
-    stack: ["Python", "Flask", "React Native", "OpenAI Whisper", "REST API"],
-    topics: ["AI/ML", "Mobile", "Back-End", "Course Work"],
-    github: "https://github.com/MithunPara/pocket-ai",
-    demo: "/assets/videos/pocket-ai.mp4",
-    demoLabel: "Demo video",
-    demoMode: "window",
-  },
-  {
-    name: "Particle Engine",
-    year: "2026",
-    image: "/assets/images/Particle-Engine.png",
-    summary:
-      "Interactive React and Three.js particle simulation that morphs up to 30,000 particles between text, images, drawings, 2D shapes, and 3D forms.",
-    stack: ["React", "Three.js", "WebGL", "Particle Systems"],
-    topics: ["Web Apps", "Graphics"],
-    github: "https://github.com/yoonalexander/Particle-Engine",
-    demo: "https://www.alexyoon.com/particle-engine/",
-  },
-  {
-    name: "CraveAI",
-    year: "2025",
-    image: "/assets/images/CraveAI.png",
-    summary:
-      "Full-stack restaurant discovery app that uses OpenAI and Google Places to turn moods and cravings into personalized recommendations. Includes Supabase accounts, Google sign-in, and a FastAPI backend hosted on Render.",
-    stack: ["React", "FastAPI", "OpenAI API", "Google Places", "Supabase", "Google OAuth", "Render"],
-    topics: ["AI/ML", "Web Apps", "Back-End"],
-    github: "https://github.com/yoonalexander/CraveAI",
-    demo: "https://craveai.alexyoon.com/",
-  },
-  {
-    name: "Spam vs. Ham",
-    year: "2025",
-    image: "/assets/images/Spam_vs_ham.png",
-    summary:
-      "Explainable SMS spam and phishing detector that combines TF-IDF n-grams with handcrafted message cues. A linear SVM classifies each message while supporting analysis of the signals behind its result.",
-    stack: ["Python", "scikit-learn", "Linear SVM", "TF-IDF"],
-    topics: ["AI/ML", "Data/NLP", "Course Work"],
-    demo: "/assets/files/spam_vs_ham_report.pdf",
-    demoLabel: "See report",
-  },
-  {
-    name: "MAL Anime Score Predictor",
-    year: "2025",
-    image: "/assets/images/anime-score-predictor.png",
-    summary:
-      "Predicts MyAnimeList scores from pre-air seasonal metadata using a leakage-safe regression pipeline, Jikan ingestion, and an AniList fallback. The Vercel-hosted React site runs without a production backend by loading generated prediction JSON with uncertainty bands, search, sorting, season filters, and CSV export.",
-    stack: ["Python", "scikit-learn", "LightGBM", "Jikan API", "AniList", "React", "Vite", "Vercel"],
-    topics: ["AI/ML", "Web Apps", "Data/NLP", "Back-End"],
-    github: "https://github.com/yoonalexander/mal-anime-score-predictor",
-  },
-  {
-    name: "Portfolio Website",
-    year: "2025",
-    image: "/assets/images/Portfolio.png",
-    summary:
-      "Personal portfolio migrated from a lightweight static site to a component-based Next.js application. Features an interactive desktop-inspired interface, project filtering, responsive windows, and light and dark themes.",
-    stack: ["Next.js", "React", "CSS"],
-    topics: ["Web Apps"],
-    github: "https://github.com/yoonalexander/card",
-    demo: "https://yoonalexander.github.io/card",
-    demoMode: "message",
-  },
-  {
-    name: "Cursora",
-    year: "2026",
-    image: "/assets/images/Cursora.png",
-    summary:
-      "Neon browser sketch-and-dodge game controlled through cursor movement. Players complete quick quests, collect items, and avoid escalating bullet patterns inside a fast, lightweight JavaScript game loop.",
-    stack: ["HTML", "CSS", "JavaScript", "Game Loop"],
-    topics: ["Games", "Web Apps"],
-    demo: "https://alexyoon.com/cursora",
-  },
-  {
-    name: "XY-Ball-Fight",
-    year: "2025",
-    image: "/assets/images/XY-Ball-Fight.png",
-    summary:
-      "Vanilla JavaScript arena game where players battle computer-controlled opponents using movement and collision physics. Built with a custom browser game loop, responsive controls, and lightweight HTML and CSS rendering.",
-    stack: ["HTML", "CSS", "JavaScript", "Game Loop"],
-    topics: ["Games", "Web Apps"],
-    github: "https://github.com/yoonalexander/XY-Ball-Fight",
-    demo: "https://www.alexyoon.com/xy-fight",
-  },
-  {
-    name: "Chess-Bot",
-    year: "2025",
-    image: "/assets/images/Chess.png",
-    summary:
-      "Python chess agent that searches possible moves with minimax and speeds up decision-making through alpha-beta pruning. It evaluates board states to choose competitive moves while avoiding unnecessary search branches.",
-    stack: ["Python", "Minimax", "Alpha-Beta Pruning"],
-    topics: ["AI/ML", "Games"],
-    github: "https://github.com/yoonalexander/Chess-Bot",
-  },
-  {
-    name: "Evodle",
-    year: "2025",
-    image: "/assets/images/Evodle.png",
-    summary:
-      "Idle browser game where progression is driven by evolutionary systems and increasingly capable generations. Combines automated progression, game design, and evolutionary algorithms in a lightweight JavaScript experience.",
-    stack: ["JavaScript", "Game Design", "Evolutionary Algorithms"],
-    topics: ["Games", "Web Apps"],
-    github: "https://github.com/yoonalexander/Evodle",
-    demo: "https://yoonalexander.github.io/Evodle",
-  },
-  {
-    name: "NLP Analysis Tool",
-    year: "2024",
-    image: "/assets/images/NLP.png",
-    summary:
-      "Python NLP toolkit for extracting keywords, measuring sentiment, and classifying text with NLTK and spaCy. It brings several common analysis workflows together for exploring and understanding unstructured language data.",
-    stack: ["Python", "NLTK", "spaCy", "Text Analytics"],
-    topics: ["AI/ML", "Data/NLP"],
-    github: "https://github.com/yoonalexander/Natural-Language-Processing-Analysis-Tool",
-  },
-  {
-    name: "VanklCommApp",
-    year: "2024",
-    image: "/assets/images/Vankl.png",
-    summary:
-      "Cross-platform React Native messaging application backed by Firebase for real-time conversations. Explores mobile interface design, cloud-connected data flow, and responsive message updates in a course project.",
-    stack: ["React Native", "Firebase", "Realtime Messaging"],
-    topics: ["Mobile", "Back-End", "Course Work"],
-    github: "https://github.com/yoonalexander/VanklCommApp",
-  },
-  {
-    name: "ACMERun",
-    year: "2023",
-    image: "/assets/images/ACME-Run.png",
-    summary:
-      "Android fitness tracker built with Kotlin and Jetpack Compose to record running activity through Google Fit. Combines a native mobile interface, fitness-data integration, and workout-oriented tracking flows.",
-    stack: ["Kotlin", "Jetpack Compose", "Android", "Google Fit"],
-    topics: ["Mobile", "Course Work"],
-    github: "https://github.com/yoonalexander/Fitness-Run-Application-ACMERun",
-  },
-  {
-    name: "Island Generator",
-    year: "2023",
-    image: "/assets/images/Island.png",
-    summary:
-      "Java terrain generator that uses Perlin noise to create varied procedural island landscapes. It translates layered noise values into repeatable maps for experimenting with world generation and game environments.",
-    stack: ["Java", "Perlin Noise", "Procedural Generation"],
-    topics: ["Games", "Graphics", "Course Work"],
-    github: "https://github.com/yoonalexander/Island-Generator",
-  },
-  {
-    name: "Mesh Terrain Generator",
-    year: "2023",
-    image: "/assets/images/Mesh.png",
-    summary:
-      "Java graphics project that converts heightmap data into renderable 3D terrain meshes. It generates geometry and UV mapping information for textured procedural landscapes and graphics experiments.",
-    stack: ["Java", "3D Graphics", "Heightmaps"],
-    topics: ["Graphics", "Course Work"],
-    github: "https://github.com/yoonalexander/Mesh-Terrain-Generator",
-  },
-  {
-    name: "Piraten-Karpen",
-    year: "2023",
-    image: "/assets/images/piraten karpen.png",
-    summary:
-      "Unity pirate adventure featuring a pixel-art presentation and procedurally generated maps. Built in C# to explore replayable layouts, game systems, and a cohesive pirate-themed experience.",
-    stack: ["Unity", "C#", "Procedural Maps", "Pixel Art"],
-    topics: ["Games", "Graphics", "Course Work"],
-    github: "https://github.com/yoonalexander/Piraten-Karpen",
-  },
-];
+import { projects, projectTopics, type Project, type ProjectId, type ProjectTopic } from "../projectData";
 
 function getFilteredProjects(selectedTopics: ProjectTopic[]) {
   return selectedTopics.length === 0
@@ -187,10 +10,8 @@ function getFilteredProjects(selectedTopics: ProjectTopic[]) {
 }
 
 type ProjectsSectionProps = {
-  onOpenProjectDemo?: (projectName: string) => void;
+  onOpenProjectDetails?: (projectId: ProjectId) => void;
 };
-
-type Project = (typeof projects)[number];
 
 type ProjectRect = {
   top: number;
@@ -205,8 +26,7 @@ type LeavingProject = {
   rect: ProjectRect;
 };
 
-export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionProps) {
-  const [activeProjectName, setActiveProjectName] = useState<string | null>(null);
+export default function ProjectsSection({ onOpenProjectDetails }: ProjectsSectionProps) {
   const [showPortfolioMessage, setShowPortfolioMessage] = useState(false);
   const [selectedTopics, setSelectedTopics] = useState<ProjectTopic[]>([]);
   const [displayedProjects, setDisplayedProjects] = useState(() => getFilteredProjects([]));
@@ -367,10 +187,6 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
     liquidAnimationTimers.current = [];
     previousProjectRects.current = previousRects;
     setSelectedTopics(nextTopics);
-    setActiveProjectName((currentProjectName) =>
-      currentProjectName && nextProjectNames.has(currentProjectName) ? currentProjectName : null,
-    );
-
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setLeavingProjects([]);
       setDisplayedProjects(nextProjects);
@@ -432,7 +248,7 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
         })}
       </div>
 
-      <p className="project-demo-tip">Some projects have live demos. Use the button shown on each available project.</p>
+      <p className="project-demo-tip">Click any project card to view its details.</p>
 
       <div className="project-results" ref={resultsRef} aria-live="polite">
         <div className="project-liquid-layer" aria-hidden="true">
@@ -455,11 +271,8 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
           <div className="project-grid">
             {displayedProjects.map((project) => (
               <ProjectCard
-                active={activeProjectName === project.name}
                 key={project.name}
-                onActivate={() => setActiveProjectName(project.name)}
-                onDismiss={() => setActiveProjectName(null)}
-                onOpenProjectDemo={onOpenProjectDemo}
+                onOpenProjectDetails={onOpenProjectDetails}
                 onPointerActivation={blurAfterPointerActivation}
                 onShowPortfolioMessage={() => setShowPortfolioMessage(true)}
                 project={project}
@@ -477,12 +290,9 @@ export default function ProjectsSection({ onOpenProjectDemo }: ProjectsSectionPr
 }
 
 type ProjectCardProps = {
-  active?: boolean;
   className?: string;
   inertContent?: boolean;
-  onActivate?: () => void;
-  onDismiss?: () => void;
-  onOpenProjectDemo?: (projectName: string) => void;
+  onOpenProjectDetails?: (projectId: ProjectId) => void;
   onPointerActivation?: (event: PointerEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
   onShowPortfolioMessage?: () => void;
   project: Project;
@@ -492,12 +302,9 @@ type ProjectCardProps = {
 };
 
 function ProjectCard({
-  active = false,
   className = "",
   inertContent = false,
-  onActivate,
-  onDismiss,
-  onOpenProjectDemo,
+  onOpenProjectDetails,
   onPointerActivation,
   onShowPortfolioMessage,
   project,
@@ -507,35 +314,12 @@ function ProjectCard({
 }: ProjectCardProps) {
   return (
     <article
-      className={`project-card${active ? " project-card-touch-active" : ""}${className ? ` ${className}` : ""}`}
+      className={`project-card${className ? ` ${className}` : ""}`}
       ref={refCallback}
       style={style}
     >
-      <div
-        className={`project-image-wrap${project.imageFit === "contain" ? " project-image-contain" : ""}`}
-        onClick={(event) => {
-          if (
-            inertContent ||
-            !onActivate ||
-            !window.matchMedia("(max-width: 720px), (hover: none), (pointer: coarse)").matches
-          )
-            return;
-          if ((event.target as HTMLElement).closest("a, button")) return;
-          onActivate();
-        }}
-      >
+      <div className={`project-image-wrap${project.imageFit === "contain" ? " project-image-contain" : ""}`}>
         <img src={project.image} alt={inertContent ? "" : `${project.name} preview`} />
-        <div
-          className="project-overlay"
-          onClick={(event) => {
-            if (!active || !onDismiss || (event.target as HTMLElement).closest("a, button")) return;
-            event.stopPropagation();
-            onDismiss();
-          }}
-        >
-          <p>{project.summary}</p>
-          {renderProjectDemo(project, inertContent, showPortfolioMessage, onPointerActivation, onOpenProjectDemo, onShowPortfolioMessage)}
-        </div>
       </div>
 
       <div className="project-card-body">
@@ -546,39 +330,61 @@ function ProjectCard({
 
         <p className="project-summary">{project.summary}</p>
 
-        <div className="project-tag-row" aria-label={`${project.name} technologies`}>
-          <svg
-            className="project-tag-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M3.75 5.2v5.5c0 .7.28 1.37.78 1.87l7.05 7.05a2.75 2.75 0 0 0 3.89 0l4.15-4.15a2.75 2.75 0 0 0 0-3.89L12.57 4.53a2.65 2.65 0 0 0-1.87-.78H5.2c-.8 0-1.45.65-1.45 1.45Z"
-            />
-            <circle cx="8.15" cy="8.15" r="1.45" fill="currentColor" stroke="none" />
-          </svg>
-          <ProjectTags projectName={project.name} technologies={project.stack} />
+        <div className="project-card-footer">
+          <div className="project-tag-row" aria-label={`${project.name} technologies`}>
+            <svg
+              className="project-tag-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M3.75 5.2v5.5c0 .7.28 1.37.78 1.87l7.05 7.05a2.75 2.75 0 0 0 3.89 0l4.15-4.15a2.75 2.75 0 0 0 0-3.89L12.57 4.53a2.65 2.65 0 0 0-1.87-.78H5.2c-.8 0-1.45.65-1.45 1.45Z"
+              />
+              <circle cx="8.15" cy="8.15" r="1.45" fill="currentColor" stroke="none" />
+            </svg>
+            <ProjectTags projectName={project.name} technologies={project.stack} />
+          </div>
+
+          <div className="project-card-actions" aria-label={`${project.name} actions`}>
+            {renderProjectDemoAction(
+              project,
+              inertContent,
+              showPortfolioMessage,
+              onPointerActivation,
+              onOpenProjectDetails,
+              onShowPortfolioMessage,
+            )}
+            {project.github ? (
+              inertContent ? (
+                <span className="project-github-link">
+                  <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
+                </span>
+              ) : (
+                <a
+                  className="project-github-link"
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onPointerUp={onPointerActivation}
+                  aria-label={`Open ${project.name} GitHub`}
+                >
+                  <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
+                </a>
+              )
+            ) : null}
+          </div>
         </div>
       </div>
 
-      {project.github ? (
-        inertContent ? (
-          <span className="project-github-link">
-            <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
-          </span>
-        ) : (
-          <a
-            className="project-github-link"
-            href={project.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            onPointerUp={onPointerActivation}
-            aria-label={`Open ${project.name} GitHub`}
-          >
-            <img src="/assets/icons/github-logo.png" alt="" aria-hidden="true" />
-          </a>
-        )
+      {!inertContent ? (
+        <button
+          className="project-card-details-hitbox"
+          type="button"
+          onPointerUp={onPointerActivation}
+          onClick={() => onOpenProjectDetails?.(project.id)}
+          aria-label={`View ${project.name} details`}
+        />
       ) : null}
     </article>
   );
@@ -638,32 +444,34 @@ function ProjectTags({ projectName, technologies }: ProjectTagsProps) {
   );
 }
 
-function renderProjectDemo(
+function renderProjectDemoAction(
   project: Project,
   inertContent: boolean,
   showPortfolioMessage?: boolean,
   onPointerActivation?: (event: PointerEvent<HTMLAnchorElement | HTMLButtonElement>) => void,
-  onOpenProjectDemo?: (projectName: string) => void,
+  onOpenProjectDetails?: (projectId: ProjectId) => void,
   onShowPortfolioMessage?: () => void,
 ) {
-  if (!project.demo) {
-    return <span>demo coming later</span>;
-  }
+  if (!project.demo) return null;
 
   if (inertContent) {
-    return <span className="project-demo-button project-demo-ghost-label">{project.demoLabel || "Live demo"}</span>;
+    return (
+      <span className="project-card-demo-button project-demo-ghost-label">
+        {project.demoMode === "window" ? "View demo" : project.demoLabel || "Demo"}
+      </span>
+    );
   }
 
   if (project.demoMode === "window") {
     return (
       <button
-        className="project-demo-button"
+        className="project-card-demo-button"
         type="button"
         onPointerUp={onPointerActivation}
-        onClick={() => onOpenProjectDemo?.(project.name)}
-        aria-label={`Open ${project.name} demo video`}
+        onClick={() => onOpenProjectDetails?.(project.id)}
+        aria-label={`View ${project.name} demo and details`}
       >
-        {project.demoLabel || "Demo"}
+        View demo
       </button>
     );
   }
@@ -671,27 +479,27 @@ function renderProjectDemo(
   if (project.demoMode === "message") {
     return (
       <button
-        className="project-demo-button project-demo-message-button"
+        className="project-card-demo-button project-demo-message-button"
         type="button"
         onPointerUp={onPointerActivation}
         onClick={onShowPortfolioMessage}
         aria-label="This portfolio project is the current website"
       >
-        {showPortfolioMessage ? "its this website silly :p" : project.demoLabel || "Live demo"}
+        {showPortfolioMessage ? "this website :p" : project.demoLabel || "Demo"}
       </button>
     );
   }
 
   return (
     <a
-      className="project-demo-button"
+      className="project-card-demo-button"
       href={project.demo}
       target="_blank"
       rel="noopener noreferrer"
       onPointerUp={onPointerActivation}
       aria-label={`Open ${project.name} ${project.demoLabel || "live demo"}`}
     >
-      {project.demoLabel || "Live demo"}
+      {project.demoLabel || "Demo"}
     </a>
   );
 }

@@ -3,6 +3,7 @@ import ContactSection from "./sections/ContactSection";
 import FAQSection from "./sections/FAQSection";
 import ProjectsSection from "./sections/ProjectsSection";
 import WorkSection from "./sections/WorkSection";
+import type { ProjectId } from "./projectData";
 
 export type SectionId = "about" | "work" | "projects" | "faq" | "contact";
 
@@ -20,14 +21,14 @@ export function getSectionTitle(sectionId: SectionId) {
 
 type SectionPanelProps = {
   sectionId: SectionId;
-  onOpenProjectDemo?: (projectName: string) => void;
+  onOpenProjectDetails?: (projectId: ProjectId) => void;
   onCatSecretClick?: () => void;
   onLogoSecretClick?: () => void;
 };
 
 export default function SectionPanel({
   sectionId,
-  onOpenProjectDemo,
+  onOpenProjectDetails,
   onCatSecretClick,
   onLogoSecretClick,
 }: SectionPanelProps) {
@@ -35,7 +36,7 @@ export default function SectionPanel({
     return <AboutSection onLogoSecretClick={onLogoSecretClick} />;
   }
   if (sectionId === "work") return <WorkSection />;
-  if (sectionId === "projects") return <ProjectsSection onOpenProjectDemo={onOpenProjectDemo} />;
+  if (sectionId === "projects") return <ProjectsSection onOpenProjectDetails={onOpenProjectDetails} />;
   if (sectionId === "faq") return <FAQSection />;
   return <ContactSection onCatSecretClick={onCatSecretClick} />;
 }
