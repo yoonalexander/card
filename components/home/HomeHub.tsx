@@ -53,6 +53,7 @@ const soundVolumes: Record<keyof typeof soundSources, number> = {
 const heroLinks = [
   { label: "LinkedIn", href: "https://www.linkedin.com/in/yoonalex/", icon: "/assets/icons/linkedin-logo.png" },
   { label: "GitHub", href: "https://github.com/yoonalexander", icon: "/assets/icons/github-logo.png" },
+  { label: "Email", href: "mailto:alexanderyoon02@gmail.com", icon: "/assets/icons/gmail-logo.png" },
   { label: "Resume", href: "/assets/files/Alexander_Yoon_Resume_SWE_2026.pdf", icon: "/assets/icons/work.svg", darkIcon: "/assets/icons/work-white.svg" },
 ] as const;
 
@@ -378,6 +379,28 @@ export default function HomeHub() {
             hi! <span>i&apos;m alex</span>
           </h1>
           <TypewriterText descriptors={heroDescriptors} staticText="software engineer" {...typewriterConfig} />
+          <p className="home-tagline">
+            I&apos;m currently looking for software engineering roles. Previously, I built backup
+            automation at{" "}
+            <a
+              className="tagline-company tagline-amazon"
+              href="https://www.amazon.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Amazon
+            </a>{" "}
+            and large-scale data pipelines at{" "}
+            <a
+              className="tagline-company tagline-cibc"
+              href="https://www.cibc.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CIBC
+            </a>
+            .
+          </p>
         </section>
 
         <SectionNav openSections={openSectionIds} onOpen={openSection} isDark={isDark} />
@@ -417,18 +440,20 @@ export default function HomeHub() {
 
       <div className="bottom-dock">
         <div className="hero-link-row" aria-label="Featured links">
-          {heroLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={link.label}
-            >
-              <img src={isDark && "darkIcon" in link ? link.darkIcon : link.icon} alt="" aria-hidden="true" />
-              <span>{link.label}</span>
-            </a>
-          ))}
+          {heroLinks.map((link) => {
+            const isMailto = link.href.startsWith("mailto:");
+            return (
+              <a
+                key={link.label}
+                href={link.href}
+                {...(!isMailto ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                aria-label={link.label}
+              >
+                <img src={isDark && "darkIcon" in link ? link.darkIcon : link.icon} alt="" aria-hidden="true" />
+                <span>{link.label}</span>
+              </a>
+            );
+          })}
         </div>
 
         <footer className="site-footer">&copy; Alex Yoon 2026, Toronto</footer>
