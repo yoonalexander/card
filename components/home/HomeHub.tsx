@@ -6,6 +6,8 @@ import SectionPanel, { getSectionTitle, type SectionId } from "./SectionPanel";
 import SectionWindow from "./SectionWindow";
 import StarField from "./StarField";
 import ProjectDetailsWindow from "./ProjectDetailsWindow";
+import FlowerCounter from "./FlowerCounter";
+import FlowerGraphic from "./FlowerGraphic";
 import { getProjectById, type ProjectId } from "./projectData";
 
 type OpenWindow = {
@@ -51,10 +53,30 @@ const soundVolumes: Record<keyof typeof soundSources, number> = {
 };
 
 const heroLinks = [
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/yoonalex/", icon: "/assets/icons/linkedin-logo.png" },
-  { label: "GitHub", href: "https://github.com/yoonalexander", icon: "/assets/icons/github-logo.png" },
-  { label: "Email", href: "mailto:alexanderyoon02@gmail.com", icon: "/assets/icons/gmail-logo.png" },
-  { label: "Resume", href: "/assets/files/Alexander_Yoon_Resume_SWE_2026.pdf", icon: "/assets/icons/work.svg", darkIcon: "/assets/icons/work-white.svg" },
+  {
+    label: "linkedin",
+    href: "https://www.linkedin.com/in/yoonalex/",
+    icon: "/assets/icons/linkedin-monochrome.svg",
+    monochrome: true,
+  },
+  {
+    label: "github",
+    href: "https://github.com/yoonalexander",
+    icon: "/assets/icons/github-logo.png",
+    darkIcon: "/assets/icons/github-white-icon.webp",
+  },
+  {
+    label: "email",
+    href: "mailto:alexanderyoon02@gmail.com",
+    icon: "/assets/icons/email-monochrome.svg",
+    monochrome: true,
+  },
+  {
+    label: "resume",
+    href: "/assets/files/Alexander_Yoon_Resume_SWE_2026.pdf",
+    icon: "/assets/icons/work.svg",
+    darkIcon: "/assets/icons/work-white.svg",
+  },
 ] as const;
 
 const heroDescriptors = [
@@ -65,8 +87,8 @@ const heroDescriptors = [
   "morning runner",
   "bug squashing",
   "game dev hobbyist",
-  "AI curious",
-  "ML passionate",
+  "ai curious",
+  "ml passionate",
   "manga reading",
   "anime bingeing",
   "foodie",
@@ -373,33 +395,31 @@ export default function HomeHub() {
         {isDark ? "🌙" : "☀️"}
       </button>
 
-      <div className="card">
+      <div className="card home-card">
         <section className="home-intro" aria-label="Home introduction">
           <h1>
             hi! <span>i&apos;m alex</span>
           </h1>
           <TypewriterText descriptors={heroDescriptors} staticText="software engineer" {...typewriterConfig} />
           <p className="home-tagline">
-            I&apos;m currently looking for software engineering roles. Previously, I built backup
-            automation at{" "}
+            prev @{" "}
             <a
               className="tagline-company tagline-amazon"
               href="https://www.amazon.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Amazon
+              amazon
             </a>{" "}
-            and large-scale data pipelines at{" "}
+            and{" "}
             <a
               className="tagline-company tagline-cibc"
               href="https://www.cibc.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              CIBC
+              cibc
             </a>
-            .
           </p>
         </section>
 
@@ -438,12 +458,15 @@ export default function HomeHub() {
 
       {isSecretFlowerVisible ? <SecretLily /> : null}
 
-      <div className="bottom-dock">
+      <footer className="home-footer">
+        <p className="site-footer">&copy; Alex Yoon 2026, Toronto</p>
+
         <div className="hero-link-row" aria-label="Featured links">
           {heroLinks.map((link) => {
             const isMailto = link.href.startsWith("mailto:");
             return (
               <a
+                className={"monochrome" in link && link.monochrome ? "hero-link-monochrome" : undefined}
                 key={link.label}
                 href={link.href}
                 {...(!isMailto ? { target: "_blank", rel: "noopener noreferrer" } : {})}
@@ -456,8 +479,8 @@ export default function HomeHub() {
           })}
         </div>
 
-        <footer className="site-footer">&copy; Alex Yoon 2026, Toronto</footer>
-      </div>
+        <FlowerCounter isDark={isDark} />
+      </footer>
     </main>
   );
 }
@@ -465,26 +488,7 @@ export default function HomeHub() {
 function SecretLily() {
   return (
     <a className="secret-lily" href="/bunny" aria-label="Follow the lily">
-      <span className="secret-lily-sparkles" aria-hidden="true">
-        ✦ · ✦
-      </span>
-      <svg viewBox="-34 -38 68 100" aria-hidden="true">
-        <path className="secret-lily-stem" d="M0 17 C-3 31 2 46-2 61" />
-        <path className="secret-lily-leaf" d="M-1 43 C-20 30-25 48-3 52Z" />
-        <g className="secret-lily-head">
-          {Array.from({ length: 6 }, (_, index) => (
-            <ellipse
-              key={index}
-              cx="0"
-              cy="-11"
-              rx="7"
-              ry="16"
-              transform={`rotate(${index * 60})`}
-            />
-          ))}
-          <circle cx="0" cy="0" r="6.5" />
-        </g>
-      </svg>
+      <FlowerGraphic />
     </a>
   );
 }

@@ -1,5 +1,9 @@
 # Alexander Yoon Portfolio
 
+## Shared flower counter
+
+The homepage flower counter uses [Abacus](https://github.com/jasonlovesdoggo/abacus) through the `/api/flowers` route. The shared counter lives at namespace `alexyoon.com` with key `flowers`; no local credentials are required.
+
 ## Vercel rewrites
 
 The `/craveai/:path*` rewrite in `vercel.json` proxies requests to the separate CraveAI Vercel deployment at `https://crave-ai-eight.vercel.app`.

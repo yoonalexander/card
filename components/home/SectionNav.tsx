@@ -31,7 +31,7 @@ export default function SectionNav({ openSections, onOpen, isDark }: SectionNavP
             alt=""
             aria-hidden="true"
           />
-          <span>{section.label}</span>
+          <span>{section.label.toLowerCase()}</span>
         </button>
       ))}
     </div>
