@@ -2768,7 +2768,7 @@ html.dark .contact-cat-note {
   }
 
   .btn-container .section-launcher {
-    width: calc((100% - 1rem) / 3);
+    width: calc((100% - 1.2rem) / 3);
     min-width: 0;
     min-height: 78px;
     gap: 0.35rem;
