@@ -324,7 +324,20 @@ function ProjectCard({
 
       <div className="project-card-body">
         <div className="project-heading-row">
-          <h3 className="project-name">{project.name}</h3>
+          <h3 className="project-name">
+            {project.name}
+            {project.onResume ? (
+              <span
+                className="project-resume-star"
+                role="img"
+                aria-label="On my resume"
+                tabIndex={inertContent ? -1 : 0}
+              >
+                <span aria-hidden="true">★</span>
+                <span className="project-resume-tooltip" aria-hidden="true">On my resume</span>
+              </span>
+            ) : null}
+          </h3>
           <time className="project-date">{project.year}</time>
         </div>
 

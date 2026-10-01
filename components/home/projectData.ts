@@ -31,6 +31,7 @@ export type Project = {
   id: ProjectId;
   name: string;
   year: string;
+  onResume?: boolean;
   image: string;
   imageFit?: "contain";
   summary: string;
@@ -46,9 +47,38 @@ export type Project = {
 
 export const projects: readonly Project[] = [
   {
+    id: "crave-ai",
+    name: "CraveAI",
+    year: "2025 - 2026",
+    onResume: true,
+    image: "/assets/images/CraveAI.png",
+    summary:
+      "Full-stack restaurant discovery app that uses OpenAI and Google Places to turn moods and cravings into personalized recommendations. Includes Supabase accounts, Google sign-in, and a FastAPI backend hosted on Render.",
+    stack: ["React", "FastAPI", "OpenAI API", "Google Places", "Supabase", "Google OAuth", "Render"],
+    topics: ["AI/ML", "Web Apps", "Back-End"],
+    details: {
+      context: "AI Restaurant Discovery",
+      overview:
+        "CraveAI is a conversational restaurant-discovery app that translates a user's mood, cravings, dietary needs, and location into practical nearby recommendations.",
+      highlights: [
+        "Guides users through a natural conversation instead of a rigid filter form.",
+        "Enriches recommendations with live restaurant and location data from Google Places.",
+        "Supports persistent Supabase accounts and sign-in with Google.",
+      ],
+      implementation: [
+        "A React client manages the chat, recommendation cards, maps, and authenticated account experience.",
+        "FastAPI and OpenAI coordinate conversational intent, recommendation reasoning, and structured responses.",
+        "Supabase provides authentication and user data while the backend is deployed on Render.",
+      ],
+    },
+    github: "https://github.com/yoonalexander/CraveAI",
+    demo: "https://craveai.alexyoon.com/",
+  },
+  {
     id: "pocket-ai",
     name: "Pocket AI",
     year: "2025 - 2026",
+    onResume: true,
     image: "/assets/images/Pocket AI Poster.png",
     imageFit: "contain",
     summary:
@@ -103,33 +133,6 @@ export const projects: readonly Project[] = [
     },
     github: "https://github.com/yoonalexander/Particle-Engine",
     demo: "https://www.alexyoon.com/particle-engine/",
-  },
-  {
-    id: "crave-ai",
-    name: "CraveAI",
-    year: "2025",
-    image: "/assets/images/CraveAI.png",
-    summary:
-      "Full-stack restaurant discovery app that uses OpenAI and Google Places to turn moods and cravings into personalized recommendations. Includes Supabase accounts, Google sign-in, and a FastAPI backend hosted on Render.",
-    stack: ["React", "FastAPI", "OpenAI API", "Google Places", "Supabase", "Google OAuth", "Render"],
-    topics: ["AI/ML", "Web Apps", "Back-End"],
-    details: {
-      context: "AI Restaurant Discovery",
-      overview:
-        "CraveAI is a conversational restaurant-discovery app that translates a user's mood, cravings, dietary needs, and location into practical nearby recommendations.",
-      highlights: [
-        "Guides users through a natural conversation instead of a rigid filter form.",
-        "Enriches recommendations with live restaurant and location data from Google Places.",
-        "Supports persistent Supabase accounts and sign-in with Google.",
-      ],
-      implementation: [
-        "A React client manages the chat, recommendation cards, maps, and authenticated account experience.",
-        "FastAPI and OpenAI coordinate conversational intent, recommendation reasoning, and structured responses.",
-        "Supabase provides authentication and user data while the backend is deployed on Render.",
-      ],
-    },
-    github: "https://github.com/yoonalexander/CraveAI",
-    demo: "https://craveai.alexyoon.com/",
   },
   {
     id: "spam-vs-ham",

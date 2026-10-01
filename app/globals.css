@@ -1803,6 +1803,45 @@ html.dark .project-card {
   line-height: 1.25;
 }
 
+.project-resume-star {
+  position: relative;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.35rem;
+  color: #facc15;
+  cursor: help;
+  vertical-align: baseline;
+}
+
+.project-resume-star:focus-visible {
+  outline: 2px solid #2d8ed6;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+.project-resume-tooltip {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 50%;
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  background: #20242b;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  white-space: nowrap;
+  pointer-events: none;
+  visibility: hidden;
+  transform: translateX(-50%);
+}
+
+.project-resume-star:hover .project-resume-tooltip,
+.project-resume-star:focus-visible .project-resume-tooltip {
+  visibility: visible;
+}
+
 .project-summary {
   display: -webkit-box;
   height: calc(3 * 1.42em);
