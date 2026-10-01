@@ -239,7 +239,7 @@ export const projects: readonly Project[] = [
         "The experience is deployed as a self-contained static web game.",
       ],
     },
-    demo: "https://alexyoon.com/cursora",
+    demo: "https://cursora.alexyoon.com",
   },
   {
     id: "xy-ball-fight",

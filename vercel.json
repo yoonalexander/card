@@ -2,8 +2,13 @@
   "redirects": [
     {
       "source": "/cursora",
-      "destination": "/cursora/index.html",
-      "permanent": false
+      "destination": "https://cursora.alexyoon.com",
+      "permanent": true
+    },
+    {
+      "source": "/cursora/:path*",
+      "destination": "https://cursora.alexyoon.com/:path*",
+      "permanent": true
     }
   ],
   "rewrites": [
@@ -34,18 +39,6 @@
     {
       "source": "/craveai/:path*",
       "destination": "https://crave-ai-eight.vercel.app/craveai/:path*"
-    },
-    {
-      "source": "/cursora",
-      "destination": "https://cursora-woad.vercel.app"
-    },
-    {
-      "source": "/cursora/",
-      "destination": "https://cursora-woad.vercel.app"
-    },
-    {
-      "source": "/cursora/:path*",
-      "destination": "https://cursora-woad.vercel.app/:path*"
     },
     {
       "source": "/particle-engine",
