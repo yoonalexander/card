@@ -5,7 +5,8 @@ import SectionNav from "./SectionNav";
 import SectionPanel, { getSectionTitle, type SectionId } from "./SectionPanel";
 import SectionWindow from "./SectionWindow";
 import StarField from "./StarField";
-import ProjectDetailsWindow from "./ProjectDetailsWindow";
+import ProjectDetailsWindow, { ProjectDetailsLinks } from "./ProjectDetailsWindow";
+import ProjectDemoWindow from "./ProjectDemoWindow";
 import FlowerCounter from "./FlowerCounter";
 import FlowerGraphic from "./FlowerGraphic";
 import { getProjectById, type ProjectId } from "./projectData";
@@ -19,7 +20,8 @@ type OpenWindow = {
 };
 
 type ProjectDetailsWindowId = `project-details:${ProjectId}`;
-type WindowId = SectionId | ProjectDetailsWindowId;
+type ProjectDemoWindowId = `project-demo:${ProjectId}`;
+type WindowId = SectionId | ProjectDetailsWindowId | ProjectDemoWindowId;
 
 const defaultPositions: Record<SectionId, { x: number; y: number }> = {
   about: { x: 96, y: 96 },
@@ -129,6 +131,17 @@ export default function HomeHub() {
   );
 
   useEffect(() => {
+    function keepProjectWindowsInView() {
+      setOpenWindows((currentWindows) => currentWindows.map((entry) =>
+        isSectionId(entry.id) ? entry : { ...entry, ...clampProjectPosition(entry.id, entry) },
+      ));
+    }
+
+    window.addEventListener("resize", keepProjectWindowsInView);
+    return () => window.removeEventListener("resize", keepProjectWindowsInView);
+  }, []);
+
+  useEffect(() => {
     const root = document.documentElement;
     const saved = window.localStorage.getItem("theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -169,7 +182,31 @@ export default function HomeHub() {
   }
 
   function openProjectDetails(projectId: ProjectId) {
-    openWindow(getProjectDetailsWindowId(projectId));
+    const project = getProjectById(projectId);
+    if (!project) return;
+
+    const detailsId = getProjectDetailsWindowId(projectId);
+    const demoId: ProjectDemoWindowId = `project-demo:${projectId}`;
+    const windowIds: WindowId[] = project.demoVideo ? [detailsId, demoId] : [detailsId];
+    const zIndexes = windowIds.map(() => nextZIndex());
+
+    setOpenWindows((currentWindows) => {
+      const projectWindowCount = currentWindows.filter((entry) => isProjectDetailsWindowId(entry.id)).length;
+      const positions = getProjectPositions(projectId, projectWindowCount);
+      const nextWindows = [...currentWindows];
+
+      windowIds.forEach((id, index) => {
+        const existingIndex = nextWindows.findIndex((entry) => entry.id === id);
+        if (existingIndex >= 0) {
+          nextWindows[existingIndex] = { ...nextWindows[existingIndex], z: zIndexes[index], isClosing: false };
+        } else {
+          const position = clampProjectPosition(id, savedPositions[id] ?? (index === 0 ? positions.details : positions.demo));
+          nextWindows.push({ id, ...position, z: zIndexes[index] });
+        }
+      });
+
+      return nextWindows;
+    });
   }
 
   function openWindow(windowId: WindowId) {
@@ -177,7 +214,7 @@ export default function HomeHub() {
     setOpenWindows((currentWindows) => {
       if (currentWindows.some((sectionWindow) => sectionWindow.id === windowId)) {
         return currentWindows.map((sectionWindow) =>
-          sectionWindow.id === windowId ? { ...sectionWindow, z: nextZ } : sectionWindow,
+          sectionWindow.id === windowId ? { ...sectionWindow, z: nextZ, isClosing: false } : sectionWindow,
         );
       }
 
@@ -428,12 +465,14 @@ export default function HomeHub() {
 
       {openWindows.map((sectionWindow) => {
         const project = getProjectFromWindowId(sectionWindow.id);
+        const isDemo = isProjectDemoWindowId(sectionWindow.id);
 
         return (
           <SectionWindow
             key={sectionWindow.id}
             title={getWindowTitle(sectionWindow.id)}
-            sectionId={project ? "project-details" : sectionWindow.id}
+            sectionId={project ? (isDemo ? `project-demo${project.demoVideoLayout === "portrait" ? "-portrait" : ""}` : "project-details") : sectionWindow.id}
+            headerActions={project && !isDemo ? <ProjectDetailsLinks project={project} /> : undefined}
             isClosing={sectionWindow.isClosing}
             position={{ x: sectionWindow.x, y: sectionWindow.y }}
             zIndex={sectionWindow.z}
@@ -450,7 +489,7 @@ export default function HomeHub() {
                 onLogoSecretClick={handleLogoSecretClick}
               />
             ) : project ? (
-              <ProjectDetailsWindow project={project} />
+              isDemo ? <ProjectDemoWindow project={project} /> : <ProjectDetailsWindow project={project} />
             ) : null}
           </SectionWindow>
         );
@@ -498,30 +537,71 @@ function getHoverSoundTarget(target: Element) {
 }
 
 function getInitialPosition(windowId: WindowId, projectWindowCount = 0) {
-  const isProjectWindow = isProjectDetailsWindowId(windowId);
-  const cascadeOffset = isProjectWindow ? (projectWindowCount % 6) * 22 : 0;
-  const fallback = isProjectWindow ? { x: 260, y: 96 } : defaultPositions[windowId];
+  const project = getProjectFromWindowId(windowId);
+  if (project) {
+    const positions = getProjectPositions(project.id, projectWindowCount);
+    return isProjectDemoWindowId(windowId) ? positions.demo : positions.details;
+  }
+  if (!isSectionId(windowId)) return { x: 16, y: 96 };
+  const fallback = defaultPositions[windowId];
 
   if (typeof window === "undefined") {
-    return { x: fallback.x + cascadeOffset, y: fallback.y + cascadeOffset };
+    return fallback;
   }
 
   const estimatedWidth = Math.min(
     window.innerWidth * 0.96,
-    isProjectWindow ? 980 : estimatedWindowWidths[windowId] ?? 520,
+    estimatedWindowWidths[windowId] ?? 520,
   );
   const preferredX =
-    windowId === "projects" || isProjectWindow
-      ? (window.innerWidth - estimatedWidth) / 2 + cascadeOffset
+    windowId === "projects"
+      ? (window.innerWidth - estimatedWidth) / 2
       : fallback.x;
 
   return {
     x: Math.min(Math.max(16, preferredX), Math.max(16, window.innerWidth - estimatedWidth - 16)),
-    y: Math.min(fallback.y + cascadeOffset, Math.max(72, window.innerHeight - 460)),
+    y: Math.min(fallback.y, Math.max(72, window.innerHeight - 460)),
+  };
+}
+
+function getProjectPositions(projectId: ProjectId, projectWindowCount: number) {
+  const project = getProjectById(projectId);
+  const viewportWidth = typeof window === "undefined" ? 1280 : window.innerWidth;
+  const viewportHeight = typeof window === "undefined" ? 900 : window.innerHeight;
+  const isMobile = viewportWidth <= 720;
+  const detailsWidth = Math.min(viewportWidth - (isMobile ? 48 : 32), 580);
+  const demoWidth = Math.min(viewportWidth * (isMobile ? 0.76 : 0.9), project?.demoVideoLayout === "portrait" ? 320 : 680);
+  const cascade = (projectWindowCount % 4) * 22;
+  const groupWidth = project?.demoVideo ? detailsWidth + demoWidth - 48 : detailsWidth;
+  const detailsX = Math.max(12, Math.min((viewportWidth - groupWidth) / 2 + cascade, viewportWidth - detailsWidth - 12));
+  const detailsY = isMobile ? 80 : Math.max(16, Math.min(96 + cascade, viewportHeight - 700));
+
+  return {
+    details: { x: detailsX, y: detailsY },
+    demo: {
+      x: Math.max(12, Math.min(detailsX + detailsWidth - 48, viewportWidth - demoWidth - 12)),
+      y: Math.min(detailsY + (isMobile ? 112 : 64), Math.max(16, viewportHeight - 240)),
+    },
+  };
+}
+
+function clampProjectPosition(windowId: WindowId, position: { x: number; y: number }) {
+  if (typeof window === "undefined") return position;
+  const project = getProjectFromWindowId(windowId);
+  if (!project) return position;
+  const isMobile = window.innerWidth <= 720;
+  const width = isProjectDemoWindowId(windowId)
+    ? Math.min(window.innerWidth * (isMobile ? 0.76 : 0.9), project.demoVideoLayout === "portrait" ? 320 : 680)
+    : Math.min(window.innerWidth - (isMobile ? 48 : 32), 580);
+
+  return {
+    x: Math.max(12, Math.min(position.x, window.innerWidth - width - 12)),
+    y: Math.max(12, Math.min(position.y, window.innerHeight - 120)),
   };
 }
 
 function getWindowTitle(windowId: WindowId) {
+  if (isProjectDemoWindowId(windowId)) return "Demo Video";
   if (isProjectDetailsWindowId(windowId)) {
     const project = getProjectFromWindowId(windowId);
     return project ? `${project.name} Details` : "Project Details";
@@ -531,7 +611,7 @@ function getWindowTitle(windowId: WindowId) {
 }
 
 function isSectionId(windowId: WindowId): windowId is SectionId {
-  return !isProjectDetailsWindowId(windowId);
+  return !isProjectDetailsWindowId(windowId) && !isProjectDemoWindowId(windowId);
 }
 
 function getProjectDetailsWindowId(projectId: ProjectId): ProjectDetailsWindowId {
@@ -542,9 +622,13 @@ function isProjectDetailsWindowId(windowId: WindowId): windowId is ProjectDetail
   return windowId.startsWith("project-details:");
 }
 
+function isProjectDemoWindowId(windowId: WindowId): windowId is ProjectDemoWindowId {
+  return windowId.startsWith("project-demo:");
+}
+
 function getProjectFromWindowId(windowId: WindowId) {
-  if (!isProjectDetailsWindowId(windowId)) return undefined;
-  return getProjectById(windowId.slice("project-details:".length));
+  if (isSectionId(windowId)) return undefined;
+  return getProjectById(windowId.slice(windowId.indexOf(":") + 1));
 }
 
 type TypewriterTextProps = {

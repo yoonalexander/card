@@ -17,6 +17,7 @@ type SectionWindowProps = {
   onClosed: () => void;
   onFocus: () => void;
   onMove: (position: Position) => void;
+  headerActions?: ReactNode;
   children: ReactNode;
 };
 
@@ -30,6 +31,7 @@ export default function SectionWindow({
   onClosed,
   onFocus,
   onMove,
+  headerActions,
   children,
 }: SectionWindowProps) {
   const dragOffset = useRef<Position>({ x: 0, y: 0 });
@@ -71,7 +73,7 @@ export default function SectionWindow({
 
   return (
     <section
-      className={`section-window${sectionId ? ` section-window-${sectionId}` : ""}${
+      className={`section-window${headerActions ? " section-window-with-actions" : ""}${sectionId ? ` section-window-${sectionId}` : ""}${
         isClosing ? " section-window-closing" : ""
       }`}
       ref={windowRef}
@@ -90,6 +92,11 @@ export default function SectionWindow({
         onPointerCancel={handlePointerUp}
       >
         <h2 className="section-window-title">{title}</h2>
+        {headerActions ? (
+          <div className="section-window-actions" onPointerDown={(event) => event.stopPropagation()}>
+            {headerActions}
+          </div>
+        ) : null}
         <button
           className="section-window-close"
           type="button"

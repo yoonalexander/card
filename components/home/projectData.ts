@@ -42,7 +42,8 @@ export type Project = {
   demo?: string;
   demoLabel?: string;
   demoMode?: "window" | "message";
-  detailVideo?: string;
+  demoVideo?: string;
+  demoVideoLayout?: "portrait";
 };
 
 export const projects: readonly Project[] = [
@@ -73,6 +74,7 @@ export const projects: readonly Project[] = [
     },
     github: "https://github.com/yoonalexander/CraveAI",
     demo: "https://craveai.alexyoon.com/",
+    demoVideo: "/assets/videos/craveai_demo_video.mp4",
   },
   {
     id: "pocket-ai",
@@ -105,7 +107,35 @@ export const projects: readonly Project[] = [
     demo: "/assets/videos/pocket-ai.mp4",
     demoLabel: "Demo video",
     demoMode: "window",
-    detailVideo: "/assets/videos/pocket-ai.mp4",
+    demoVideo: "/assets/videos/pocket-ai.mp4",
+    demoVideoLayout: "portrait",
+  },
+  {
+    id: "cursora",
+    name: "Cursora",
+    year: "2026",
+    image: "/assets/images/Cursora.png",
+    summary:
+      "Browser sketch-and-survive game where players draw timed prompts for a sketch recognizer while dodging bullets and collecting score orbs. Features a paper-and-ink sketchbook interface, live recognition feedback, and locally saved training sketches.",
+    stack: ["JavaScript", "HTML Canvas", "TensorFlow.js", "CSS"],
+    topics: ["Games", "Web Apps", "AI/ML"],
+    details: {
+      context: "Sketch Recognition Arcade Game",
+      overview:
+        "Cursora combines drawing recognition with bullet-hell survival: sketch the prompted object within 20 seconds while moving your cursor around hazards and collecting score orbs.",
+      highlights: [
+        "Pairs timed drawing prompts with escalating bullet patterns, score pickups, and completion streaks.",
+        "Shows live sketch guesses and target confidence in a paper-and-ink sketchbook interface.",
+        "Saves missed sketches on the device and lets players export them as training references.",
+        "Runs directly in the browser with no installation or account required.",
+      ],
+      implementation: [
+        "A custom JavaScript game loop coordinates cursor movement, hazards, collisions, prompt timing, and scoring while HTML Canvas captures drawing strokes.",
+        "A TensorFlow.js adapter supports browser model inference with a geometry-based recognizer as the fallback when model files are unavailable.",
+        "Shared stroke normalization and rasterization support both inference and a CNN training pipeline; the game deploys as a static site without a production backend.",
+      ],
+    },
+    demo: "https://cursora.alexyoon.com/",
   },
   {
     id: "particle-engine",
@@ -214,32 +244,6 @@ export const projects: readonly Project[] = [
     github: "https://github.com/yoonalexander/card",
     demo: "https://yoonalexander.github.io/card",
     demoMode: "message",
-  },
-  {
-    id: "cursora",
-    name: "Cursora",
-    year: "2026",
-    image: "/assets/images/Cursora.png",
-    summary:
-      "Neon browser sketch-and-dodge game controlled through cursor movement. Players complete quick quests, collect items, and avoid escalating bullet patterns inside a fast, lightweight JavaScript game loop.",
-    stack: ["HTML", "CSS", "JavaScript", "Game Loop"],
-    topics: ["Games", "Web Apps"],
-    details: {
-      context: "Browser Arcade Game",
-      overview:
-        "Cursora turns ordinary pointer movement into a neon arcade challenge built around drawing, collecting, and surviving increasingly busy hazards.",
-      highlights: [
-        "Uses the cursor itself as the player's primary movement and interaction mechanic.",
-        "Combines quick quests, collectible objectives, and bullet-avoidance encounters.",
-        "Runs directly in the browser with no installation or account required.",
-      ],
-      implementation: [
-        "A custom JavaScript game loop updates player movement, hazards, collisions, quests, and score state.",
-        "Canvas-style effects and CSS build the neon presentation around lightweight browser primitives.",
-        "The experience is deployed as a self-contained static web game.",
-      ],
-    },
-    demo: "https://cursora.alexyoon.com",
   },
   {
     id: "xy-ball-fight",

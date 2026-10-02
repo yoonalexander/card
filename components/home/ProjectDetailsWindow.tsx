@@ -7,50 +7,8 @@ type ProjectDetailsWindowProps = {
 };
 
 export default function ProjectDetailsWindow({ project }: ProjectDetailsWindowProps) {
-  const showDemoLink = Boolean(project.demo && !project.demoMode);
-
   return (
-    <div className={`project-detail-panel${project.detailVideo ? " project-detail-panel-video" : ""}`}>
-      <div className="project-detail-media-column">
-        {project.detailVideo ? (
-          <div className="project-phone-demo" aria-label={`${project.name} demo video`}>
-            <div className="project-phone-screen">
-              <video
-                className="project-video"
-                src={project.detailVideo}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                disablePictureInPicture
-                controlsList="nodownload nofullscreen noremoteplayback"
-                onContextMenu={(event) => event.preventDefault()}
-              />
-            </div>
-          </div>
-        ) : (
-          <div className={`project-detail-image${project.imageFit === "contain" ? " project-detail-image-contain" : ""}`}>
-            <img src={project.image} alt={`${project.name} project preview`} />
-          </div>
-        )}
-
-        {project.github || showDemoLink ? (
-          <div className="project-detail-links" aria-label={`${project.name} links`}>
-            {showDemoLink ? (
-              <a href={project.demo} target="_blank" rel="noopener noreferrer">
-                {project.demoLabel || "Open live demo"}
-              </a>
-            ) : null}
-            {project.github ? (
-              <a className="project-detail-link-secondary" href={project.github} target="_blank" rel="noopener noreferrer">
-                View on GitHub
-              </a>
-            ) : null}
-          </div>
-        ) : null}
-      </div>
-
+    <div className="project-detail-panel">
       <article className="project-detail-copy">
         <p className="project-video-kicker">
           {project.details.context} · {project.year}
@@ -82,6 +40,26 @@ export default function ProjectDetailsWindow({ project }: ProjectDetailsWindowPr
           ))}
         </div>
       </article>
+    </div>
+  );
+}
+
+export function ProjectDetailsLinks({ project }: ProjectDetailsWindowProps) {
+  const showDemoLink = Boolean(project.demo && !project.demoMode);
+  if (!project.github && !showDemoLink) return null;
+
+  return (
+    <div className="project-detail-links" aria-label={`${project.name} links`}>
+      {showDemoLink ? (
+        <a href={project.demo} target="_blank" rel="noopener noreferrer">
+          {project.demoLabel || "Open live demo"}
+        </a>
+      ) : null}
+      {project.github ? (
+        <a className="project-detail-link-secondary" href={project.github} target="_blank" rel="noopener noreferrer">
+          View on GitHub
+        </a>
+      ) : null}
     </div>
   );
 }
