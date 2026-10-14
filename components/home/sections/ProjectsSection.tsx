@@ -326,15 +326,15 @@ function ProjectCard({
         <div className="project-heading-row">
           <h3 className="project-name">
             {project.name}
-            {project.onResume ? (
+            {project.featured ? (
               <span
                 className="project-resume-star"
                 role="img"
-                aria-label="On my resume"
+                aria-label="Featured"
                 tabIndex={inertContent ? -1 : 0}
               >
                 <span aria-hidden="true">★</span>
-                <span className="project-resume-tooltip" aria-hidden="true">On my resume</span>
+                <span className="project-resume-tooltip" aria-hidden="true">Featured</span>
               </span>
             ) : null}
           </h3>

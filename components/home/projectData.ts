@@ -3,6 +3,13 @@ export const projectTopics = ["AI/ML", "Web Apps", "Mobile", "Games", "Graphics"
 export type ProjectTopic = (typeof projectTopics)[number];
 
 export type ProjectId =
+  | "wf-studio"
+  | "diana-yoon-budgeting"
+  | "hibipetto"
+  | "vitera"
+  | "mini-mining"
+  | "musicale"
+  | "comfyfitter"
   | "pocket-ai"
   | "particle-engine"
   | "crave-ai"
@@ -31,7 +38,7 @@ export type Project = {
   id: ProjectId;
   name: string;
   year: string;
-  onResume?: boolean;
+  featured?: boolean;
   image: string;
   imageFit?: "contain";
   summary: string;
@@ -51,7 +58,7 @@ export const projects: readonly Project[] = [
     id: "crave-ai",
     name: "CraveAI",
     year: "2025 - 2026",
-    onResume: true,
+    featured: true,
     image: "/assets/images/CraveAI.png",
     summary:
       "Full-stack restaurant discovery app that uses OpenAI and Google Places to turn moods and cravings into personalized recommendations. Includes Supabase accounts, Google sign-in, and a FastAPI backend hosted on Render.",
@@ -77,10 +84,167 @@ export const projects: readonly Project[] = [
     demoVideo: "/assets/videos/craveai_demo_video.mp4",
   },
   {
+    id: "hibipetto",
+    name: "Hibipetto",
+    year: "2026",
+    image: "/assets/images/Hibipetto.png",
+    summary:
+      "Habit tracker with pet companions, recurring goals, rewards, streaks, and grace hearts. Start as a guest, track daily progress, and optionally sign in for cloud synchronization.",
+    stack: ["React", "TypeScript", "Vite", "Supabase", "PostgreSQL", "IndexedDB"],
+    topics: ["Web Apps", "Back-End"],
+    details: {
+      context: "Pet Companion Habit Tracker",
+      overview:
+        "Hibipetto pairs everyday goals with a pet companion, progressive rewards, a wardrobe, and a coin economy. Guest-first tracking lets users build routines before choosing whether to create an account.",
+      highlights: [
+        "Supports recurring and temporary goals, tracked history, streaks, and a three-heart grace system.",
+        "Settles daily activity at 5 a.m. local time with explicit rules for missed days and rewards.",
+        "Offers optional cloud synchronization, data export/import, and validated AI-formatted task imports.",
+      ],
+      implementation: [
+        "React and TypeScript coordinate task state, pet progression, and a responsive, accessibility-aware interface.",
+        "Local persistence supports guests while Supabase provides authentication and protected account synchronization.",
+        "A larger pet-collection engine with transactional operations, IndexedDB receipts, and offline retries is tested in isolated preview; the full collection rollout is not yet enabled in production.",
+      ],
+    },
+    demo: "https://hibipetto.alexyoon.com/",
+  },
+  {
+    id: "wf-studio",
+    name: "Wave Function / WF-Studio",
+    year: "2026",
+    image: "/assets/images/Waveform_Studio.png",
+    summary:
+      "Browser music studio that turns mathematical equations into sound and live graphs. Compose multi-track arrangements, save projects locally, and export WAV, MIDI, or graph videos with audio.",
+    stack: ["TypeScript", "Web Audio API", "Canvas", "Web Workers", "mathjs", "IndexedDB"],
+    topics: ["Web Apps", "Graphics"],
+    details: {
+      context: "Mathematical Music Studio",
+      overview:
+        "Wave Function turns editable equations into music and synchronized visuals, mapping curves to pitch, volume, filters, panning, and musical events in a browser-based composition studio.",
+      highlights: [
+        "Combines live graph visualization, synthesizer presets, multiple tracks, and arrangement sections.",
+        "Saves projects locally and supports validated project imports.",
+        "Exports WAV audio, MIDI, project JSON, and graph videos with synchronized audio.",
+      ],
+      implementation: [
+        "A restricted mathjs AST interpreter evaluates allowlisted expressions with bounded execution.",
+        "The Web Audio API uses audio-clock scheduling while Web Workers sample graphs for Canvas rendering.",
+        "IndexedDB stores local autosaves, with KaTeX and CodeMirror supporting equation display and editing.",
+      ],
+    },
+    github: "https://github.com/yoonalexander/WF-Studio",
+    demo: "https://wfstudio.alexyoon.com/",
+  },
+  {
+    id: "vitera",
+    name: "Vitera",
+    year: "2026",
+    image: "/assets/images/Vitera.png",
+    imageFit: "contain",
+    summary:
+      "Offline-first nutrition desktop app for food, recipes, water, weight, and personal metrics. Stores data locally and offers optional local AI to turn food descriptions or photos into reviewable drafts.",
+    stack: ["Tauri", "Rust", "React", "TypeScript", "SQLite", "Ollama"],
+    topics: ["AI/ML"],
+    details: {
+      context: "Offline Nutrition Desktop App",
+      overview:
+        "Vitera is an offline-first desktop application for nutrition logging and personal metrics. Food records, recipes, saved meals, and body measurements stay in local SQLite storage, with optional AI-assisted entry running on the user's machine.",
+      highlights: [
+        "Tracks food, calories and macros, custom foods, recipes, water, weight, measurements, and trends.",
+        "Provides exports and validated backups and restores for local data.",
+        "Offers optional food entry from descriptions or photographs, with user review before saving.",
+      ],
+      implementation: [
+        "Tauri and Rust provide the desktop backend, with React and TypeScript for the interface and SQLite for persistence.",
+        "Local Ollama/Qwen inference extracts structured food drafts; Rust validation resolves nutrition from the food catalog instead of trusting model-generated calorie counts.",
+        "AI defaults off and requests stay on localhost, while transaction-backed persistence and validated imports protect saved data.",
+      ],
+    },
+    github: "https://github.com/yoonalexander/Vitera",
+  },
+  {
+    id: "comfyfitter",
+    name: "ComfyFitter (WIP)",
+    year: "2026",
+    image: "/assets/images/ComfyFitter.png",
+    summary:
+      "Work-in-progress local virtual try-on app that combines personal photos and garment references into outfit previews. Runs image generation on a local GPU through ComfyUI, with desktop-first development.",
+    stack: ["Python", "FastAPI", "React", "TypeScript", "ComfyUI", "Qwen Image Edit", "SQLite"],
+    topics: ["AI/ML", "Back-End"],
+    details: {
+      context: "Local AI Virtual Try-On · Work in Progress",
+      overview:
+        "ComfyFitter uses local GPU-powered image editing to create outfit previews from a personal photo and garment references. Users can compare, save, and download generated looks. Development focuses on the Windows desktop experience, with public web access deferred. Previews do not predict clothing size or physical fit.",
+      highlights: [
+        "Supports garment references and clothing categories for generated outfit previews.",
+        "Lets users view, compare, save, and download generated looks.",
+        "Uses a Windows launcher to start or reuse local services and GPU inference.",
+      ],
+      implementation: [
+        "FastAPI and React coordinate the interface and local ComfyUI workflows using Qwen Image Edit.",
+        "The backend manages durable asynchronous generation jobs, input image validation, ownership, quotas, and restart recovery.",
+        "Category-based internal evaluation checks garment transfer and image consistency during ongoing workflow refinement.",
+      ],
+    },
+    github: "https://github.com/yoonalexander/ComfyFitter",
+  },
+  {
+    id: "diana-yoon-budgeting",
+    name: "Diana Yoon Budget Website",
+    year: "2026",
+    image: "/assets/images/Diana_Yoon_Budget_Website.png",
+    summary:
+      "Participatory budgeting prototype with fictional sample projects and funding data. Demonstrates resident proposals, phased review, administrator moderation, and opt-in notifications.",
+    stack: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "Resend"],
+    topics: ["Web Apps", "Back-End"],
+    details: {
+      context: "Civic Participatory Budgeting Prototype",
+      overview:
+        "An interactive demonstration of a proposed participatory budgeting initiative for Diana Yoon. Campaign examples, projects, budgets, and results are fictional sample data; the prototype does not represent an active civic funding program.",
+      highlights: [
+        "Supports resident proposal submission, public project information, and phased review workflows.",
+        "Provides administrator moderation, event publishing, and opt-in notifications.",
+        "Demonstrates funding stages and project approval using fictional sample content.",
+      ],
+      implementation: [
+        "Next.js, React, and TypeScript provide the resident-facing and administrator interfaces.",
+        "PostgreSQL constraints, transactions, and row-level security protect roles, approvals, and phase progression.",
+        "A database-backed notification outbox coordinates email subscriptions and retries, with database, browser, and accessibility checks.",
+      ],
+    },
+    demo: "https://budget.voteyoon.ca/",
+  },
+  {
+    id: "mini-mining",
+    name: "Mini-Mining (WIP)",
+    year: "2026",
+    image: "/assets/images/Mini_Mining.png",
+    imageFit: "contain",
+    summary:
+      "Work-in-progress desktop idle mining game with an autonomous miner, cave exploration, resource discovery, crafting, and upgrades. Designed as a companion that can run while you work.",
+    stack: ["Godot 4", "GDScript", "Procedural Generation", "Pixel Art", "GUT"],
+    topics: ["Games", "Graphics"],
+    details: {
+      context: "Idle Mining Game · Work in Progress",
+      overview:
+        "Mini-Mining is a desktop idle/incremental game built around an autonomous miner, generated caves, resource discovery, and long-term progression. Core gameplay milestones are implemented, while later biome and content expansion and the full release remain in progress.",
+      highlights: [
+        "Combines autonomous exploration with active mining, processing, and pickaxe-forging minigames.",
+        "Includes resource rarity and grades, inventory, sales, upgrades, catalog progression, and rebirth.",
+        "Implements cave generation and world navigation with persistent save slots.",
+      ],
+      implementation: [
+        "Godot 4 and GDScript separate simulation, encounters, economy, progression, and UI into scene and domain modules.",
+        "Scene signals coordinate gameplay systems, with data-driven content and deterministic scoring and state transitions.",
+        "Custom save persistence and GUT unit/integration tests support ongoing development.",
+      ],
+    },
+  },
+  {
     id: "pocket-ai",
     name: "Pocket AI",
     year: "2025 - 2026",
-    onResume: true,
     image: "/assets/images/Pocket AI Poster.png",
     imageFit: "contain",
     summary:
@@ -136,6 +300,33 @@ export const projects: readonly Project[] = [
       ],
     },
     demo: "https://cursora.alexyoon.com/",
+  },
+  {
+    id: "musicale",
+    name: "Musicale (WIP)",
+    year: "2025 - 2026",
+    image: "/assets/images/Musicale.png",
+    summary:
+      "Work-in-progress daily music voting platform: listen to two songs, cast a daily vote, and explore a global Elo leaderboard. Includes profiles, voting history, streaks, and archived matchups.",
+    stack: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "Playwright"],
+    topics: ["Web Apps", "Back-End"],
+    details: {
+      context: "Daily Music Voting Platform · Work in Progress",
+      overview:
+        "Musicale presents a daily global song matchup with official listening links, one vote per user per UTC day, and an Elo-ranked song leaderboard. The public site is available while production email and hosted end-to-end verification remain release gates.",
+      highlights: [
+        "Offers profiles, voting history, streaks, search and filters, and archived daily matchups.",
+        "Includes an administrator console for music catalog editing and matchup scheduling.",
+        "Records rating events to support auditable leaderboard updates and ranking recovery.",
+      ],
+      implementation: [
+        "Next.js, React, and TypeScript provide the application, with Supabase authentication and PostgreSQL persistence.",
+        "An atomic PostgreSQL voting function validates eligibility, prevents duplicate votes, and updates both songs' Elo ratings and user streaks together.",
+        "Row-level security, request limits, atomic imports, selective cache invalidation, and database/browser tests protect shared state.",
+      ],
+    },
+    github: "https://github.com/yoonalexander/musicale",
+    demo: "https://musicale.alexyoon.com/",
   },
   {
     id: "particle-engine",
