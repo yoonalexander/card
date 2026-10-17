@@ -75,7 +75,7 @@ const heroLinks = [
   },
   {
     label: "resume",
-    href: "/assets/files/Alexander_Yoon_Resume_SWE_2026.pdf",
+    href: "/assets/files/AY_Resume_SWE_2026.pdf",
     icon: "/assets/icons/work.svg",
     darkIcon: "/assets/icons/work-white.svg",
   },
