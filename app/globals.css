@@ -2292,7 +2292,7 @@ html.dark .project-card-demo-button:focus-visible {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.4rem;
-  padding: 0.65rem;
+  padding: 0.4rem;
   border-bottom: 1px solid #c4d4df;
   background: #e8eff5;
   font-family: "Quicksand", sans-serif;
@@ -2312,34 +2312,35 @@ html.dark .project-card-demo-button:focus-visible {
 .concept-demo-modes button[aria-pressed="true"] { border-color: #86aac5; background: #fff; color: #195f95; }
 .concept-demo-modes button:focus-visible { outline: 2px solid #247bc0; outline-offset: 2px; }
 .project-demo-loading { padding: 1rem; font-family: "Quicksand", sans-serif; }
+.ncm-replay { gap: 0.5rem; padding: 0.75rem; }
 .ncm-replay-phases { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.35rem; padding: 0; margin: 0; list-style: none; }
 .ncm-replay-phases button { width: 100%; min-height: 32px; padding: 0.3rem; font-size: 0.7rem; }
 .ncm-replay-phases button[aria-pressed="true"] { border-color: #247bc0; background: #e0eef9; color: #195f95; }
 .ncm-replay td.ncm-replay-changed { background: #e0f0fa; color: #195f95; }
 .ncm-replay td.ncm-replay-conflict { background: #fbe8ea; color: #a02b38; }
 .ncm-replay-verified .sudoku-live-board-frame { border-color: #62ac92; }
-.ncm-replay-verified td.ncm-replay-changed { background: #e2f4ed; color: #176147; }
-.ncm-replay-grid { animation: ncm-whole-grid-reveal 450ms ease-out; }
-.ncm-replay-explanation { gap: 0.5rem; font-size: 0.79rem; }
-.ncm-replay-explanation h4 { font-size: 1rem; }
+.ncm-grid-verified td.ncm-replay-changed { background: #e2f4ed; color: #176147; }
+.ncm-board-stack { display: grid; isolation: isolate; }
+.ncm-board-stack > table { grid-area: 1 / 1; }
+.ncm-grid-outgoing { z-index: 1; pointer-events: none; animation: ncm-grid-crossfade var(--ncm-crossfade) cubic-bezier(0.4, 0, 0.2, 1) both; }
+.ncm-replay .sudoku-demo-board-wrap { width: min(100%, 280px); }
+.ncm-replay-status { min-height: 1.3em; margin: 0; text-align: center; }
+.ncm-replay .sudoku-demo-controls { justify-content: center; }
+.ncm-replay .sudoku-demo-controls button { min-width: 88px; }
+.ncm-replay-disclosure { text-align: center; }
+.ncm-replay .sudoku-demo-evidence p { color: var(--sudoku-muted); line-height: 1.6; }
+.ncm-replay-changed-key { background: #e0f0fa; }
 .ncm-replay .sudoku-demo-status { font-size: 0.75rem; }
 .ncm-replay .ncm-replay-rejected { color: #a02b38; }
 .ncm-replay-verified .sudoku-demo-status { color: #176147; }
 .ncm-replay .sudoku-demo-legend { gap: 0.3rem 0.6rem; font-size: 0.65rem; }
-.ncm-replay-warning, .ncm-replay-method-note { padding-top: 0.5rem; border-top: 1px solid var(--sudoku-line); color: var(--sudoku-muted); font-size: 0.7rem; line-height: 1.5; }
-.ncm-replay-checks { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 0; padding-top: 0.6rem; border-top: 1px solid var(--sudoku-line); }
-.ncm-replay-checks div { display: grid; gap: 0.15rem; }
-.ncm-replay-checks dt { color: var(--sudoku-muted); font-size: 0.65rem; }
-.ncm-replay-checks dd { margin: 0; font: 700 1rem ui-monospace, monospace; }
-.ncm-replay-finding { margin: 0; padding: 0.6rem 0.7rem; border-left: 3px solid #7e91a1; background: #e8eff5; color: #3d5365; font-size: 0.72rem; line-height: 1.5; }
 :is(body.dark, html.dark) .concept-demo-modes { border-color: #52677a; background: #17232e; }
 :is(body.dark, html.dark) .concept-demo-modes button { color: #bdcedc; }
 :is(body.dark, html.dark) .concept-demo-modes button[aria-pressed="true"] { border-color: #789ab5; background: #273b4c; color: #d5eaff; }
-:is(body.dark, html.dark) .ncm-replay-finding { background: #273b4c; color: #d5e2eb; }
 :is(body.dark, html.dark) .ncm-replay .ncm-replay-rejected { color: #ffadb5; }
 :is(body.dark, html.dark) .ncm-replay-verified .sudoku-demo-status { color: #9ee0c5; }
-@keyframes ncm-whole-grid-reveal { from { opacity: 0.25; transform: scale(0.985); } to { opacity: 1; transform: scale(1); } }
-@media (prefers-reduced-motion: reduce) { .ncm-replay-grid { animation: none; } }
+@keyframes ncm-grid-crossfade { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ncm-grid-outgoing { display: none; animation: none; } }
 
 .sudoku-demo-heading :is(h3, p),
 .sudoku-demo-explanation :is(h4, p) {
@@ -2631,7 +2632,6 @@ html.dark .project-card-demo-button:focus-visible {
   .concept-demo-modes { gap: 0.2rem; padding: 0.4rem; }
   .concept-demo-modes button { font-size: 0.68rem; }
   .ncm-replay .sudoku-demo-board-wrap { width: min(100%, 240px); }
-  .ncm-replay .sudoku-live-header p { display: none; }
 }
 
 .project-detail-links {

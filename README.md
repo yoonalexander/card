@@ -19,7 +19,9 @@ The primary Concept Firewall demo is a **recorded NCM research replay**. NCM pre
 positions in parallel within coarse-to-fine latent levels; decoded states cover the
 whole board. The replay displays only four retained snapshots: the puzzle, the
 level-6 cumulative-prefix decode, the original final output, and one selected retry
-outcome. Whole-grid transitions show those snapshots together. Missing intermediate
+outcome. A 650 ms whole-grid crossfade blends each pair of saved snapshots without
+zooming or staggering cells. The board, snapshot controls and outcome remain visible;
+explanations and diagnostic counts sit inside "About this replay." Missing intermediate
 levels and retry trajectories are not fabricated, and playback is not live inference
 or a latency measurement.
 

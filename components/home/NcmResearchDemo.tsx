@@ -1,11 +1,52 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import evidence from "../../public/assets/projects/concept-firewall/ncm-replay.json";
 import { inspectReplayBoard, replayBoard, type RetryMethod } from "./ncmReplay";
 
 const phases = ["Input", "Level 6", "Final output", "Retry"];
 const caseLabels = ["Both recover", "Restart only", "Prefix only", "Neither recovers"];
+const CROSSFADE_MS = 650;
+
+type BoardSnapshot = { puzzle: string; board: string; previous: string; phase: number };
+
+function SnapshotGrid({ snapshot, outgoing = false }: { snapshot: BoardSnapshot; outgoing?: boolean }) {
+  const { puzzle, board, previous, phase } = snapshot;
+  const inspection = inspectReplayBoard(puzzle, board);
+  return <table className={`sudoku-demo-board${outgoing ? " ncm-grid-outgoing" : ""}${phase > 1 && inspection.valid ? " ncm-grid-verified" : ""}`}
+    aria-label={outgoing ? undefined : "Recorded NCM board"} aria-hidden={outgoing || undefined}>
+    <tbody>{Array.from({ length: 9 }, (_, row) => <tr key={row}>{Array.from({ length: 9 }, (_, column) => {
+      const index = row * 9 + column;
+      const given = puzzle[index] !== "0";
+      const conflict = phase > 0 && inspection.conflictCells.has(index);
+      const changed = phase > 0 && board[index] !== previous[index];
+      const classes = ["sudoku-demo-cell", given ? "sudoku-demo-cell-given" : "",
+        changed ? "ncm-replay-changed" : "", conflict ? "ncm-replay-conflict" : ""].filter(Boolean).join(" ");
+      return <td key={column} className={classes} data-value={board[index]}
+        aria-label={`Row ${row + 1}, column ${column + 1}: ${board[index] === "0" ? "empty" : board[index]}${given ? `; original clue ${puzzle[index]}` : ""}${conflict ? "; constraint violation" : ""}`}>
+        <span aria-hidden="true">{board[index] === "0" ? "" : board[index]}</span>
+      </td>;
+    })}</tr>)}</tbody>
+  </table>;
+}
+
+// Blend two real whole-grid snapshots together; never invent intermediate digits.
+function SnapshotBoard({ snapshot, snapshotKey }: { snapshot: BoardSnapshot; snapshotKey: string }) {
+  const last = useRef({ snapshot, key: snapshotKey });
+  const [outgoing, setOutgoing] = useState<{ snapshot: BoardSnapshot; key: string } | null>(null);
+  useLayoutEffect(() => {
+    if (last.current.key === snapshotKey) return;
+    setOutgoing(last.current);
+    last.current = { snapshot, key: snapshotKey };
+    const timer = window.setTimeout(() => setOutgoing(null), CROSSFADE_MS);
+    return () => window.clearTimeout(timer);
+  }, [snapshot, snapshotKey]);
+
+  return <div className="sudoku-live-board-frame ncm-board-stack" style={{ "--ncm-crossfade": `${CROSSFADE_MS}ms` } as CSSProperties}>
+    <SnapshotGrid snapshot={snapshot} />
+    {outgoing ? <SnapshotGrid key={outgoing.key} snapshot={outgoing.snapshot} outgoing /> : null}
+  </div>;
+}
 
 export default function NcmResearchDemo() {
   const [caseIndex, setCaseIndex] = useState(0);
@@ -15,6 +56,7 @@ export default function NcmResearchDemo() {
   const example = evidence.cases[caseIndex];
   const board = replayBoard(example, phase, method);
   const previous = replayBoard(example, Math.max(0, phase - 1), method);
+  const snapshot = useMemo(() => ({ puzzle: example.puzzle, board, previous, phase }), [example.puzzle, board, previous, phase]);
   const inspection = inspectReplayBoard(example.puzzle, board);
   const clueCount = [...example.puzzle].filter(n => n !== "0").length;
 
@@ -23,35 +65,22 @@ export default function NcmResearchDemo() {
     const timer = window.setTimeout(() => {
       if (phase === 3) setPlaying(false);
       else setPhase(current => current + 1);
-    }, 2200);
+    }, 2600);
     return () => window.clearTimeout(timer);
   }, [playing, phase]);
 
   function showPhase(next: number) { setPlaying(false); setPhase(next); }
 
-  const status = phase === 0 ? `${clueCount} original clues` : phase === 1 ? "Intermediate whole-grid decode" :
-    inspection.valid ? "✓ Verified completion" : phase === 2 ? "Original output rejected" : "Retry also rejected";
-  const title = phase === 0 ? "The puzzle goes into NCM" : phase === 1 ? "Refine the whole grid, in parallel" :
-    phase === 2 ? "Check the final generated board" : method === "restart" ? "Generate a new complete hierarchy" : "Keep the prefix, resample the rest";
-  const description = phase === 0 ? "NCM predicts a hierarchy of latent codes, coarse to fine. Positions within each level are predicted in parallel; it does not fill Sudoku cells through backtracking." :
-    phase === 1 ? "This is the saved decode of the cumulative level-6 prefix. It covers the whole board and can still violate Sudoku constraints. Later levels refine it; this is not the final answer." :
-    phase === 2 ? "The original final NCM output is a complete proposed board. Exact constraint checks reject this recorded attempt. Filled cells alone do not make a correct answer." :
-    method === "restart" ? "This saved full stochastic restart generates from the original input again, at temperature 0.5. The complete returned board is checked before acceptance." :
-    "This saved retry forces the original level-6 code prefix and samples later levels at temperature 0.5. It recomputes attention; it is not cached resumption or cell-by-cell repair.";
+  const status = phase === 0 ? `${clueCount} original clues` : phase === 1 ? "Whole-grid refinement" :
+    inspection.valid ? "✓ Verified completion" : phase === 2 ? "Output rejected · constraint violations" : "Retry rejected · constraint violations";
 
   return (
     <div className={`sudoku-demo ncm-replay${phase > 1 && inspection.valid ? " ncm-replay-verified" : ""}`}>
-      <header className="sudoku-live-header">
-        <div className="sudoku-live-eyebrow"><span className="sudoku-live-dot" /> Recorded NCM research</div>
-        <h3>Whole-grid generation, then a retry.</h3>
-        <p>Real saved outputs · no live model inference</p>
-      </header>
-
       <div className="sudoku-live-toolbar">
-        <label>Curated example<select aria-label="Recorded NCM example" value={caseIndex} onChange={event => {
+        <label>Example<select aria-label="Recorded NCM example" value={caseIndex} onChange={event => {
           setCaseIndex(Number(event.target.value)); showPhase(0);
         }}>{evidence.cases.map((item, index) => <option value={index} key={item.id}>{caseLabels[index] || item.label}</option>)}</select></label>
-        <label>Compare retry method<select aria-label="Recorded retry method" value={method} onChange={event => {
+        <label>Retry method<select aria-label="Recorded retry method" value={method} onChange={event => {
           setMethod(event.target.value as RetryMethod); setPlaying(false);
         }}><option value="restart">Restart</option><option value="prefix">Fixed prefix</option></select></label>
       </div>
@@ -60,64 +89,38 @@ export default function NcmResearchDemo() {
         {phases.map((name, index) => <li key={name}><button type="button" aria-pressed={phase === index} onClick={() => showPhase(index)}>{name}</button></li>)}
       </ol>
 
+      <figure className="sudoku-demo-board-wrap">
+        <SnapshotBoard snapshot={snapshot} snapshotKey={`${example.id}-${phase}-${method}`} />
+        <figcaption className="sudoku-demo-legend">
+          <span><i className="sudoku-demo-given-key" /> Clue position</span>
+          <span><i className="ncm-replay-changed-key" /> Changed</span>
+          <span><i className="sudoku-live-undo-key" /> Conflict</span>
+        </figcaption>
+      </figure>
+
+      <p className={`sudoku-demo-status ncm-replay-status${phase > 1 && !inspection.valid ? " ncm-replay-rejected" : ""}`} role="status">{status}</p>
+
       <div className="sudoku-demo-controls">
         <button className="sudoku-demo-play" type="button" onClick={() => {
           if (phase === 3 && !playing) setPhase(0);
           setPlaying(current => !current);
-        }}>{playing ? "Pause" : phase === 3 ? "Replay recorded run" : "Play recorded run"}</button>
-        <button type="button" onClick={() => showPhase(phase === 3 ? 0 : phase + 1)}>{phase === 3 ? "Start again" : "Next snapshot"}</button>
+        }}>{playing ? "Pause" : phase === 3 ? "Replay" : "Play"}</button>
+        <button type="button" onClick={() => showPhase(phase === 3 ? 0 : phase + 1)}>{phase === 3 ? "Reset" : "Next"}</button>
       </div>
 
-      <div className="sudoku-demo-main">
-        <figure className="sudoku-demo-board-wrap">
-          <div className="sudoku-live-board-frame">
-            <table className="sudoku-demo-board" aria-label="Recorded NCM board">
-              <tbody className="ncm-replay-grid" key={`${example.id}-${phase}-${method}`}>
-                {Array.from({ length: 9 }, (_, row) => <tr key={row}>{Array.from({ length: 9 }, (_, column) => {
-                  const index = row * 9 + column;
-                  const given = example.puzzle[index] !== "0";
-                  const conflict = phase > 0 && inspection.conflictCells.has(index);
-                  const changed = phase > 0 && board[index] !== previous[index];
-                  const classes = ["sudoku-demo-cell", given ? "sudoku-demo-cell-given" : "",
-                    changed ? "ncm-replay-changed" : "", conflict ? "ncm-replay-conflict" : ""].filter(Boolean).join(" ");
-                  return <td key={column} className={classes} data-value={board[index]}
-                    aria-label={`Row ${row + 1}, column ${column + 1}: ${board[index] === "0" ? "empty" : board[index]}${given ? `; original clue ${example.puzzle[index]}` : ""}${conflict ? "; constraint violation" : ""}`}>
-                    <span aria-hidden="true">{board[index] === "0" ? "" : board[index]}</span>
-                  </td>;
-                })}</tr>)}
-              </tbody>
-            </table>
-          </div>
-          <figcaption className="sudoku-demo-legend">
-            <span><i className="sudoku-demo-given-key" /> Original clue position</span>
-            {phase > 0 ? <><span><i className="sudoku-demo-filled-key" /> Changed since prior snapshot</span><span><i className="sudoku-live-undo-key" /> Constraint violation</span></> : null}
-          </figcaption>
-        </figure>
-
-        <div className="sudoku-demo-explanation ncm-replay-explanation">
-          <p className={`sudoku-demo-status${phase > 1 && !inspection.valid ? " ncm-replay-rejected" : ""}`} role="status">{status}</p>
-          <h4>{title}</h4>
-          <p>{description}</p>
-          {phase === 1 ? <p className="ncm-replay-warning">Recorded warning: {example.warning.alert ? "raised" : "not raised"} · score {example.warning.score.toFixed(3)}. Observed before later generation.</p> : null}
-          {phase > 0 ? <dl className="ncm-replay-checks" aria-label="Exact constraint checks">
-            <div><dt>Clue changes</dt><dd>{inspection.changedClues}</dd></div>
-            <div><dt>Row conflicts</dt><dd>{inspection.rows}</dd></div>
-            <div><dt>Column conflicts</dt><dd>{inspection.columns}</dd></div>
-            <div><dt>Box conflicts</dt><dd>{inspection.boxes}</dd></div>
-          </dl> : null}
-          {phase === 3 ? <p className="ncm-replay-method-note">The retry methods are alternative single recorded attempts. Switching methods does not show a second sequential retry.</p> : null}
-        </div>
-      </div>
-
-      <p className="ncm-replay-finding"><strong>Study finding:</strong> no established useful learned recovery-allocation advantage. These four curated examples are not a success-rate estimate.</p>
-      <p className="sudoku-demo-scope">Playback changes whole-grid snapshots together. Only the input, level-6 decode, final output and selected retry outcome are shown; omitted intermediate levels are not fabricated. Playback timing is illustrative.</p>
+      <p className="sudoku-demo-scope ncm-replay-disclosure">Recorded outputs · no live inference · illustrative timing</p>
       <details className="sudoku-demo-evidence">
-        <summary>Research evidence and recorded data</summary>
+        <summary>About this replay</summary>
+        <p>NCM generates in parallel within each coarse-to-fine level. This replay shows the input, saved level-6 decode, final output and one retry. Other levels are omitted; the crossfade is a visual transition.</p>
+        <p>Restart generates again from the input. Fixed prefix keeps the original level-6 codes and resamples later levels. These are alternative single attempts, not sequential retries.</p>
+        <p><strong>Study finding:</strong> no established useful learned recovery-allocation advantage. These four curated examples are not a success-rate estimate.</p>
+        {phase === 1 ? <p>Recorded warning: {example.warning.alert ? "raised" : "not raised"} · score {example.warning.score.toFixed(3)}.</p> : null}
+        {phase > 0 ? <p>Constraint checks: {inspection.changedClues} clue changes, {inspection.rows} row, {inspection.columns} column and {inspection.boxes} box conflicts.</p> : null}
         <div>
           <a href="https://github.com/yoonalexander/Concept-Firewall/blob/main/results/reports/confidence_allocation_recovery.md" target="_blank" rel="noopener noreferrer">Recovery study</a>
           <a href="https://github.com/HazyResearch/ncm#coarse-to-fine-generation" target="_blank" rel="noopener noreferrer">How NCM generates</a>
-          <a href="/assets/projects/concept-firewall/ncm-replay.json" target="_blank" rel="noopener noreferrer">Snapshots and source hashes</a>
-          <a href="/assets/projects/concept-firewall/sudoku-source-LICENSE.txt" target="_blank" rel="noopener noreferrer">Puzzle data dedication</a>
+          <a href="/assets/projects/concept-firewall/ncm-replay.json" target="_blank" rel="noopener noreferrer">Recorded data</a>
+          <a href="/assets/projects/concept-firewall/sudoku-source-LICENSE.txt" target="_blank" rel="noopener noreferrer">Data dedication</a>
         </div>
       </details>
     </div>
