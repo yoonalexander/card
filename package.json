@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test:sudoku": "node --test scripts/test-sudoku-solver.cjs"
+    "test:sudoku": "node --test scripts/test-sudoku-solver.cjs",
+    "test:ncm": "node --test scripts/test-ncm-replay.cjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

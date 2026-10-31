@@ -15,7 +15,38 @@ the homepage's project listing.
   findings. Its exact solver and CLI release are separate engineering outputs.
   Research reports, the CLI guide and integration verification are linked.
 
-Concept Firewall's live visual demo runs a TypeScript port of the CLI's bounded,
+The primary Concept Firewall demo is a **recorded NCM research replay**. NCM predicts
+positions in parallel within coarse-to-fine latent levels; decoded states cover the
+whole board. The replay displays only four retained snapshots: the puzzle, the
+level-6 cumulative-prefix decode, the original final output, and one selected retry
+outcome. Whole-grid transitions show those snapshots together. Missing intermediate
+levels and retry trajectories are not fabricated, and playback is not live inference
+or a latency measurement.
+
+Four curated alerting-original-failure examples cover both retries recovering, only
+restart recovering, only fixed-prefix retry recovering, and neither recovering.
+These are selected illustrations, not representative success rates. The methods
+are alternative single potential retries at temperature 0.5, not consecutive retries
+until success. The prefix method forces the original level-6 code prefix and
+recomputes attention; full restart regenerates the entire hierarchy. The aggregate
+finding of no established useful learned allocation advantage remains explicit.
+
+`scripts/export-ncm-replay.py` reads the already exposed retained JSON tables and
+checks their bytes against the research evidence inventory. It exports four small
+examples and original line/source hashes, checks the original/retry outcomes, and
+retains the public-domain puzzle-data dedication. It imports no model code, does no
+fitting or inference, and writes no research artifacts or ledgers. Re-export with:
+
+```powershell
+python scripts/export-ncm-replay.py --project ..\Concept-Firewall
+```
+
+Run `npm.cmd run test:ncm` to check snapshot fidelity, all four outcome combinations,
+constraint counts and the replay's stated boundaries. Its additional full-source
+hash check runs when the original retained research tables are available locally;
+ordinary portfolio checks do not require those ignored research artifacts.
+
+The **Separate exact-solver CLI** tab runs a TypeScript port of the CLI's bounded,
 deterministic minimum-remaining-values exact search. A generator advances the real
 search one operation at a time, exposing candidate selection, placements, dead ends
 and backtracking. It does not read a saved solution. The original CLI puzzle and a

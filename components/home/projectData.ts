@@ -63,7 +63,7 @@ export type Project = {
   demoMode?: "window" | "message";
   demoVideo?: string;
   demoVideoLayout?: "portrait";
-  visualDemo?: "sudoku";
+  visualDemo?: "concept-firewall";
 };
 
 export const projects: readonly Project[] = [
@@ -173,7 +173,7 @@ export const projects: readonly Project[] = [
       implementation: [
         "Reproducible evaluations with corrected cumulative-prefix reconstruction, immutable decision-time features, grouped partitions, frozen protocols and independent Sudoku checks.",
         "Dependency-free CLI 0.2.0 verifies proposals and falls back to deterministic, bounded exact search from the original clues. Invalid, unsatisfiable and budget-exhausted inputs receive explicit failures.",
-        "The live visual demo runs a browser port of the CLI's bounded exact-search algorithm. Watch candidate selection, placements and backtracking on two puzzles, then check the verified completion. No learned model is involved.",
+        "The main demo replays recorded NCM whole-grid states and alternative retry outcomes from exposed research data, without new inference. A separate tab demonstrates the classical exact-solving CLI algorithm live in the browser.",
       ],
       limitations:
         "The final recovery analysis reused an already exposed cohort; cross-validation does not restore fresh confirmation. Its uncertainty is conditional on fixed out-of-fold scores and saved retry outcomes. Exact-solving validation establishes a Sudoku utility, not learned intervention or general AI safety effectiveness.",
@@ -186,15 +186,16 @@ export const projects: readonly Project[] = [
         { label: "CLI guide", href: "https://github.com/yoonalexander/Concept-Firewall/blob/main/CLI_README.md" },
         { label: "Integration verification", href: "https://github.com/yoonalexander/Concept-Firewall/blob/main/release/0.2.0/integration-verification.json" },
         { label: "Demo script", href: "https://github.com/yoonalexander/Concept-Firewall/blob/main/examples/sudoku_demo.py" },
+        { label: "Recorded NCM demo snapshots", href: "/assets/projects/concept-firewall/ncm-replay.json" },
         { label: "Captured demo JSON", href: "/assets/projects/concept-firewall/sudoku-demo.json" },
         { label: "Terminal recording (.cast)", href: "/assets/projects/concept-firewall/sudoku-demo.cast" },
       ],
     },
     github: "https://github.com/yoonalexander/Concept-Firewall",
-    demo: "/assets/projects/concept-firewall/sudoku-demo.json",
+    demo: "/assets/projects/concept-firewall/ncm-replay.json",
     demoLabel: "Visual demo",
     demoMode: "window",
-    visualDemo: "sudoku",
+    visualDemo: "concept-firewall",
   },
   {
     id: "hibipetto",

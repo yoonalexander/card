@@ -1,10 +1,14 @@
 "use client";
 
 import type { Project } from "./projectData";
-import SudokuDemo from "./SudokuDemo";
+import dynamic from "next/dynamic";
+
+const ConceptFirewallDemo = dynamic(() => import("./ConceptFirewallDemo"), {
+  loading: () => <p className="project-demo-loading">Loading research replay…</p>,
+});
 
 export default function ProjectDemoWindow({ project }: { project: Project }) {
-  if (project.visualDemo === "sudoku") return <SudokuDemo />;
+  if (project.visualDemo === "concept-firewall") return <ConceptFirewallDemo />;
   return (
     <video
       className="project-demo-video"

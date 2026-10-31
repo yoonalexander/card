@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "kind": "recorded_ncm_research_replay",
+  "scope": "Four curated examples from the already exposed 1,600-puzzle recovery cohort; not representative success rates or fresh confirmation.",
+  "selection": "First puzzle identity in sorted order in each alerting-original-failure / two-retry-outcome combination.",
+  "snapshots": "Original puzzle, recorded level-6 cumulative-prefix reconstruction, original final output, and one chosen recorded retry outcome. Intermediate levels and retry trajectories are not retained here or fabricated.",
+  "retry_design": "Alternative single potential retries at temperature 0.5, not sequential retries until success. Prefix method forces the original level-6 code prefix and recomputes attention; restart generates a new complete hierarchy.",
+  "research_finding": "No established useful learned recovery-allocation advantage; exact solving is a separate engineering deliverable.",
+  "model_execution_during_export": false,
+  "sources": {
+    "original": {
+      "path": "results/continuation/raw/confirmation.jsonl",
+      "sha256": "03aa39348c4c4013543f3fee748914fd2b90a9bb057ef64eb0f72eaf50ddd459",
+      "bytes": 2569903
+    },
+    "prefix": {
+      "path": "results/continuation/raw/level6_fixed_prefix_stochastic_suffix.jsonl",
+      "sha256": "58eca229aa73ae95c3b8c92657c91d5d076d6ed30a785dfc49002720eacf4394",
+      "bytes": 1691562
+    },
+    "restart": {
+      "path": "results/continuation/raw/full_stochastic_restart.jsonl",
+      "sha256": "8ab177697b147545f02702fd16bb5f927cc041469e99feab501ff893003c21ce",
+      "bytes": 1691275
+    }
+  },
+  "dataset": {
+    "name": "Sudoku Exchange Puzzle Bank",
+    "url": "https://github.com/grantm/sudoku-exchange-puzzle-bank",
+    "rights": "Public-domain dedication retained in sudoku-source-LICENSE.txt"
+  },
+  "cases": [
+    {
+      "id": "2712c804cc899068d773ebff7931182ff9ba26dc5db77293bc5e919883c9af9e",
+      "label": "Both retries recover",
+      "puzzle": "030501020600070001000000000070000080400020007500060009310907046060040030004000100",
+      "level6": "755853644656711513111763575677345888483386777277796414337127666167662333227537111",
+      "final": "837591624649273851152884793976415382481329567523768419318957246765142938294638175",
+      "warning": {
+        "score": 2.4278253206855993,
+        "alert": true
+      },
+      "retries": {
+        "prefix": {
+          "board": "837591624649273851152684793976415382481329567523768419318957246765142938294836175",
+          "valid": true
+        },
+        "restart": {
+          "board": "837591624649273851152684793976415382481329567523768419318957246765142938294836175",
+          "valid": true
+        }
+      },
+      "source_line_sha256": {
+        "original": "d58a243a4fff0f88f2a56eae30cc55e69798693318737abec3439cbdcb72fea9",
+        "prefix": "36e3ed6200bba50b81249e0386bfae7fea9894bc3421db30173569fa400fc743",
+        "restart": "ac5f59da350e7d467c8167ccf9a9a375547952c87c1893469891b7262d5d2357"
+      }
+    },
+    {
+      "id": "074e484b5aaad50aa49ee8fe98b16ad16631a0c04cf0381e3acdad2c28c04dfa",
+      "label": "Only restart recovers",
+      "puzzle": "000050000701000406900701003032000810000000000680010025300506009006000300040090060",
+      "level6": "895237111111199229294843553446689555555794646466733785335378992929998335458678662",
+      "final": "823654271751832496964721583432965817519288634687413925378526149296147358145398762",
+      "warning": {
+        "score": 1.9187534823945498,
+        "alert": true
+      },
+      "retries": {
+        "prefix": {
+          "board": "823654271751832496964721583432965817519284634687413925378526149296147358145398762",
+          "valid": false
+        },
+        "restart": {
+          "board": "863954271751832496924761583532679814419285637687413925378526149296147358145398762",
+          "valid": true
+        }
+      },
+      "source_line_sha256": {
+        "original": "109487d8ad03c53f185e303ec014c48006f22caebe61fd2b9cea3848ce0731c9",
+        "prefix": "c0b5d3f1b99fea0bcf5ad955b32f6cf3911163ab49d12204115990c4f04d5013",
+        "restart": "0c7bdc2ca83d4a90da90bbfae772d915058be6bfca26bd54e9cf4c07b7b38f58"
+      }
+    },
+    {
+      "id": "00d19853ac1b321490bad1e85b02633afd7ea7746a4ea2290572e248a3d68c60",
+      "label": "Only prefix retry recovers",
+      "puzzle": "028000940400000003090403050060030010200000006000701000006000200800607004009050700",
+      "level6": "333227446444466668797573442225341111211945566866567449744444555555554111441188774",
+      "final": "328576941475129673691483852964238517217945386583761429736814295852697134149352768",
+      "warning": {
+        "score": 2.0183972648760613,
+        "alert": true
+      },
+      "retries": {
+        "prefix": {
+          "board": "328576941415829673697413852964238517271945386583761429736184295852697134149352768",
+          "valid": true
+        },
+        "restart": {
+          "board": "328576941475129673691483852964238517217945386583761429736814295852697134149352768",
+          "valid": false
+        }
+      },
+      "source_line_sha256": {
+        "original": "7e297ac60d6332aa8193eb328ae23fe8e5461248e632e98543a9038092f01ec1",
+        "prefix": "7be613867a917b6ac6b7e07990b9ee065b9a5cac3c8101363dcb39839b3772c5",
+        "restart": "20b267d971d46e823e28846f86a56e8e0e4b51339338af5a4e06447d2423dc93"
+      }
+    },
+    {
+      "id": "003bb82638c5002604589f9157828674df2882cf42fde51beeb9ff7790e03f97",
+      "label": "Neither retry recovers",
+      "puzzle": "200500640000000100800907000000006020072305410090400000000803005007000000028004001",
+      "level6": "218966644444968688633975555555596666677794511314596777943439555666669848889469666",
+      "final": "239581647754632189861947532485176923672395418193428756946813275517269834328754961",
+      "warning": {
+        "score": 1.5062781715992135,
+        "alert": true
+      },
+      "retries": {
+        "prefix": {
+          "board": "239581647754632189861947332485176923672395418193428756946813275517269834328754961",
+          "valid": false
+        },
+        "restart": {
+          "board": "239581647754632189861947532485176923672395418193428756946813275517269884328754961",
+          "valid": false
+        }
+      },
+      "source_line_sha256": {
+        "original": "ed06d3caef42c9bcd05d71204936301c67da6a249d0f12936b90f5bef4527299",
+        "prefix": "f7c94eff3125c3a54b97fc523296466a05dbede2c32d2b4e6f9611f7bf81ca38",
+        "restart": "e17f67d20831458c3d81093f69988ba66820c3bb3272f1ce2ed57b95ba6b95ea"
+      }
+    }
+  ]
+}

@@ -601,7 +601,7 @@ function clampProjectPosition(windowId: WindowId, position: { x: number; y: numb
 }
 
 function getWindowTitle(windowId: WindowId) {
-  if (isProjectDemoWindowId(windowId)) return getProjectFromWindowId(windowId)?.visualDemo ? "Sudoku Demo" : "Demo Video";
+  if (isProjectDemoWindowId(windowId)) return getProjectFromWindowId(windowId)?.visualDemo ? "Concept Firewall Demo" : "Demo Video";
   if (isProjectDetailsWindowId(windowId)) {
     const project = getProjectFromWindowId(windowId);
     return project ? `${project.name} Details` : "Project Details";

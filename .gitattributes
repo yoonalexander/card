@@ -1,3 +1,4 @@
 # Keep the recorded output bytes stable for the accompanying SHA-256 receipt.
 public/assets/projects/concept-firewall/sudoku-demo.* -text
 public/assets/projects/concept-firewall/recording-receipt.json -text
+public/assets/projects/concept-firewall/ncm-replay.json -text
