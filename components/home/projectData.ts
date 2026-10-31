@@ -63,7 +63,7 @@ export type Project = {
   demoMode?: "window" | "message";
   demoVideo?: string;
   demoVideoLayout?: "portrait";
-  terminalRecording?: string;
+  visualDemo?: "sudoku";
 };
 
 export const projects: readonly Project[] = [
@@ -173,7 +173,7 @@ export const projects: readonly Project[] = [
       implementation: [
         "Reproducible evaluations with corrected cumulative-prefix reconstruction, immutable decision-time features, grouped partitions, frozen protocols and independent Sudoku checks.",
         "Dependency-free CLI 0.2.0 verifies proposals and falls back to deterministic, bounded exact search from the original clues. Invalid, unsatisfiable and budget-exhausted inputs receive explicit failures.",
-        "The recorded demo runs examples/sudoku_demo.py: reject an incomplete proposal, solve the puzzle, then recheck the completed board. No learned model is involved.",
+        "The visual demo presents recorded results from examples/sudoku_demo.py: reject a blank proposal, solve from the original clues, then verify the completed board. No learned model is involved.",
       ],
       limitations:
         "The final recovery analysis reused an already exposed cohort; cross-validation does not restore fresh confirmation. Its uncertainty is conditional on fixed out-of-fold scores and saved retry outcomes. Exact-solving validation establishes a Sudoku utility, not learned intervention or general AI safety effectiveness.",
@@ -191,10 +191,10 @@ export const projects: readonly Project[] = [
       ],
     },
     github: "https://github.com/yoonalexander/Concept-Firewall",
-    demo: "/assets/projects/concept-firewall/sudoku-demo.cast",
-    demoLabel: "Terminal demo",
+    demo: "/assets/projects/concept-firewall/sudoku-demo.json",
+    demoLabel: "Visual demo",
     demoMode: "window",
-    terminalRecording: "/assets/projects/concept-firewall/sudoku-demo.cast",
+    visualDemo: "sudoku",
   },
   {
     id: "hibipetto",

@@ -15,14 +15,20 @@ the homepage's project listing.
   findings. Its exact solver and CLI release are separate engineering outputs.
   Research reports, the CLI guide and integration verification are linked.
 
-Concept Firewall's demo is a 15-second `.cast` terminal replay of actual output
-from `examples/sudoku_demo.py` using CLI 0.2.0. Integer arrays are compacted without
-changing any JSON values; playback is paced for readability and does not depict
-execution latency. It starts paused and supports play/pause, seeking, showing the
-final result, keyboard controls and a readable transcript. Original stdout JSON,
-the transcript, capture/source hashes and provenance receipt are retained beside
-the recording. The demo executes only the classical CLI; it loads no model and
-does not reopen research.
+Concept Firewall's visual demo shows the original Sudoku clues, the rejected blank
+proposal, and the solved board with constraint checks. Dark given cells retain the
+original clues; green cells show values filled by exact search; crosses identify
+clues omitted from the rejected proposal. Visitors can select each step, play or
+pause the walkthrough, and jump to the solution. `SudokuDemo.tsx` uses the puzzle
+from `examples/sudoku_demo.py` and the recorded CLI 0.2.0 JSON directly. It shows
+saved outcomes, not a live solver or an intermediate search trace.
+
+The original terminal evidence remains available in a collapsed disclosure and
+the project evidence links: stdout JSON, transcript, 15-second `.cast` recording,
+capture/source hashes and provenance receipt. Integer arrays in the terminal replay
+are compacted without changing values; its timing is paced for readability and
+does not depict execution latency. This is the separate classical exact-solving
+deliverable; no model or research experiment runs in the website.
 
 To recapture from a local Concept Firewall checkout with CLI 0.2.0 installed:
 

@@ -1,10 +1,10 @@
 "use client";
 
 import type { Project } from "./projectData";
-import TerminalRecording from "./TerminalRecording";
+import SudokuDemo from "./SudokuDemo";
 
 export default function ProjectDemoWindow({ project }: { project: Project }) {
-  if (project.terminalRecording) return <TerminalRecording src={project.terminalRecording} name={project.name} />;
+  if (project.visualDemo === "sudoku") return <SudokuDemo />;
   return (
     <video
       className="project-demo-video"

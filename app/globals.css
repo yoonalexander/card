@@ -2261,92 +2261,283 @@ html.dark .project-card-demo-button:focus-visible {
   color: #9bc8ff;
 }
 
-.terminal-recording {
+.section-window-project-demo-sudoku {
+  display: flex;
+  flex-direction: column;
+  width: min(90vw, 680px);
+  max-height: calc(100dvh - 110px);
+}
+
+.section-window-project-demo-sudoku .section-window-content {
+  min-height: 0;
+  max-height: none;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.sudoku-demo {
+  --sudoku-text: #253d50;
+  --sudoku-muted: #52677a;
+  --sudoku-line: #c4d4df;
   display: grid;
-  gap: 0.8rem;
-  min-width: 0;
-  padding: 1rem;
-  background: #101820;
-  color: #e6edf3;
-  font-family: monospace;
+  gap: 0.75rem;
+  padding: 1.1rem;
+  background: #f5f9fc;
+  color: var(--sudoku-text);
+  font-family: "Quicksand", sans-serif;
+}
+
+.sudoku-demo-heading :is(h3, p),
+.sudoku-demo-explanation :is(h4, p) {
+  margin: 0;
+}
+
+.sudoku-demo-kicker {
+  color: var(--sudoku-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sudoku-demo-heading h3 {
+  margin: 0.3rem 0;
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+  line-height: 1.2;
+}
+
+.sudoku-demo-heading > p:last-child {
+  color: var(--sudoku-muted);
   font-size: 0.82rem;
 }
 
-.terminal-recording-caption {
+.sudoku-demo-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
   margin: 0;
-  color: #b6c8d8;
-  font-size: 0.78rem;
-  line-height: 1.5;
+  padding: 0;
+  list-style: none;
 }
 
-.terminal-recording-output {
-  height: min(42dvh, 350px);
-  overflow: auto;
-  margin: 0;
-  padding: 0.8rem;
-  border: 1px solid #384957;
-  border-radius: 6px;
-  background: #0a1016;
-  color: #c8f7d6;
-  font: inherit;
-  line-height: 1.55;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-.terminal-recording-controls,
-.terminal-recording-downloads {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.7rem;
-}
-
-.terminal-recording-controls button {
+.sudoku-demo button {
   min-height: 36px;
-  padding: 0.4rem 0.65rem;
-  border: 1px solid #65839d;
-  border-radius: 5px;
-  background: #20384d;
-  color: #fff;
-  font: inherit;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--sudoku-line);
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  font: 700 0.8rem "Quicksand", sans-serif;
   cursor: pointer;
 }
 
-.terminal-recording-controls button:disabled {
-  opacity: 0.5;
-  cursor: wait;
-}
-
-.terminal-recording-seek {
-  flex: 1;
-  min-width: 90px;
-}
-
-.terminal-recording-seek input {
+.sudoku-demo-steps button {
   width: 100%;
-  accent-color: #9bc8ff;
 }
 
-.terminal-recording-downloads a {
-  color: #9bc8ff;
-  text-underline-offset: 3px;
+.sudoku-demo-steps button[aria-pressed="true"] {
+  border-color: #247bc0;
+  background: #e0eef9;
+  color: #195f95;
 }
 
-.terminal-recording :is(button, input, a, pre):focus-visible {
-  outline: 2px solid #9bc8ff;
-  outline-offset: 3px;
+.sudoku-demo-step-1 .sudoku-demo-steps button[aria-pressed="true"] {
+  border-color: #b23b47;
+  background: #fbe8ea;
+  color: #a02b38;
 }
+
+.sudoku-demo-step-2 .sudoku-demo-steps button[aria-pressed="true"] {
+  border-color: #218063;
+  background: #e2f4ed;
+  color: #176147;
+}
+
+.sudoku-demo-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.sudoku-demo-board-wrap {
+  min-width: 0;
+  width: min(100%, 280px);
+  margin: 0;
+  justify-self: center;
+}
+
+.sudoku-demo-board {
+  width: 100%;
+  border: 2px solid #526e83;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: #fff;
+  color: #253d50;
+  font-family: ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.sudoku-demo-cell {
+  width: 11.111%;
+  padding: 0;
+  border: 1px solid #c4d4df;
+}
+
+.sudoku-demo-cell > span {
+  display: grid;
+  aspect-ratio: 1;
+  place-items: center;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+}
+
+.sudoku-demo-cell:nth-child(3n):not(:last-child) {
+  border-right: 2px solid #526e83;
+}
+
+.sudoku-demo-board tr:nth-child(3n):not(:last-child) td {
+  border-bottom: 2px solid #526e83;
+}
+
+.sudoku-demo-cell-given {
+  background: #eaf0f5;
+  font-weight: 800;
+}
+
+.sudoku-demo-cell-filled {
+  background: #e2f4ed;
+  color: #176147;
+}
+
+.sudoku-demo-cell-missing {
+  background: #fbe8ea;
+  color: #a02b38;
+}
+
+.sudoku-demo-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.65rem;
+  color: var(--sudoku-muted);
+  font-size: 0.7rem;
+}
+
+.sudoku-demo-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.sudoku-demo-legend i {
+  width: 10px;
+  height: 10px;
+  border: 1px solid #526e83;
+}
+
+.sudoku-demo-given-key { background: #eaf0f5; }
+.sudoku-demo-filled-key { background: #e2f4ed; }
+.sudoku-demo-missing-key { color: #b23b47; font-size: 1rem; }
+
+.sudoku-demo-explanation {
+  display: grid;
+  align-content: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.sudoku-demo-explanation h4 {
+  font-size: 1.1rem;
+  line-height: 1.25;
+}
+
+.sudoku-demo-status {
+  color: #195f95;
+  font-weight: 800;
+}
+
+.sudoku-demo-step-1 .sudoku-demo-status { color: #a02b38; }
+.sudoku-demo-step-2 .sudoku-demo-status { color: #176147; }
+
+.sudoku-demo-aside,
+.sudoku-demo-search {
+  color: var(--sudoku-muted);
+  font-size: 0.75rem;
+}
+
+.sudoku-demo-checks {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  color: #176147;
+  font-size: 0.8rem;
+  list-style: none;
+}
+
+.sudoku-demo-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sudoku-demo-controls .sudoku-demo-play {
+  border-color: #247bc0;
+  background: #247bc0;
+  color: #fff;
+}
+
+.sudoku-demo-scope {
+  margin: 0;
+  color: var(--sudoku-muted);
+  font-size: 0.73rem;
+  line-height: 1.5;
+}
+
+.sudoku-demo-evidence {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--sudoku-line);
+  font-size: 0.75rem;
+}
+
+.sudoku-demo-evidence summary {
+  width: fit-content;
+  cursor: pointer;
+}
+
+.sudoku-demo-evidence > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.sudoku-demo-evidence a { color: #195f95; text-underline-offset: 3px; }
+.sudoku-demo :is(button, a, summary):focus-visible { outline: 2px solid #247bc0; outline-offset: 3px; }
+
+:is(body.dark, html.dark) .sudoku-demo {
+  --sudoku-text: #e5edf4;
+  --sudoku-muted: #bdcedc;
+  --sudoku-line: #52677a;
+  background: #202b35;
+}
+
+:is(body.dark, html.dark) .sudoku-demo :is(.sudoku-demo-status, .sudoku-demo-evidence a) { color: #9bc8ff; }
+:is(body.dark, html.dark) .sudoku-demo-step-1 .sudoku-demo-status { color: #ffadb5; }
+:is(body.dark, html.dark) .sudoku-demo-step-2 :is(.sudoku-demo-status, .sudoku-demo-checks) { color: #9ee0c5; }
 
 @media (max-width: 720px) {
-  .terminal-recording {
-    gap: 0.55rem;
-    padding: 0.75rem;
-  }
-
-  .terminal-recording-output {
-    height: min(24dvh, 200px);
-  }
+  .sudoku-demo { gap: 0.75rem; padding: 0.85rem; }
+  .sudoku-demo-main { grid-template-columns: 1fr; gap: 0.85rem; }
+  .sudoku-demo-board-wrap { width: min(100%, 252px); justify-self: center; }
+  .sudoku-demo-explanation { gap: 0.4rem; font-size: 0.8rem; }
+  .sudoku-demo-explanation h4 { font-size: 1rem; }
+  .sudoku-demo-checks { grid-template-columns: 1fr 1fr; gap: 0.2rem; font-size: 0.72rem; }
+  .sudoku-demo-heading > p:last-child { font-size: 0.72rem; }
+  .sudoku-demo-aside { display: none; }
+  .sudoku-demo button { padding: 0.4rem 0.5rem; font-size: 0.75rem; }
 }
 
 .project-detail-links {
@@ -2873,7 +3064,7 @@ html.dark .contact-cat-note {
     max-height: 70vh;
   }
 
-  .section-window:not(.section-window-project-details):not(.section-window-project-demo):not(.section-window-project-demo-portrait) {
+  .section-window:not(.section-window-project-details):not(.section-window-project-demo):not(.section-window-project-demo-portrait):not(.section-window-project-demo-sudoku) {
     left: 4vw !important;
     top: 7rem !important;
   }
@@ -2906,6 +3097,11 @@ html.dark .contact-cat-note {
 
   .section-window-project-demo-portrait {
     width: min(76vw, 320px);
+  }
+
+  .section-window-project-demo-sudoku {
+    width: min(90vw, 680px);
+    max-height: calc(100dvh - 128px);
   }
 
   .project-demo-video {

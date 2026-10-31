@@ -187,7 +187,7 @@ export default function HomeHub() {
 
     const detailsId = getProjectDetailsWindowId(projectId);
     const demoId: ProjectDemoWindowId = `project-demo:${projectId}`;
-    const windowIds: WindowId[] = project.demoVideo || project.terminalRecording ? [detailsId, demoId] : [detailsId];
+    const windowIds: WindowId[] = project.demoVideo || project.visualDemo ? [detailsId, demoId] : [detailsId];
     const zIndexes = windowIds.map(() => nextZIndex());
 
     setOpenWindows((currentWindows) => {
@@ -471,7 +471,7 @@ export default function HomeHub() {
           <SectionWindow
             key={sectionWindow.id}
             title={getWindowTitle(sectionWindow.id)}
-            sectionId={project ? (isDemo ? `project-demo${project.demoVideoLayout === "portrait" ? "-portrait" : ""}` : "project-details") : sectionWindow.id}
+            sectionId={project ? (isDemo ? `project-demo${project.visualDemo ? "-sudoku" : project.demoVideoLayout === "portrait" ? "-portrait" : ""}` : "project-details") : sectionWindow.id}
             headerActions={project && !isDemo ? <ProjectDetailsLinks project={project} /> : undefined}
             isClosing={sectionWindow.isClosing}
             position={{ x: sectionWindow.x, y: sectionWindow.y }}
@@ -570,9 +570,9 @@ function getProjectPositions(projectId: ProjectId, projectWindowCount: number) {
   const viewportHeight = typeof window === "undefined" ? 900 : window.innerHeight;
   const isMobile = viewportWidth <= 720;
   const detailsWidth = Math.min(viewportWidth - (isMobile ? 48 : 32), 580);
-  const demoWidth = Math.min(viewportWidth * (isMobile ? 0.76 : 0.9), project?.demoVideoLayout === "portrait" ? 320 : 680);
+  const demoWidth = Math.min(viewportWidth * (isMobile && !project?.visualDemo ? 0.76 : 0.9), project?.demoVideoLayout === "portrait" ? 320 : 680);
   const cascade = (projectWindowCount % 4) * 22;
-  const groupWidth = project?.demoVideo || project?.terminalRecording ? detailsWidth + demoWidth - 48 : detailsWidth;
+  const groupWidth = project?.demoVideo || project?.visualDemo ? detailsWidth + demoWidth - 48 : detailsWidth;
   const detailsX = Math.max(12, Math.min((viewportWidth - groupWidth) / 2 + cascade, viewportWidth - detailsWidth - 12));
   const detailsY = isMobile ? 80 : Math.max(16, Math.min(96 + cascade, viewportHeight - 700));
 
@@ -580,7 +580,7 @@ function getProjectPositions(projectId: ProjectId, projectWindowCount: number) {
     details: { x: detailsX, y: detailsY },
     demo: {
       x: Math.max(12, Math.min(detailsX + detailsWidth - 48, viewportWidth - demoWidth - 12)),
-      y: Math.min(detailsY + (isMobile ? 112 : 64), Math.max(16, viewportHeight - 240)),
+      y: isMobile && project?.visualDemo ? Math.max(16, Math.min(112, viewportHeight - 660)) : Math.min(detailsY + (isMobile ? 112 : 64), Math.max(16, viewportHeight - 240)),
     },
   };
 }
@@ -591,7 +591,7 @@ function clampProjectPosition(windowId: WindowId, position: { x: number; y: numb
   if (!project) return position;
   const isMobile = window.innerWidth <= 720;
   const width = isProjectDemoWindowId(windowId)
-    ? Math.min(window.innerWidth * (isMobile ? 0.76 : 0.9), project.demoVideoLayout === "portrait" ? 320 : 680)
+    ? Math.min(window.innerWidth * (isMobile && !project.visualDemo ? 0.76 : 0.9), project.demoVideoLayout === "portrait" ? 320 : 680)
     : Math.min(window.innerWidth - (isMobile ? 48 : 32), 580);
 
   return {
@@ -601,7 +601,7 @@ function clampProjectPosition(windowId: WindowId, position: { x: number; y: numb
 }
 
 function getWindowTitle(windowId: WindowId) {
-  if (isProjectDemoWindowId(windowId)) return getProjectFromWindowId(windowId)?.terminalRecording ? "Terminal Demo" : "Demo Video";
+  if (isProjectDemoWindowId(windowId)) return getProjectFromWindowId(windowId)?.visualDemo ? "Sudoku Demo" : "Demo Video";
   if (isProjectDetailsWindowId(windowId)) {
     const project = getProjectFromWindowId(windowId);
     return project ? `${project.name} Details` : "Project Details";
