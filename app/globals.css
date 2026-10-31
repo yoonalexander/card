@@ -2207,6 +2207,148 @@ html.dark .project-card-demo-button:focus-visible {
   font-family: "Quicksand", sans-serif;
 }
 
+.project-status-label {
+  margin: 0;
+  color: #247bc0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.project-image-caption,
+.project-disclosure,
+.project-evidence-figure figcaption {
+  margin: 0;
+  color: #5e6268;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.project-detail-section p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.project-evidence-figure {
+  display: grid;
+  gap: 0.65rem;
+  min-width: 0;
+  margin: 0.5rem 0;
+}
+
+.project-evidence-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(20, 42, 64, 0.12);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.project-evidence-links a {
+  color: #176caa;
+  text-underline-offset: 3px;
+}
+
+:is(body.dark, html.dark) :is(.project-image-caption, .project-disclosure, .project-evidence-figure figcaption, .project-detail-section p) {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+:is(body.dark, html.dark) :is(.project-status-label, .project-evidence-links a) {
+  color: #9bc8ff;
+}
+
+.terminal-recording {
+  display: grid;
+  gap: 0.8rem;
+  min-width: 0;
+  padding: 1rem;
+  background: #101820;
+  color: #e6edf3;
+  font-family: monospace;
+  font-size: 0.82rem;
+}
+
+.terminal-recording-caption {
+  margin: 0;
+  color: #b6c8d8;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.terminal-recording-output {
+  height: min(42dvh, 350px);
+  overflow: auto;
+  margin: 0;
+  padding: 0.8rem;
+  border: 1px solid #384957;
+  border-radius: 6px;
+  background: #0a1016;
+  color: #c8f7d6;
+  font: inherit;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.terminal-recording-controls,
+.terminal-recording-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.terminal-recording-controls button {
+  min-height: 36px;
+  padding: 0.4rem 0.65rem;
+  border: 1px solid #65839d;
+  border-radius: 5px;
+  background: #20384d;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.terminal-recording-controls button:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.terminal-recording-seek {
+  flex: 1;
+  min-width: 90px;
+}
+
+.terminal-recording-seek input {
+  width: 100%;
+  accent-color: #9bc8ff;
+}
+
+.terminal-recording-downloads a {
+  color: #9bc8ff;
+  text-underline-offset: 3px;
+}
+
+.terminal-recording :is(button, input, a, pre):focus-visible {
+  outline: 2px solid #9bc8ff;
+  outline-offset: 3px;
+}
+
+@media (max-width: 720px) {
+  .terminal-recording {
+    gap: 0.55rem;
+    padding: 0.75rem;
+  }
+
+  .terminal-recording-output {
+    height: min(24dvh, 200px);
+  }
+}
+
 .project-detail-links {
   display: flex;
   flex-wrap: wrap;

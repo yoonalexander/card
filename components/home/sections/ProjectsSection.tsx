@@ -319,10 +319,11 @@ function ProjectCard({
       style={style}
     >
       <div className={`project-image-wrap${project.imageFit === "contain" ? " project-image-contain" : ""}`}>
-        <img src={project.image} alt={inertContent ? "" : `${project.name} preview`} />
+        <img src={project.image} alt={inertContent ? "" : project.imageAlt || `${project.name} preview`} loading="lazy" />
       </div>
 
       <div className="project-card-body">
+        {project.statusLabel ? <p className="project-status-label">{project.statusLabel}</p> : null}
         <div className="project-heading-row">
           <h3 className="project-name">
             {project.name}
@@ -342,6 +343,7 @@ function ProjectCard({
         </div>
 
         <p className="project-summary">{project.summary}</p>
+        {project.imageCaption ? <p className="project-image-caption">{project.imageCaption}</p> : null}
 
         <div className="project-card-footer">
           <div className="project-tag-row" aria-label={`${project.name} technologies`}>

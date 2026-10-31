@@ -187,7 +187,7 @@ export default function HomeHub() {
 
     const detailsId = getProjectDetailsWindowId(projectId);
     const demoId: ProjectDemoWindowId = `project-demo:${projectId}`;
-    const windowIds: WindowId[] = project.demoVideo ? [detailsId, demoId] : [detailsId];
+    const windowIds: WindowId[] = project.demoVideo || project.terminalRecording ? [detailsId, demoId] : [detailsId];
     const zIndexes = windowIds.map(() => nextZIndex());
 
     setOpenWindows((currentWindows) => {
@@ -572,7 +572,7 @@ function getProjectPositions(projectId: ProjectId, projectWindowCount: number) {
   const detailsWidth = Math.min(viewportWidth - (isMobile ? 48 : 32), 580);
   const demoWidth = Math.min(viewportWidth * (isMobile ? 0.76 : 0.9), project?.demoVideoLayout === "portrait" ? 320 : 680);
   const cascade = (projectWindowCount % 4) * 22;
-  const groupWidth = project?.demoVideo ? detailsWidth + demoWidth - 48 : detailsWidth;
+  const groupWidth = project?.demoVideo || project?.terminalRecording ? detailsWidth + demoWidth - 48 : detailsWidth;
   const detailsX = Math.max(12, Math.min((viewportWidth - groupWidth) / 2 + cascade, viewportWidth - detailsWidth - 12));
   const detailsY = isMobile ? 80 : Math.max(16, Math.min(96 + cascade, viewportHeight - 700));
 
@@ -601,7 +601,7 @@ function clampProjectPosition(windowId: WindowId, position: { x: number; y: numb
 }
 
 function getWindowTitle(windowId: WindowId) {
-  if (isProjectDemoWindowId(windowId)) return "Demo Video";
+  if (isProjectDemoWindowId(windowId)) return getProjectFromWindowId(windowId)?.terminalRecording ? "Terminal Demo" : "Demo Video";
   if (isProjectDetailsWindowId(windowId)) {
     const project = getProjectFromWindowId(windowId);
     return project ? `${project.name} Details` : "Project Details";

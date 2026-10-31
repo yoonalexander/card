@@ -1,8 +1,10 @@
 "use client";
 
 import type { Project } from "./projectData";
+import TerminalRecording from "./TerminalRecording";
 
 export default function ProjectDemoWindow({ project }: { project: Project }) {
+  if (project.terminalRecording) return <TerminalRecording src={project.terminalRecording} name={project.name} />;
   return (
     <video
       className="project-demo-video"

@@ -1,0 +1,25 @@
+{
+  "captured_at": "2026-10-31T17:32:25.794650+00:00",
+  "command": "python examples/sudoku_demo.py",
+  "version": "concept-firewall 0.2.0",
+  "source_commit": "44e06c0e5ec29766533cf6e497118618052f7142",
+  "source_sha256": "2258d98fc95571d2aedd58d28052cf8663e969303370bdbd587cbe320aec0881",
+  "exit_code": 0,
+  "observed_process_seconds": 0.565825,
+  "scope": "One supplied example, no models, no research experiments; not a benchmark.",
+  "presentation": "Recorded stdout with integer arrays compacted; playback retimed for readability, not execution speed.",
+  "files": {
+    "sudoku-demo.json": {
+      "sha256": "be5a3f2870679ee42d1390591c568003ad505421cc80ad96de18ee4e50e2232d",
+      "bytes": 2359
+    },
+    "sudoku-demo.txt": {
+      "sha256": "4e3b6d4f593b2c479f8707c9bde68b49111ccff4e2d546613a51a5eb187550e6",
+      "bytes": 1420
+    },
+    "sudoku-demo.cast": {
+      "sha256": "7a205338dd83ccf5821c6fa66a3f1318cf593823b4f2d497720e5358d7fe7a42",
+      "bytes": 3018
+    }
+  }
+}

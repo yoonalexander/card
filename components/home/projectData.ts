@@ -3,6 +3,8 @@ export const projectTopics = ["AI/ML", "Web Apps", "Mobile", "Games", "Graphics"
 export type ProjectTopic = (typeof projectTopics)[number];
 
 export type ProjectId =
+  | "anytime-ncm"
+  | "concept-firewall"
   | "wf-studio"
   | "diana-yoon-budgeting"
   | "hibipetto"
@@ -32,6 +34,13 @@ export type ProjectDetails = {
   overview: string;
   highlights: readonly string[];
   implementation: readonly string[];
+  highlightsLabel?: string;
+  implementationLabel?: string;
+  contribution?: string;
+  limitations?: string;
+  disclosure?: string;
+  figures?: readonly { src: string; alt: string; caption: string }[];
+  evidenceLinks?: readonly { label: string; href: string }[];
 };
 
 export type Project = {
@@ -41,6 +50,9 @@ export type Project = {
   featured?: boolean;
   image: string;
   imageFit?: "contain";
+  imageAlt?: string;
+  imageCaption?: string;
+  statusLabel?: string;
   summary: string;
   stack: readonly string[];
   topics: readonly ProjectTopic[];
@@ -51,6 +63,7 @@ export type Project = {
   demoMode?: "window" | "message";
   demoVideo?: string;
   demoVideoLayout?: "portrait";
+  terminalRecording?: string;
 };
 
 export const projects: readonly Project[] = [
@@ -82,6 +95,106 @@ export const projects: readonly Project[] = [
     github: "https://github.com/yoonalexander/CraveAI",
     demo: "https://craveai.alexyoon.com/",
     demoVideo: "/assets/videos/craveai_demo_video.mp4",
+  },
+  {
+    id: "anytime-ncm",
+    name: "Anytime NCM",
+    year: "2026",
+    statusLabel: "Completed research",
+    image: "/assets/projects/anytime-ncm/architecture.png",
+    imageFit: "contain",
+    imageAlt: "Illustration of cumulative-prefix reconstruction and a causal online stopping decision",
+    imageCaption: "Architecture illustration; not an execution trace.",
+    summary:
+      "The final translation controller saved 5.08% mean time, but failed the BLEU quality tolerance. Built causal early-stopping tools for coarse-to-fine generation; delivered an inspectable negative result with research code, an evidence viewer and a versioned snapshot.",
+    stack: ["Python", "PyTorch", "CUDA measurement", "Adaptive inference", "Reproducible research", "Statistical evaluation"],
+    topics: ["AI/ML", "Data/NLP"],
+    details: {
+      context: "Completed research · Frozen-model adaptive stopping",
+      overview:
+        "Can a frozen coarse-to-fine generator return an earlier answer while preserving quality? Anytime NCM tested causal stopping against full-depth generation and fixed-depth controls, retaining failed gates alongside useful research tooling.",
+      highlightsLabel: "Key findings",
+      highlights: [
+        "The final controller saved 5.08% actual mean ready-output time on 1,188 development inputs: 127.872 ms versus 134.710 ms at full depth.",
+        "Its 0.665 corpus BLEU loss exceeded the unchanged 0.5 tolerance. The combined quality-preserving acceleration target failed.",
+        "The paired timing interval [3.38%, 6.86%] is conditional on recorded sessions and component assumptions; it provides no independent quality guarantee.",
+      ],
+      implementationLabel: "Approach and tooling",
+      implementation: [
+        "Built full-resolution cumulative-prefix reconstruction using the released learned transformations, checked intermediate/final parity, and exposed causal online stopping callbacks.",
+        "Separated decision-time observations from future outputs and offline references; measured reconstruction, decoding, transfers, observation and decision costs.",
+        "Delivered prefix adapters, exact Sudoku checks, translation metrics, source-locked evidence, a portable historical viewer and a dependency-free aggregate inspector with installable distributions.",
+      ],
+      contribution:
+        "I directed the investigation and its evaluation criteria, developed the reconstruction and causal stopping tooling with AI assistance, and assembled the retained evidence and delivery package. I kept the failed quality gate visible in the final interpretation.",
+      limitations:
+        "The full timing matrix was not completed after a preserved reporting failure. A complete matched-quality fixed-depth frontier, independent quality confirmation and cross-hardware generalization remain unestablished. Findings apply to the tested checkpoints, rules, populations and schedules; reserved outcomes remain sealed.",
+      disclosure:
+        "Substantial AI assistance was used in this project. Same-assistant verification is not independent human scientific review. No publication acceptance, institutional endorsement or production deployment is claimed.",
+      figures: [{
+        src: "/assets/projects/anytime-ncm/results.png",
+        alt: "Final development evaluation: 5.076 percent mean time saving and 0.664892 BLEU loss, exceeding the 0.5 tolerance",
+        caption: "Actual controller/full timing and corpus quality points from the final development evaluation. Conditional paired uncertainty; no independent quality guarantee.",
+      }],
+      evidenceLinks: [
+        { label: "Full case study", href: "https://github.com/yoonalexander/Anytime-NCM/blob/main/docs/portfolio/CASE_STUDY.md" },
+        { label: "Verification receipt", href: "https://github.com/yoonalexander/Anytime-NCM/blob/main/docs/delivery/COMPLETION.md" },
+      ],
+    },
+    github: "https://github.com/yoonalexander/Anytime-NCM",
+    demo: "https://github.com/yoonalexander/Anytime-NCM/releases/tag/research-v0.1.0",
+    demoLabel: "Research release",
+  },
+  {
+    id: "concept-firewall",
+    name: "Concept Firewall",
+    year: "2026",
+    statusLabel: "Completed research + CLI 0.2.0",
+    image: "/assets/projects/concept-firewall/research.png",
+    imageFit: "contain",
+    imageAlt: "Initial representation study: adding level-6 latent features did not improve the primary failure-prediction comparison",
+    imageCaption: "Initial study: level-6 latent features did not improve prediction. Later recovery analysis also found no established useful advantage.",
+    summary:
+      "Investigated whether internal NCM signals could predict and help recover from generation errors. Built reproducible evaluations and released a Sudoku verification and exact-solving CLI.",
+    stack: ["Python", "PyTorch", "Statistical evaluation", "Reproducible research", "CLI", "Exact solving"],
+    topics: ["AI/ML", "Data/NLP", "Back-End"],
+    details: {
+      context: "Completed research · Separate exact-solving CLI",
+      overview:
+        "Concept Firewall studied whether decision-time signals inside a frozen Next-Concept Model could predict Sudoku failures and allocate recovery compute. Learned recovery showed no established useful advantage. The released exact solver is a separate classical engineering deliverable.",
+      highlightsLabel: "Key findings",
+      highlights: [
+        "Initial representation study: the prespecified level-6 latent addition changed AUROC by −0.0078 (95% interval [−0.0368, +0.0193]); it did not improve the primary comparison. Chart bands are pointwise.",
+        "Final recovery analysis: at 272 retries, the primary model rescued 20 fixed-prefix failures and 30 restart failures, versus verifier-first random expectations of 16.97 and 28.28. Both primary 97.5% gain intervals included zero.",
+        "After monitoring costs, gains were +0.23 and −4.31 rescues. Decision: inconclusive evidence and no-go for advancing this learned allocator.",
+        "Separately, exact solving preserved 2,479 valid model answers and completed 3,921 others: 6,400/6,400 exposed development completions independently verified. This is not neural-model accuracy or a guarantee for arbitrary inputs.",
+      ],
+      implementationLabel: "Engineering deliverables",
+      implementation: [
+        "Reproducible evaluations with corrected cumulative-prefix reconstruction, immutable decision-time features, grouped partitions, frozen protocols and independent Sudoku checks.",
+        "Dependency-free CLI 0.2.0 verifies proposals and falls back to deterministic, bounded exact search from the original clues. Invalid, unsatisfiable and budget-exhausted inputs receive explicit failures.",
+        "The recorded demo runs examples/sudoku_demo.py: reject an incomplete proposal, solve the puzzle, then recheck the completed board. No learned model is involved.",
+      ],
+      limitations:
+        "The final recovery analysis reused an already exposed cohort; cross-validation does not restore fresh confirmation. Its uncertainty is conditional on fixed out-of-fold scores and saved retry outcomes. Exact-solving validation establishes a Sudoku utility, not learned intervention or general AI safety effectiveness.",
+      evidenceLinks: [
+        { label: "CLI 0.2.0 release", href: "https://github.com/yoonalexander/Concept-Firewall/releases/tag/cli-v0.2.0" },
+        { label: "Project overview", href: "https://github.com/yoonalexander/Concept-Firewall#readme" },
+        { label: "Full-size research chart", href: "/assets/projects/concept-firewall/research.png" },
+        { label: "Final recovery analysis", href: "https://github.com/yoonalexander/Concept-Firewall/blob/main/results/reports/recoverability_analysis.md" },
+        { label: "Exact-solver report", href: "https://github.com/yoonalexander/Concept-Firewall/blob/main/results/reports/verified_sudoku_fallback.md" },
+        { label: "CLI guide", href: "https://github.com/yoonalexander/Concept-Firewall/blob/main/CLI_README.md" },
+        { label: "Integration verification", href: "https://github.com/yoonalexander/Concept-Firewall/blob/main/release/0.2.0/integration-verification.json" },
+        { label: "Demo script", href: "https://github.com/yoonalexander/Concept-Firewall/blob/main/examples/sudoku_demo.py" },
+        { label: "Captured demo JSON", href: "/assets/projects/concept-firewall/sudoku-demo.json" },
+        { label: "Terminal recording (.cast)", href: "/assets/projects/concept-firewall/sudoku-demo.cast" },
+      ],
+    },
+    github: "https://github.com/yoonalexander/Concept-Firewall",
+    demo: "/assets/projects/concept-firewall/sudoku-demo.cast",
+    demoLabel: "Terminal demo",
+    demoMode: "window",
+    terminalRecording: "/assets/projects/concept-firewall/sudoku-demo.cast",
   },
   {
     id: "hibipetto",
