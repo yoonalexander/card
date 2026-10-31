@@ -580,7 +580,7 @@ function getProjectPositions(projectId: ProjectId, projectWindowCount: number) {
     details: { x: detailsX, y: detailsY },
     demo: {
       x: Math.max(12, Math.min(detailsX + detailsWidth - 48, viewportWidth - demoWidth - 12)),
-      y: isMobile && project?.visualDemo ? Math.max(16, Math.min(112, viewportHeight - 660)) : Math.min(detailsY + (isMobile ? 112 : 64), Math.max(16, viewportHeight - 240)),
+      y: project?.visualDemo ? (isMobile ? 64 : Math.max(16, Math.min(detailsY + 48, viewportHeight - 740))) : Math.min(detailsY + (isMobile ? 112 : 64), Math.max(16, viewportHeight - 240)),
     },
   };
 }
@@ -596,7 +596,7 @@ function clampProjectPosition(windowId: WindowId, position: { x: number; y: numb
 
   return {
     x: Math.max(12, Math.min(position.x, window.innerWidth - width - 12)),
-    y: Math.max(12, Math.min(position.y, window.innerHeight - 120)),
+    y: Math.max(isMobile && project.visualDemo ? 64 : 12, Math.min(position.y, window.innerHeight - 120)),
   };
 }
 

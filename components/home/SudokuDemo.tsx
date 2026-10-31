@@ -1,125 +1,157 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import recorded from "../../public/assets/projects/concept-firewall/sudoku-demo.json";
-
-// Original clues from Concept-Firewall/examples/sudoku_demo.py. The proposal,
-// solution and verification below come from its retained CLI output.
-const puzzle = "530070000600195000098000060800060003400803001700020006060000280000419005000080079";
-const clues = [...puzzle].filter((cell) => cell !== "0").length;
-const solution = recorded.exact_fallback.board;
-const steps = [
-  { label: "Puzzle", title: "Start with the original clues", status: `${clues} given numbers`,
-    description: "Keep the given numbers. Fill the empty cells so every row, column and 3 × 3 box contains 1–9." },
-  { label: "Rejected", title: "An empty answer fails the check", status: "Proposal rejected",
-    description: `The demo submits a blank answer. All 81 cells are empty and ${recorded.rejected_proposal.clue_violations} original clues are missing, so the verifier rejects it.` },
-  { label: "Verified", title: "Solve, then check the answer", status: "Verified completion",
-    description: `Exact search fills the ${81 - clues} missing numbers from the original puzzle. The CLI then rechecks the completed board before returning it.` },
-] as const;
+import { useCallback, useEffect, useRef, useState } from "react";
+import { initialFrame, solveSudoku, sudokuPuzzles, type SearchFrame } from "./sudokuSolver";
 
 export default function SudokuDemo() {
-  const [step, setStep] = useState(0);
-  const [playing, setPlaying] = useState(false);
-  const current = steps[step];
+  const [puzzleIndex, setPuzzleIndex] = useState(0);
+  const [frame, setFrame] = useState(() => initialFrame(sudokuPuzzles[0].clues));
+  const [running, setRunning] = useState(false);
+  const [finishing, setFinishing] = useState(false);
+  const [pace, setPace] = useState(110);
+  const search = useRef<Generator<SearchFrame, void, unknown> | null>(null);
+  const puzzle = sudokuPuzzles[puzzleIndex].clues;
+  const filled = frame.board.filter(Boolean).length;
+  const solved = frame.kind === "solved";
+  const done = solved || frame.kind === "failed";
+  const active = frame.index;
+  const row = active === null ? null : Math.floor(active / 9);
+  const column = active === null ? null : active % 9;
+
+  const advance = useCallback((count = 1) => {
+    if (!search.current) return;
+    let latest: SearchFrame | undefined;
+    for (let i = 0; i < count; i++) {
+      const next = search.current.next();
+      if (next.done) { setRunning(false); setFinishing(false); break; }
+      latest = next.value;
+      if (latest.kind === "solved" || latest.kind === "failed") {
+        setRunning(false); setFinishing(false); break;
+      }
+    }
+    if (latest) setFrame(latest);
+  }, []);
 
   useEffect(() => {
-    if (!playing) return;
-    const timer = window.setTimeout(() => {
-      if (step === steps.length - 1) setPlaying(false);
-      else setStep((value) => value + 1);
-    }, 3000);
+    if (!running) return;
+    const timer = window.setTimeout(() => advance(finishing ? 64 : 1), finishing ? 16 : pace);
     return () => window.clearTimeout(timer);
-  }, [playing, step]);
+  }, [running, finishing, pace, frame, advance]);
 
-  function showStep(next: number) {
-    setPlaying(false);
-    setStep(next);
+  useEffect(() => () => { search.current?.return(); }, []);
+
+  function reset(nextIndex = puzzleIndex) {
+    search.current?.return();
+    search.current = null;
+    setRunning(false);
+    setFinishing(false);
+    setPuzzleIndex(nextIndex);
+    setFrame(initialFrame(sudokuPuzzles[nextIndex].clues));
   }
 
+  function prepareSearch() {
+    if (done) {
+      search.current?.return();
+      search.current = null;
+      setFrame(initialFrame(puzzle));
+    }
+    if (!search.current) search.current = solveSudoku(puzzle);
+  }
+
+  const operation = frame.kind === "inspect" ? "Find the tightest choice" : frame.kind === "place" ? `Try ${frame.value} in this cell` :
+    frame.kind === "remove" ? `Undo ${frame.value} and try another path` : frame.kind === "dead-end" ? "No number fits here" :
+    solved ? "Every constraint checks out" : frame.kind === "failed" ? "No verified answer returned" : "One grid. Every constraint.";
+  const description = frame.kind === "inspect" ? `Row ${row! + 1}, column ${column! + 1} has ${frame.candidates.length === 1 ? "only one possible number" : `${frame.candidates.length} possible numbers`}. The search chooses the empty cell with the fewest options.` :
+    frame.kind === "place" ? "This number fits the current row, column and box. The search continues from this actual board state." :
+    frame.kind === "remove" || frame.kind === "dead-end" ? "This branch cannot complete the puzzle. Backtracking removes a previous choice so the search can explore an alternative." :
+    solved ? "The browser found this answer through exact search, then checked the original clues and all 27 rows, columns and boxes." :
+    frame.kind === "failed" ? frame.reason : "Start the solver to see it examine candidates, place numbers and backtrack when a branch fails. Every move is computed here in your browser.";
+
   return (
-    <div className={`sudoku-demo sudoku-demo-step-${step}`}>
-      <div className="sudoku-demo-heading">
-        <p className="sudoku-demo-kicker">Concept Firewall · Sudoku CLI 0.2.0</p>
-        <h3>From puzzle to verified answer</h3>
-        <p>Recorded exact-solving example · no learned model.</p>
+    <div className={`sudoku-demo sudoku-live${solved ? " sudoku-live-complete" : ""}`}>
+      <header className="sudoku-live-header">
+        <div className="sudoku-live-eyebrow"><span className={running ? "sudoku-live-dot is-running" : "sudoku-live-dot"} /> Concept Firewall · live exact solver</div>
+        <h3>Watch the puzzle come together.</h3>
+        <p>Real search. Visible choices. A verified finish.</p>
+      </header>
+
+      <div className="sudoku-live-toolbar">
+        <label>Puzzle<select aria-label="Sudoku puzzle" value={puzzleIndex} onChange={event => reset(Number(event.target.value))}>
+          {sudokuPuzzles.map((item, index) => <option value={index} key={item.name}>{item.name}</option>)}
+        </select></label>
+        <label>Animation pace<select aria-label="Animation pace" value={pace} onChange={event => setPace(Number(event.target.value))}>
+          <option value={260}>Slow</option><option value={110}>Normal</option><option value={20}>Fast</option>
+        </select></label>
       </div>
 
-      <ol className="sudoku-demo-steps" aria-label="Walkthrough steps">
-        {steps.map((item, index) => (
-          <li key={item.label}>
-            <button type="button" aria-pressed={index === step} onClick={() => showStep(index)}>
-              <span aria-hidden="true">{index + 1}</span> {item.label}
-            </button>
-          </li>
-        ))}
-      </ol>
+      <div className="sudoku-demo-controls sudoku-live-controls">
+        <button className="sudoku-demo-play" type="button" onClick={() => {
+          if (running) { setRunning(false); setFinishing(false); }
+          else { prepareSearch(); setRunning(true); }
+        }}>{running ? "Pause" : done ? "Solve again" : frame.kind === "ready" ? "Solve live" : "Resume"}</button>
+        <button type="button" disabled={running || done} onClick={() => { prepareSearch(); advance(); }}>Step</button>
+        <button type="button" onClick={() => reset()}>Reset</button>
+        {!done ? <button type="button" disabled={finishing} onClick={() => { prepareSearch(); setFinishing(true); setRunning(true); }}>{finishing ? "Finishing…" : "Finish search"}</button> : null}
+      </div>
 
       <div className="sudoku-demo-main">
         <figure className="sudoku-demo-board-wrap">
-          <table className="sudoku-demo-board" aria-label={`${current.label} Sudoku board`}>
-            <tbody>
-              {Array.from({ length: 9 }, (_, row) => (
-                <tr key={row}>
-                  {Array.from({ length: 9 }, (_, column) => {
-                    const index = row * 9 + column;
-                    const given = puzzle[index] !== "0";
-                    const value = step === 2 ? solution[index] : step === 1 ? recorded.rejected_proposal.board[index] : Number(puzzle[index]);
-                    const missing = step === 1 && given;
-                    const filled = step === 2 && !given;
-                    const state = missing ? "missing" : given ? "given" : filled ? "filled" : "empty";
-                    return (
-                      <td key={column} className={`sudoku-demo-cell sudoku-demo-cell-${state}`}
-                        aria-label={`Row ${row + 1}, column ${column + 1}: ${missing ? `missing original clue ${puzzle[index]}` : value === 0 || value === "0" ? "empty" : `${value}${given ? ", original clue" : ", solved value"}`}`}>
-                        <span aria-hidden="true">{missing ? "×" : value === 0 || value === "0" ? "" : value}</span>
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="sudoku-live-board-frame">
+            <table className="sudoku-demo-board" aria-label="Live Sudoku board">
+              <tbody>{Array.from({ length: 9 }, (_, r) => (
+                <tr key={r}>{Array.from({ length: 9 }, (_, c) => {
+                  const index = r * 9 + c, value = frame.board[index], given = puzzle[index] !== "0";
+                  const selected = active === index;
+                  const related = active !== null && (r === row || c === column || (Math.floor(r / 3) === Math.floor(row! / 3) && Math.floor(c / 3) === Math.floor(column! / 3)));
+                  const undo = selected && (frame.kind === "remove" || frame.kind === "dead-end");
+                  const classes = ["sudoku-demo-cell", given ? "sudoku-demo-cell-given" : value ? "sudoku-demo-cell-filled" : "sudoku-demo-cell-empty",
+                    related && !selected ? "sudoku-live-related" : "", selected ? "sudoku-live-active" : "", undo ? "sudoku-live-undo" : "", selected && frame.kind === "place" ? "sudoku-live-placed" : ""].filter(Boolean).join(" ");
+                  return <td key={c} className={classes} data-value={value}
+                    aria-label={`Row ${r + 1}, column ${c + 1}: ${value || "empty"}${given ? ", original clue" : ""}${selected ? ", active cell" : ""}`}>
+                    <span aria-hidden="true" key={`${value}-${undo}`}>
+                      {value || (undo && frame.value ? <s>{frame.value}</s> : selected && frame.kind === "inspect" ? <i className="sudoku-live-cursor" /> : "")}
+                    </span>
+                  </td>;
+                })}</tr>
+              ))}</tbody>
+            </table>
+          </div>
           <figcaption className="sudoku-demo-legend">
-            {step === 1 ? <span><b className="sudoku-demo-missing-key">×</b> Missing original clue</span> : (
-              <>
-                <span><i className="sudoku-demo-given-key" /> Original clues</span>
-                {step === 2 ? <span><i className="sudoku-demo-filled-key" /> Solved values</span> : null}
-              </>
-            )}
+            <span><i className="sudoku-demo-given-key" /> Given</span>
+            <span><i className="sudoku-live-active-key" /> Considering</span>
+            <span><i className="sudoku-demo-filled-key" /> Placed</span>
+            <span><i className="sudoku-live-undo-key" /> Backtrack</span>
           </figcaption>
         </figure>
 
-        <div className="sudoku-demo-explanation" aria-live="polite" aria-atomic="true">
-          <p className="sudoku-demo-status">{step === 1 ? "× " : step === 2 ? "✓ " : ""}{current.status}</p>
-          <h4>{current.title}</h4>
-          <p>{current.description}</p>
-          {step === 2 ? (
-            <>
-              <ul className="sudoku-demo-checks">
-                <li>✓ Original clues preserved</li>
-                <li>✓ All rows valid</li>
-                <li>✓ All columns valid</li>
-                <li>✓ All 3 × 3 boxes valid</li>
-              </ul>
-              <p className="sudoku-demo-search">{recorded.exact_fallback.search_nodes} search nodes · {recorded.rechecked_completion.filled_cells}/81 cells verified</p>
-            </>
-          ) : <p className="sudoku-demo-aside">{step === 1 ? "The solver returns to the original puzzle; a rejected proposal never becomes extra clues." : "The finished answer must pass every constraint before it is accepted."}</p>}
+        <div className="sudoku-demo-explanation sudoku-live-explanation">
+          <p className={`sudoku-demo-status${solved ? " sudoku-live-verified" : ""}`} role="status">
+            {solved ? "✓ Verified solution" : frame.kind === "failed" ? "Search stopped" : running ? "● Solving in your browser" : frame.kind === "ready" ? "Ready to solve" : "Paused"}
+          </p>
+          <h4>{operation}</h4>
+          <p>{description}</p>
+          {solved ? <ul className="sudoku-demo-checks">
+            <li>✓ Original clues preserved</li><li>✓ All rows valid</li><li>✓ All columns valid</li><li>✓ All 3 × 3 boxes valid</li>
+          </ul> : <div className="sudoku-live-candidates">
+            <span>{active === null ? "Candidate numbers" : `Options · row ${row! + 1}, column ${column! + 1}`}</span>
+            <div>{Array.from({ length: 9 }, (_, i) => i + 1).map(n => <b key={n} className={frame.candidates.includes(n) ? "is-possible" : ""}>{n}</b>)}</div>
+            <small>{frame.kind === "ready" ? "Watch the options narrow as the grid fills." : "Highlighted numbers fit when this cell is selected."}</small>
+          </div>}
+          <div className="sudoku-live-stats" aria-label="Live search counters">
+            <div><strong>{frame.nodes}</strong><span>Search nodes</span></div>
+            <div><strong>{frame.placements}</strong><span>Placements</span></div>
+            <div><strong>{frame.backtracks}</strong><span>Backtracks</span></div>
+          </div>
         </div>
       </div>
 
-      <div className="sudoku-demo-controls">
-        <button className="sudoku-demo-play" type="button" onClick={() => {
-          if (step === steps.length - 1 && !playing) setStep(0);
-          setPlaying((value) => !value);
-        }}>{playing ? "Pause" : step === steps.length - 1 ? "Replay" : "Play walkthrough"}</button>
-        <button type="button" onClick={() => showStep(step === steps.length - 1 ? 0 : step + 1)}>
-          {step === steps.length - 1 ? "Start again" : "Next step"}
-        </button>
-        {step < 2 ? <button type="button" onClick={() => showStep(2)}>Show solution</button> : null}
+      <div className="sudoku-live-progress">
+        <div><span>{solved ? "All cells verified" : "Grid filled"}</span><strong>{filled} / 81</strong></div>
+        <progress value={filled} max={81} aria-label="Cells filled in Sudoku grid" />
       </div>
-
-      <p className="sudoku-demo-scope">Classical exact-solving tool; no learned model. Saved results shown in explanatory steps, without a live search trace.</p>
+      <p className="sudoku-demo-scope">Runs locally using a browser port of the CLI’s bounded exact-search algorithm. Animation is paced for clarity. No neural model or new research experiment.</p>
       <details className="sudoku-demo-evidence">
-        <summary>View recorded CLI evidence</summary>
+        <summary>Compare with the recorded Python CLI example</summary>
         <div>
           <a href="/assets/projects/concept-firewall/sudoku-demo.txt" target="_blank" rel="noopener noreferrer">Read transcript</a>
           <a href="/assets/projects/concept-firewall/sudoku-demo.json" target="_blank" rel="noopener noreferrer">Original JSON</a>

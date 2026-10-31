@@ -15,13 +15,22 @@ the homepage's project listing.
   findings. Its exact solver and CLI release are separate engineering outputs.
   Research reports, the CLI guide and integration verification are linked.
 
-Concept Firewall's visual demo shows the original Sudoku clues, the rejected blank
-proposal, and the solved board with constraint checks. Dark given cells retain the
-original clues; green cells show values filled by exact search; crosses identify
-clues omitted from the rejected proposal. Visitors can select each step, play or
-pause the walkthrough, and jump to the solution. `SudokuDemo.tsx` uses the puzzle
-from `examples/sudoku_demo.py` and the recorded CLI 0.2.0 JSON directly. It shows
-saved outcomes, not a live solver or an intermediate search trace.
+Concept Firewall's live visual demo runs a TypeScript port of the CLI's bounded,
+deterministic minimum-remaining-values exact search. A generator advances the real
+search one operation at a time, exposing candidate selection, placements, dead ends
+and backtracking. It does not read a saved solution. The original CLI puzzle and a
+harder backtracking example are selectable. Visitors can pause/resume, single-step,
+change the animation pace, reset, or finish in bounded batches that yield to the UI.
+Original clues stay fixed; the current row/column/box and active cell are highlighted.
+New digits animate into place; rejected branches visibly undo their choices.
+
+`sudokuSolver.ts` independently checks clues and all 27 completed units before a
+solution is accepted. The default node budget is 100,000; invalid, unsatisfiable
+and budget-exhausted searches return an explicit failure. Search counters reflect
+actual work; animation timing is deliberately paced, not an execution benchmark.
+Reduced-motion preferences disable decorative effects, and the demo starts paused.
+Run `npm.cmd run test:sudoku` for algorithm, trace, cancellation, verifier and budget
+checks. The classic board and node count match the recorded Python CLI example.
 
 The original terminal evidence remains available in a collapsed disclosure and
 the project evidence links: stdout JSON, transcript, 15-second `.cast` recording,
