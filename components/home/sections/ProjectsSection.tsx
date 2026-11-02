@@ -268,18 +268,38 @@ export default function ProjectsSection({ onOpenProjectDetails }: ProjectsSectio
           ))}
         </div>
         {displayedProjects.length > 0 ? (
-          <div className="project-grid">
-            {displayedProjects.map((project) => (
-              <ProjectCard
-                key={project.name}
-                onOpenProjectDetails={onOpenProjectDetails}
-                onPointerActivation={blurAfterPointerActivation}
-                onShowPortfolioMessage={() => setShowPortfolioMessage(true)}
-                project={project}
-                refCallback={setProjectCardRef(project.name)}
-                showPortfolioMessage={showPortfolioMessage}
-              />
-            ))}
+          <div className="project-groups">
+            {[true, false].map((featured) => {
+              const groupProjects = displayedProjects.filter((project) => Boolean(project.featured) === featured);
+
+              if (groupProjects.length === 0) return null;
+
+              return (
+                <section
+                  className={`project-group${featured ? " project-group-featured" : ""}`}
+                  aria-label={featured ? "Featured projects" : "More projects"}
+                  key={String(featured)}
+                >
+                  <h3 className="project-group-title">
+                    {featured ? <span aria-hidden="true">★</span> : null}
+                    {featured ? "Featured" : "More projects"}
+                  </h3>
+                  <div className="project-grid">
+                    {groupProjects.map((project) => (
+                      <ProjectCard
+                        key={project.name}
+                        onOpenProjectDetails={onOpenProjectDetails}
+                        onPointerActivation={blurAfterPointerActivation}
+                        onShowPortfolioMessage={() => setShowPortfolioMessage(true)}
+                        project={project}
+                        refCallback={setProjectCardRef(project.name)}
+                        showPortfolioMessage={showPortfolioMessage}
+                      />
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
           </div>
         ) : (
           <p className="project-empty-state">No projects match that topic mix.</p>
@@ -325,7 +345,7 @@ function ProjectCard({
       <div className="project-card-body">
         {project.statusLabel ? <p className="project-status-label">{project.statusLabel}</p> : null}
         <div className="project-heading-row">
-          <h3 className="project-name">
+          <h4 className="project-name">
             {project.name}
             {project.featured ? (
               <span
@@ -338,7 +358,7 @@ function ProjectCard({
                 <span className="project-resume-tooltip" aria-hidden="true">Featured</span>
               </span>
             ) : null}
-          </h3>
+          </h4>
           <time className="project-date">{project.year}</time>
         </div>
 

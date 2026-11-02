@@ -201,6 +201,7 @@ export const projects: readonly Project[] = [
     id: "hibipetto",
     name: "Hibipetto",
     year: "2026",
+    featured: true,
     image: "/assets/images/Hibipetto.png",
     summary:
       "Habit tracker with pet companions, recurring goals, rewards, streaks, and grace hearts. Start as a guest, track daily progress, and optionally sign in for cloud synchronization.",
@@ -227,6 +228,7 @@ export const projects: readonly Project[] = [
     id: "wf-studio",
     name: "Wave Function / WF-Studio",
     year: "2026",
+    featured: true,
     image: "/assets/images/Waveform_Studio.png",
     summary:
       "Browser music studio that turns mathematical equations into sound and live graphs. Compose multi-track arrangements, save projects locally, and export WAV, MIDI, or graph videos with audio.",
